@@ -8,11 +8,7 @@ namespace Monitorar_Tarefas.Models
 {
     public class Usuarios
     {
-        public Usuarios()
-        {
-            this.Projetos = new HashSet<Projetos>();
-        }
-
+  
         [Key]
         public int Id { get; set; }
 
@@ -33,7 +29,7 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Data de nascimento")]
         public DateTime DataNascimento { get; set; }
 
-        public virtual ICollection<Projetos> Projetos { get; set; }
+        public ICollection<Projetos> Projetos { get; set; }
 
     }
 }

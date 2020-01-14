@@ -7,11 +7,7 @@ namespace Monitorar_Tarefas.Models
 {
     public class Projetos
     {
-        public Projetos()
-        {
-            this.Tarefas = new HashSet<Tarefas>();
-        }
-
+       
         [Key]
         public int Id { get; set; }
 
