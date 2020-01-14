@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Novo projeto</a>
 </p>
 <table class="table">
     <thead>
@@ -33,39 +33,42 @@
             <th>
                 @Html.DisplayNameFor(model => model.Categoria)
             </th>
-            <th></th>
+            <th>
+                Ações
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeProjeto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DescricaoProjeto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataInicioProjeto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataFinalizadoProjeto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataEntregaProjeto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuarios.NomeUsuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categoria.NomeCategoria)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeProjeto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescricaoProjeto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataInicioProjeto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataFinalizadoProjeto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataEntregaProjeto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuarios.NomeUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.NomeCategoria)
+                </td>
+                <td>
+                    <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a class="btn btn-light" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

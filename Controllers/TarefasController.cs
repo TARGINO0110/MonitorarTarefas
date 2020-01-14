@@ -50,7 +50,7 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Tarefas/Create
         public IActionResult Create()
         {
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "Id");
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "Id", tarefas.ProjetoId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
             return View(tarefas);
         }
 
@@ -82,7 +82,7 @@ namespace Monitorar_Tarefas.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "Id", tarefas.ProjetoId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
             return View(tarefas);
         }
 
@@ -116,7 +116,7 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "Id", tarefas.ProjetoId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
             return View(tarefas);
         }
 

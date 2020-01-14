@@ -15,7 +15,7 @@ namespace Monitorar_Tarefas.Models
 
         [Required(ErrorMessage = "É necessario informar a data de validade do token!")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Validade do Token")]
         public DateTime DataValidadeToken { get; set; }
     }

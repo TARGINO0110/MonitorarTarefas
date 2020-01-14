@@ -1,4 +1,8 @@
-﻿@{
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -8,6 +12,38 @@
 </div>
 <br />
 
-<div class="text-center">
-    <p><a class="btn btn-light" asp-area="Identity" asp-page="/Account/Login">Iniciar agora</a></p>
-</div>
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="form-group col-lg-10">
+        <div class="card col-sm-4">
+            <div class="card-title zmdi-colorize">
+                <span>Novos recursos</span>
+            </div>
+            <div class="card-body">
+                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Projetos" asp-action="Index">Acessar Projetos</a></p>
+            </div>
+        </div>
+        <div class="card col-sm-4">
+            <div class="card-title zmdi-colorize">
+                <span>Novos recursos</span>
+            </div>
+            <div class="card-body">
+                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Tarefas" asp-action="Index">Acessar Tarefas</a></p>
+            </div>
+        </div>
+        <div class="card col-sm-4">
+            <div class="card-title zmdi-colorize">
+                <span>Novos recursos</span>
+            </div>
+            <div class="card-body">
+                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Avisos" asp-action="Index">Acessar Avisos</a></p>
+            </div>
+        </div>
+    </div>
+}
+
+else
+{
+    <p class="text-center"><a class="btn btn-light" asp-area="Identity" asp-page="/Account/Login">Iniciar agora</a></p>
+}
+

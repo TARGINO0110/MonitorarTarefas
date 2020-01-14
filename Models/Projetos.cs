@@ -22,29 +22,30 @@ namespace Monitorar_Tarefas.Models
         public string DescricaoProjeto { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Iniciado em")]
         public DateTime DataInicioProjeto { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Finalizado em")]
         public DateTime DataFinalizadoProjeto { get; set; }
 
         [Required(ErrorMessage = "É necessário informar a data de entrga do seu projeto!")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data da entrega")]
         public DateTime DataEntregaProjeto { get; set; }
 
-
+        [Display(Name = "Usuário")]
         [ForeignKey("Usuarios")]
         public int UsuarioId { get; set; }
 
+        [Display(Name = "Categoria")]
         [ForeignKey("Categoria")]
         public int CategoriaId { get; set; }
 
-        [Display(Name = "Usuário")]
+        
         public virtual Usuarios Usuarios { get; set; }
 
         public virtual Categoria Categoria { get; set; }
