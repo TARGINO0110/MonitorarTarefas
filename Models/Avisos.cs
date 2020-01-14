@@ -19,7 +19,7 @@ namespace Monitorar_Tarefas.Models
         [Required(ErrorMessage = "É necessario informar a data da postagem!")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Validade do Token")]
+        [Display(Name = "Data da postagem")]
         public DateTime DataPostagemAviso { get; set; }
     }
 }

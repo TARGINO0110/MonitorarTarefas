@@ -11,8 +11,8 @@ namespace Monitorar_Tarefas.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Será necessário selecionar a categoria do seu projeto!")]
-        [Display(Name = "Selecione a sua categoria")]
+        [Required(ErrorMessage = "Será necessário selecionar ou informar a categoria do seu projeto!")]
+        [Display(Name = "Categoria")]
         public string NomeCategoria { get; set; }
     }
 }
