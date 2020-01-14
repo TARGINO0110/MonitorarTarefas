@@ -1,0 +1,62 @@
+﻿@model Monitorar_Tarefas.Models.Tarefas
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Tarefas</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NomeTarefa" class="control-label"></label>
+                <input asp-for="NomeTarefa" class="form-control" />
+                <span asp-validation-for="NomeTarefa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DescricaoTarefa" class="control-label"></label>
+                <input asp-for="DescricaoTarefa" class="form-control" />
+                <span asp-validation-for="DescricaoTarefa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataInicioTarefa" class="control-label"></label>
+                <input asp-for="DataInicioTarefa" class="form-control" />
+                <span asp-validation-for="DataInicioTarefa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataFinalizadoTarefa" class="control-label"></label>
+                <input asp-for="DataFinalizadoTarefa" class="form-control" />
+                <span asp-validation-for="DataFinalizadoTarefa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataEntregaTarefa" class="control-label"></label>
+                <input asp-for="DataEntregaTarefa" class="form-control" />
+                <span asp-validation-for="DataEntregaTarefa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Situacao" class="control-label"></label>
+                <input asp-for="Situacao" class="form-control" />
+                <span asp-validation-for="Situacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjetoId" class="control-label"></label>
+                <select asp-for="ProjetoId" class ="form-control" asp-items="ViewBag.ProjetoId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
