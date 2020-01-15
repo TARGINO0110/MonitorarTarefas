@@ -15,19 +15,9 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Data/Hora")]
         public DateTime DataHoraAcao { get; set; }
 
-        [ForeignKey("Usuarios")]
-        public int UsuariosId { get; set; }
-
         [ForeignKey("Projetos")]
         public int ProjetosId { get; set; }
 
-        [ForeignKey("Tarefas")]
-        public int TarefasId { get; set; }
-
-        public virtual Usuarios Usuarios { get; set; }
-
         public virtual Projetos Projetos { get; set; }
-
-        public virtual Tarefas Tarefas { get; set; }
     }
 }

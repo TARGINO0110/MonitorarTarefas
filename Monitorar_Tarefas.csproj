@@ -16,6 +16,8 @@
     <Compile Remove="Data\Migrations\20200114133251_InitialMonitorarTarefas.Designer.cs" />
     <Compile Remove="Data\Migrations\20200114133936_InitaialCreateMonitorarTarefas.cs" />
     <Compile Remove="Data\Migrations\20200114133936_InitaialCreateMonitorarTarefas.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200115012348_InitialCreateMonitorarTarefa.cs" />
+    <Compile Remove="Data\Migrations\20200115012348_InitialCreateMonitorarTarefa.Designer.cs" />
   </ItemGroup>
 
 
