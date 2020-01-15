@@ -5,6 +5,19 @@
     <UserSecretsId>aspnet-Monitorar_Tarefas-2BE6BA21-F731-4312-A8FB-F4D6AA597471</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200114132252_HistoricoAcoes.cs" />
+    <Compile Remove="Data\Migrations\20200114132252_HistoricoAcoes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200114132450_HistoricoAcoes.cs" />
+    <Compile Remove="Data\Migrations\20200114132450_HistoricoAcoes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200114132758_HistoricoAcoes.cs" />
+    <Compile Remove="Data\Migrations\20200114132758_HistoricoAcoes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200114133251_InitialMonitorarTarefas.cs" />
+    <Compile Remove="Data\Migrations\20200114133251_InitialMonitorarTarefas.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200114133936_InitaialCreateMonitorarTarefas.cs" />
+    <Compile Remove="Data\Migrations\20200114133936_InitaialCreateMonitorarTarefas.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />

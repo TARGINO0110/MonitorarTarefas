@@ -19,6 +19,7 @@ namespace Monitorar_Tarefas.Data
         public virtual DbSet<Categoria> Categorias { get; set; }
         public virtual DbSet<Avisos> Avisos { get; set; }
         public virtual DbSet<Token> Tokens { get; set; }
+        public virtual DbSet<HistoricoAcoes> HistoricoAcoes { get; set; }
 
     }
 }
