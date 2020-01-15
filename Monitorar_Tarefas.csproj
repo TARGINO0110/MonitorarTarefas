@@ -5,10 +5,6 @@
     <UserSecretsId>aspnet-Monitorar_Tarefas-2BE6BA21-F731-4312-A8FB-F4D6AA597471</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\img\fundoImagem.jpg" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />

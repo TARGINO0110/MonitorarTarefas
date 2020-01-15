@@ -6,31 +6,37 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center" >
-    <h1 id="textoHome" class="display-4">Bem vindo ao Monitorar Tarefas</h1>
+<div class="text-center">
+    <h1 class="display-4">Bem vindo ao Monitorar Tarefas</h1>
     <p>Acomanhe de forma eficaz o fluxo de tarefas da sua equipe</p>
 </div>
 <br />
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a class="btn btn-light" asp-area="" asp-controller="Projetos" asp-action="Index">Acessar Projetos</a>
-                </div>
+    <div class="form-group col-lg-10">
+        <div class="card col-sm-4">
+            <div class="card-title zmdi-colorize">
+                <span>Novos recursos</span>
+            </div>
+            <div class="card-body">
+                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Projetos" asp-action="Index">Acessar Projetos</a></p>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a class="btn btn-light" asp-area="" asp-controller="Tarefas" asp-action="Index">Acessar Tarefas</a>
-                </div>
+        <div class="card col-sm-4">
+            <div class="card-title zmdi-colorize">
+                <span>Novos recursos</span>
+            </div>
+            <div class="card-body">
+                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Tarefas" asp-action="Index">Acessar Tarefas</a></p>
+            </div>
+        </div>
+        <div class="card col-sm-4">
+            <div class="card-title zmdi-colorize">
+                <span>Novos recursos</span>
+            </div>
+            <div class="card-body">
+                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Avisos" asp-action="Index">Acessar Avisos</a></p>
             </div>
         </div>
     </div>
