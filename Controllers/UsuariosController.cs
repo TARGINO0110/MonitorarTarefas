@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using Monitorar_Tarefas.Models;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
     public class UsuariosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -52,9 +50,11 @@ namespace Monitorar_Tarefas.Controllers
         }
 
         // POST: Usuarios/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,DataNascimento")] Usuarios usuarios)
+        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento")] Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {
@@ -82,9 +82,11 @@ namespace Monitorar_Tarefas.Controllers
         }
 
         // POST: Usuarios/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,DataNascimento")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento")] Usuarios usuarios)
         {
             if (id != usuarios.Id)
             {

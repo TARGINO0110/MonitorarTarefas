@@ -226,13 +226,19 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DataExpiracaoAviso")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DataPostagemAviso")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DescricaoAviso")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("TituloAviso")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -256,6 +262,48 @@ namespace Monitorar_Tarefas.Data.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("Monitorar_Tarefas.Models.Empresa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CNPJ")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
+
+                    b.Property<DateTime>("DataFundacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailEmpresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EnderecoEmpresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("NomeEmpresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PorteEmpresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelefoneEmpresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Empresas");
+                });
+
             modelBuilder.Entity("Monitorar_Tarefas.Models.HistoricoAcoes", b =>
                 {
                     b.Property<int>("Id")
@@ -272,12 +320,7 @@ namespace Monitorar_Tarefas.Data.Migrations
                     b.Property<string>("OnservacaoAcao")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjetosId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjetosId");
 
                     b.ToTable("HistoricoAcoes");
                 });
@@ -302,19 +345,22 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DescricaoProjeto")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int?>("HistoricoAcoesId")
+                        .HasColumnType("int");
 
                     b.Property<string>("NomeProjeto")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoriaId");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("HistoricoAcoesId");
 
                     b.ToTable("Projetos");
                 });
@@ -336,9 +382,12 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DescricaoTarefa")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("NomeTarefa")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProjetoId")
@@ -347,9 +396,14 @@ namespace Monitorar_Tarefas.Data.Migrations
                     b.Property<string>("Situacao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjetoId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Tarefas");
                 });
@@ -369,7 +423,12 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Tokens");
                 });
@@ -382,21 +441,48 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CPF")
+                        .IsRequired()
                         .HasColumnType("nvarchar(11)")
                         .HasMaxLength(11);
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EmpresaId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("GerenteProjeto")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("HistoricoAcoesId")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomeUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProjetosId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SobrenomeUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TelefoneCelular")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(11)")
+                        .HasMaxLength(11);
+
+                    b.Property<bool>("TokenAcesso")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EmpresaId");
+
+                    b.HasIndex("HistoricoAcoesId");
+
+                    b.HasIndex("ProjetosId");
 
                     b.ToTable("Usuarios");
                 });
@@ -452,15 +538,6 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Monitorar_Tarefas.Models.HistoricoAcoes", b =>
-                {
-                    b.HasOne("Monitorar_Tarefas.Models.Projetos", "Projetos")
-                        .WithMany()
-                        .HasForeignKey("ProjetosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Monitorar_Tarefas.Models.Projetos", b =>
                 {
                     b.HasOne("Monitorar_Tarefas.Models.Categoria", "Categoria")
@@ -469,11 +546,9 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Monitorar_Tarefas.Models.Usuarios", "Usuarios")
+                    b.HasOne("Monitorar_Tarefas.Models.HistoricoAcoes", null)
                         .WithMany("Projetos")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HistoricoAcoesId");
                 });
 
             modelBuilder.Entity("Monitorar_Tarefas.Models.Tarefas", b =>
@@ -483,6 +558,38 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasForeignKey("ProjetoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Monitorar_Tarefas.Models.Usuarios", "Usuarios")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Monitorar_Tarefas.Models.Token", b =>
+                {
+                    b.HasOne("Monitorar_Tarefas.Models.Usuarios", "Usuarios")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Monitorar_Tarefas.Models.Usuarios", b =>
+                {
+                    b.HasOne("Monitorar_Tarefas.Models.Empresa", "Empresa")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Monitorar_Tarefas.Models.HistoricoAcoes", null)
+                        .WithMany("Usuarios")
+                        .HasForeignKey("HistoricoAcoesId");
+
+                    b.HasOne("Monitorar_Tarefas.Models.Projetos", null)
+                        .WithMany("Usuarios")
+                        .HasForeignKey("ProjetosId");
                 });
 #pragma warning restore 612, 618
         }

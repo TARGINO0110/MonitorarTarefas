@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using Monitorar_Tarefas.Models;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
     public class TokensController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,7 +22,8 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Tokens
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tokens.ToListAsync());
+            var applicationDbContext = _context.Tokens.Include(t => t.Usuarios);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Tokens/Details/5
@@ -36,6 +35,7 @@ namespace Monitorar_Tarefas.Controllers
             }
 
             var token = await _context.Tokens
+                .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (token == null)
             {
@@ -48,13 +48,16 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Tokens/Create
         public IActionResult Create()
         {
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF");
             return View();
         }
 
         // POST: Tokens/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken")] Token token)
+        public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
             return View(token);
         }
 
@@ -78,13 +82,16 @@ namespace Monitorar_Tarefas.Controllers
             {
                 return NotFound();
             }
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
             return View(token);
         }
 
         // POST: Tokens/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Hash,DataValidadeToken")] Token token)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
         {
             if (id != token.Id)
             {
@@ -111,6 +118,7 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
             return View(token);
         }
 
@@ -123,6 +131,7 @@ namespace Monitorar_Tarefas.Controllers
             }
 
             var token = await _context.Tokens
+                .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (token == null)
             {

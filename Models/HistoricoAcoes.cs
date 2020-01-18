@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Monitorar_Tarefas.Models
 {
     public class HistoricoAcoes
     {
+        public HistoricoAcoes()
+        {
+            this.Usuarios = new List<Usuarios>();
+            this.Projetos = new List<Projetos>();
+        }
+
         [Key]
         public int Id { get; set; }
         [Display(Name = "Nº da Ação")]
@@ -15,9 +21,8 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Data/Hora")]
         public DateTime DataHoraAcao { get; set; }
 
-        [ForeignKey("Projetos")]
-        public int ProjetosId { get; set; }
+        public virtual ICollection<Usuarios> Usuarios { get; set; }
+        public virtual ICollection<Projetos> Projetos { get; set; }
 
-        public virtual Projetos Projetos { get; set; }
     }
 }

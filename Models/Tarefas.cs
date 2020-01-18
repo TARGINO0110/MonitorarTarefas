@@ -9,9 +9,12 @@ namespace Monitorar_Tarefas.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Informe o nome da sua tarefa!")]
         [Display(Name = "Nome da tarefa")]
         public string NomeTarefa { get; set; }
 
+        [Required(ErrorMessage = "Descreva sobre a sua tarefa!")]
+        [StringLength(100, MinimumLength = 10, ErrorMessage = "Escrava de 10 à 100 caracters!")]
         [Display(Name = "Descrição")]
         public string DescricaoTarefa { get; set; }
 
@@ -36,8 +39,12 @@ namespace Monitorar_Tarefas.Models
         [ForeignKey("Projetos")]
         public int ProjetoId { get; set; }
 
+        [ForeignKey("Usuarios")]
+        public int UsuarioId { get; set; }
+
         public virtual Projetos Projetos { get; set; }
 
-        public DateTime Datacriacao => DataInicioTarefa = DateTime.Now;
+        public virtual Usuarios Usuarios { get; set; }
+
     }
 }

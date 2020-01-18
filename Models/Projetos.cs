@@ -7,13 +7,21 @@ namespace Monitorar_Tarefas.Models
 {
     public class Projetos
     {
-       
+        public Projetos()
+        {
+            this.Usuarios = new List<Usuarios>();
+            this.Tarefas = new List<Tarefas>();
+        }
+
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Informe o nome do seu projeto!")]
         [Display(Name = "Nome do projeto")]
         public string NomeProjeto { get; set; }
 
+        [Required(ErrorMessage = "Descreva sobre o seu projeto!")]
+        [StringLength(100, MinimumLength = 10, ErrorMessage = "Escrava de 10 à 100 caracters!")]
         [Display(Name = "Descrição")]
         public string DescricaoProjeto { get; set; }
 
@@ -33,21 +41,13 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Data da entrega")]
         public DateTime DataEntregaProjeto { get; set; }
 
-        [Display(Name = "Usuário")]
-        [ForeignKey("Usuarios")]
-        public int UsuarioId { get; set; }
-
         [Display(Name = "Categoria")]
         [ForeignKey("Categoria")]
         public int CategoriaId { get; set; }
 
-        
-        public virtual Usuarios Usuarios { get; set; }
-
         public virtual Categoria Categoria { get; set; }
+        public virtual ICollection<Usuarios> Usuarios { get; set; }
+        public virtual ICollection<Tarefas> Tarefas { get; set; }
 
-        public ICollection<Tarefas> Tarefas { get; set; }
-
-        public DateTime Datacriacao => DataInicioProjeto = DateTime.Now;
     }
 }

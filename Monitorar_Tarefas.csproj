@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -6,18 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20200114132252_HistoricoAcoes.cs" />
-    <Compile Remove="Data\Migrations\20200114132252_HistoricoAcoes.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200114132450_HistoricoAcoes.cs" />
-    <Compile Remove="Data\Migrations\20200114132450_HistoricoAcoes.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200114132758_HistoricoAcoes.cs" />
-    <Compile Remove="Data\Migrations\20200114132758_HistoricoAcoes.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200114133251_InitialMonitorarTarefas.cs" />
-    <Compile Remove="Data\Migrations\20200114133251_InitialMonitorarTarefas.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200114133936_InitaialCreateMonitorarTarefas.cs" />
-    <Compile Remove="Data\Migrations\20200114133936_InitaialCreateMonitorarTarefas.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200115012348_InitialCreateMonitorarTarefa.cs" />
-    <Compile Remove="Data\Migrations\20200115012348_InitialCreateMonitorarTarefa.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200116001653_InitialCreateMonitorarTarefas.cs" />
+    <Compile Remove="Data\Migrations\20200116001653_InitialCreateMonitorarTarefas.Designer.cs" />
   </ItemGroup>
 
 

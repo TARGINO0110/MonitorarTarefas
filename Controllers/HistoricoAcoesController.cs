@@ -10,22 +10,22 @@ using Monitorar_Tarefas.Models;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    public class CategoriasController : Controller
+    public class HistoricoAcoesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriasController(ApplicationDbContext context)
+        public HistoricoAcoesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Categorias
+        // GET: HistoricoAcoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categorias.ToListAsync());
+            return View(await _context.HistoricoAcoes.ToListAsync());
         }
 
-        // GET: Categorias/Details/5
+        // GET: HistoricoAcoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var historicoAcoes = await _context.HistoricoAcoes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (historicoAcoes == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(historicoAcoes);
         }
 
-        // GET: Categorias/Create
+        // GET: HistoricoAcoes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categorias/Create
+        // POST: HistoricoAcoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeCategoria")] Categoria categoria)
+        public async Task<IActionResult> Create([Bind("Id,NumeroAcao,OnservacaoAcao,DataHoraAcao")] HistoricoAcoes historicoAcoes)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoria);
+                _context.Add(historicoAcoes);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(historicoAcoes);
         }
 
-        // GET: Categorias/Edit/5
+        // GET: HistoricoAcoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias.FindAsync(id);
-            if (categoria == null)
+            var historicoAcoes = await _context.HistoricoAcoes.FindAsync(id);
+            if (historicoAcoes == null)
             {
                 return NotFound();
             }
-            return View(categoria);
+            return View(historicoAcoes);
         }
 
-        // POST: Categorias/Edit/5
+        // POST: HistoricoAcoes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeCategoria")] Categoria categoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroAcao,OnservacaoAcao,DataHoraAcao")] HistoricoAcoes historicoAcoes)
         {
-            if (id != categoria.Id)
+            if (id != historicoAcoes.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(categoria);
+                    _context.Update(historicoAcoes);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoriaExists(categoria.Id))
+                    if (!HistoricoAcoesExists(historicoAcoes.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(historicoAcoes);
         }
 
-        // GET: Categorias/Delete/5
+        // GET: HistoricoAcoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var historicoAcoes = await _context.HistoricoAcoes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (historicoAcoes == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(historicoAcoes);
         }
 
-        // POST: Categorias/Delete/5
+        // POST: HistoricoAcoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
-            _context.Categorias.Remove(categoria);
+            var historicoAcoes = await _context.HistoricoAcoes.FindAsync(id);
+            _context.HistoricoAcoes.Remove(historicoAcoes);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoriaExists(int id)
+        private bool HistoricoAcoesExists(int id)
         {
-            return _context.Categorias.Any(e => e.Id == id);
+            return _context.HistoricoAcoes.Any(e => e.Id == id);
         }
     }
 }

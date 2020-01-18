@@ -33,6 +33,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Projetos)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuarios)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -58,7 +61,10 @@
                 @Html.DisplayFor(modelItem => item.Situacao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Projetos.Id)
+                @Html.DisplayFor(modelItem => item.Projetos.DescricaoProjeto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuarios.CPF)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

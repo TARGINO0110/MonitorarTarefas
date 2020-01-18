@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Monitorar_Tarefas.Models.Token>
+﻿@model IEnumerable<Monitorar_Tarefas.Models.HistoricoAcoes>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Hash)
+                @Html.DisplayNameFor(model => model.NumeroAcao)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataValidadeToken)
+                @Html.DisplayNameFor(model => model.OnservacaoAcao)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Usuarios)
+                @Html.DisplayNameFor(model => model.DataHoraAcao)
             </th>
             <th></th>
         </tr>
@@ -28,13 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Hash)
+                @Html.DisplayFor(modelItem => item.NumeroAcao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DataValidadeToken)
+                @Html.DisplayFor(modelItem => item.OnservacaoAcao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Usuarios.CPF)
+                @Html.DisplayFor(modelItem => item.DataHoraAcao)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

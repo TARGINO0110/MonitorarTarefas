@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using Monitorar_Tarefas.Models;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
     public class TarefasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,7 +22,7 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Tarefas
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tarefas.Include(t => t.Projetos);
+            var applicationDbContext = _context.Tarefas.Include(t => t.Projetos).Include(t => t.Usuarios);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -38,6 +36,7 @@ namespace Monitorar_Tarefas.Controllers
 
             var tarefas = await _context.Tarefas
                 .Include(t => t.Projetos)
+                .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tarefas == null)
             {
@@ -50,14 +49,17 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Tarefas/Create
         public IActionResult Create()
         {
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto");
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto");
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF");
             return View();
         }
 
         // POST: Tarefas/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeTarefa,DescricaoTarefa,DataInicioTarefa,DataFinalizadoTarefa,DataEntregaTarefa,Situacao,ProjetoId")] Tarefas tarefas)
+        public async Task<IActionResult> Create([Bind("Id,NomeTarefa,DescricaoTarefa,DataInicioTarefa,DataFinalizadoTarefa,DataEntregaTarefa,Situacao,ProjetoId,UsuarioId")] Tarefas tarefas)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +67,8 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
             return View(tarefas);
         }
 
@@ -82,14 +85,17 @@ namespace Monitorar_Tarefas.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
             return View(tarefas);
         }
 
         // POST: Tarefas/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeTarefa,DescricaoTarefa,DataInicioTarefa,DataFinalizadoTarefa,DataEntregaTarefa,Situacao,ProjetoId")] Tarefas tarefas)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeTarefa,DescricaoTarefa,DataInicioTarefa,DataFinalizadoTarefa,DataEntregaTarefa,Situacao,ProjetoId,UsuarioId")] Tarefas tarefas)
         {
             if (id != tarefas.Id)
             {
@@ -116,7 +122,8 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
             return View(tarefas);
         }
 
@@ -130,6 +137,7 @@ namespace Monitorar_Tarefas.Controllers
 
             var tarefas = await _context.Tarefas
                 .Include(t => t.Projetos)
+                .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tarefas == null)
             {

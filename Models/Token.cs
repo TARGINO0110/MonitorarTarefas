@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Monitorar_Tarefas.Models
 {
@@ -18,5 +19,10 @@ namespace Monitorar_Tarefas.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Validade do Token")]
         public DateTime DataValidadeToken { get; set; }
+
+        [ForeignKey("Usuarios")]
+        public int UsuarioId { get; set; }
+
+        public virtual Usuarios Usuarios { get; set; }
     }
 }

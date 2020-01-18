@@ -13,6 +13,7 @@ namespace Monitorar_Tarefas.Data
             : base(options)
         {
         }
+        public virtual DbSet<Empresa> Empresas { get; set; }
         public virtual DbSet<Projetos> Projetos { get; set; }
         public virtual DbSet<Tarefas> Tarefas { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }

@@ -50,7 +50,13 @@
             @Html.DisplayNameFor(model => model.Projetos)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Projetos.Id)
+            @Html.DisplayFor(model => model.Projetos.DescricaoProjeto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuarios)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Usuarios.CPF)
         </dd>
     </dl>
 </div>
