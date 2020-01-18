@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    public class UsuariosController : Controller
+    public class HistoricoAcoesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UsuariosController(ApplicationDbContext context)
+        public HistoricoAcoesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Usuarios
+        // GET: HistoricoAcoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            return View(await _context.HistoricoAcoes.ToListAsync());
         }
 
-        // GET: Usuarios/Details/5
+        // GET: HistoricoAcoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +30,37 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios
+            var historicoAcoes = await _context.HistoricoAcoes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarios == null)
+            if (historicoAcoes == null)
             {
                 return NotFound();
             }
 
-            return View(usuarios);
+            return View(historicoAcoes);
         }
 
-        // GET: Usuarios/Create
+        // GET: HistoricoAcoes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: HistoricoAcoes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento")] Usuarios usuarios)
+        public async Task<IActionResult> Create([Bind("Id,NumeroAcao,OnservacaoAcao,DataHoraAcao")] HistoricoAcoes historicoAcoes)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuarios);
+                _context.Add(historicoAcoes);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuarios);
+            return View(historicoAcoes);
         }
 
-        // GET: Usuarios/Edit/5
+        // GET: HistoricoAcoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +68,20 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios.FindAsync(id);
-            if (usuarios == null)
+            var historicoAcoes = await _context.HistoricoAcoes.FindAsync(id);
+            if (historicoAcoes == null)
             {
                 return NotFound();
             }
-            return View(usuarios);
+            return View(historicoAcoes);
         }
 
-        // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: HistoricoAcoes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroAcao,OnservacaoAcao,DataHoraAcao")] HistoricoAcoes historicoAcoes)
         {
-            if (id != usuarios.Id)
+            if (id != historicoAcoes.Id)
             {
                 return NotFound();
             }
@@ -97,12 +90,12 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(usuarios);
+                    _context.Update(historicoAcoes);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuariosExists(usuarios.Id))
+                    if (!HistoricoAcoesExists(historicoAcoes.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +106,10 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuarios);
+            return View(historicoAcoes);
         }
 
-        // GET: Usuarios/Delete/5
+        // GET: HistoricoAcoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +117,30 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios
+            var historicoAcoes = await _context.HistoricoAcoes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarios == null)
+            if (historicoAcoes == null)
             {
                 return NotFound();
             }
 
-            return View(usuarios);
+            return View(historicoAcoes);
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: HistoricoAcoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuarios = await _context.Usuarios.FindAsync(id);
-            _context.Usuarios.Remove(usuarios);
+            var historicoAcoes = await _context.HistoricoAcoes.FindAsync(id);
+            _context.HistoricoAcoes.Remove(historicoAcoes);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuariosExists(int id)
+        private bool HistoricoAcoesExists(int id)
         {
-            return _context.Usuarios.Any(e => e.Id == id);
+            return _context.HistoricoAcoes.Any(e => e.Id == id);
         }
     }
 }

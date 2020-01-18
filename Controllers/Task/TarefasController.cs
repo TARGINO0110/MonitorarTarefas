@@ -1,32 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    public class TokensController : Controller
+    public class TarefasController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TokensController(ApplicationDbContext context)
+        public TarefasController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Tokens
+        // GET: Tarefas
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tokens.Include(t => t.Usuarios);
+            var applicationDbContext = _context.Tarefas.Include(t => t.Projetos).Include(t => t.Usuarios);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Tokens/Details/5
+        // GET: Tarefas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +32,43 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var token = await _context.Tokens
+            var tarefas = await _context.Tarefas
+                .Include(t => t.Projetos)
                 .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (token == null)
+            if (tarefas == null)
             {
                 return NotFound();
             }
 
-            return View(token);
+            return View(tarefas);
         }
 
-        // GET: Tokens/Create
+        // GET: Tarefas/Create
         public IActionResult Create()
         {
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto");
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF");
             return View();
         }
 
-        // POST: Tokens/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Tarefas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
+        public async Task<IActionResult> Create([Bind("Id,NomeTarefa,DescricaoTarefa,DataInicioTarefa,DataFinalizadoTarefa,DataEntregaTarefa,Situacao,ProjetoId,UsuarioId")] Tarefas tarefas)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(token);
+                _context.Add(tarefas);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
-            return View(token);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
+            return View(tarefas);
         }
 
-        // GET: Tokens/Edit/5
+        // GET: Tarefas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +76,22 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var token = await _context.Tokens.FindAsync(id);
-            if (token == null)
+            var tarefas = await _context.Tarefas.FindAsync(id);
+            if (tarefas == null)
             {
                 return NotFound();
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
-            return View(token);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
+            return View(tarefas);
         }
 
-        // POST: Tokens/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Tarefas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeTarefa,DescricaoTarefa,DataInicioTarefa,DataFinalizadoTarefa,DataEntregaTarefa,Situacao,ProjetoId,UsuarioId")] Tarefas tarefas)
         {
-            if (id != token.Id)
+            if (id != tarefas.Id)
             {
                 return NotFound();
             }
@@ -102,12 +100,12 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(token);
+                    _context.Update(tarefas);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TokenExists(token.Id))
+                    if (!TarefasExists(tarefas.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +116,12 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
-            return View(token);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
+            return View(tarefas);
         }
 
-        // GET: Tokens/Delete/5
+        // GET: Tarefas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +129,32 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var token = await _context.Tokens
+            var tarefas = await _context.Tarefas
+                .Include(t => t.Projetos)
                 .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (token == null)
+            if (tarefas == null)
             {
                 return NotFound();
             }
 
-            return View(token);
+            return View(tarefas);
         }
 
-        // POST: Tokens/Delete/5
+        // POST: Tarefas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var token = await _context.Tokens.FindAsync(id);
-            _context.Tokens.Remove(token);
+            var tarefas = await _context.Tarefas.FindAsync(id);
+            _context.Tarefas.Remove(tarefas);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TokenExists(int id)
+        private bool TarefasExists(int id)
         {
-            return _context.Tokens.Any(e => e.Id == id);
+            return _context.Tarefas.Any(e => e.Id == id);
         }
     }
 }

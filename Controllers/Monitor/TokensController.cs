@@ -1,31 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    public class HistoricoAcoesController : Controller
+    public class TokensController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public HistoricoAcoesController(ApplicationDbContext context)
+        public TokensController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: HistoricoAcoes
+        // GET: Tokens
         public async Task<IActionResult> Index()
         {
-            return View(await _context.HistoricoAcoes.ToListAsync());
+            var applicationDbContext = _context.Tokens.Include(t => t.Usuarios);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: HistoricoAcoes/Details/5
+        // GET: Tokens/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +32,40 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var historicoAcoes = await _context.HistoricoAcoes
+            var token = await _context.Tokens
+                .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (historicoAcoes == null)
+            if (token == null)
             {
                 return NotFound();
             }
 
-            return View(historicoAcoes);
+            return View(token);
         }
 
-        // GET: HistoricoAcoes/Create
+        // GET: Tokens/Create
         public IActionResult Create()
         {
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF");
             return View();
         }
 
-        // POST: HistoricoAcoes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Tokens/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumeroAcao,OnservacaoAcao,DataHoraAcao")] HistoricoAcoes historicoAcoes)
+        public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(historicoAcoes);
+                _context.Add(token);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(historicoAcoes);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
+            return View(token);
         }
 
-        // GET: HistoricoAcoes/Edit/5
+        // GET: Tokens/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,21 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var historicoAcoes = await _context.HistoricoAcoes.FindAsync(id);
-            if (historicoAcoes == null)
+            var token = await _context.Tokens.FindAsync(id);
+            if (token == null)
             {
                 return NotFound();
             }
-            return View(historicoAcoes);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
+            return View(token);
         }
 
-        // POST: HistoricoAcoes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Tokens/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroAcao,OnservacaoAcao,DataHoraAcao")] HistoricoAcoes historicoAcoes)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
         {
-            if (id != historicoAcoes.Id)
+            if (id != token.Id)
             {
                 return NotFound();
             }
@@ -97,12 +96,12 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(historicoAcoes);
+                    _context.Update(token);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HistoricoAcoesExists(historicoAcoes.Id))
+                    if (!TokenExists(token.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +112,11 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(historicoAcoes);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
+            return View(token);
         }
 
-        // GET: HistoricoAcoes/Delete/5
+        // GET: Tokens/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,31 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
 
-            var historicoAcoes = await _context.HistoricoAcoes
+            var token = await _context.Tokens
+                .Include(t => t.Usuarios)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (historicoAcoes == null)
+            if (token == null)
             {
                 return NotFound();
             }
 
-            return View(historicoAcoes);
+            return View(token);
         }
 
-        // POST: HistoricoAcoes/Delete/5
+        // POST: Tokens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var historicoAcoes = await _context.HistoricoAcoes.FindAsync(id);
-            _context.HistoricoAcoes.Remove(historicoAcoes);
+            var token = await _context.Tokens.FindAsync(id);
+            _context.Tokens.Remove(token);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HistoricoAcoesExists(int id)
+        private bool TokenExists(int id)
         {
-            return _context.HistoricoAcoes.Any(e => e.Id == id);
+            return _context.Tokens.Any(e => e.Id == id);
         }
     }
 }
