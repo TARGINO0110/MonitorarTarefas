@@ -95,7 +95,7 @@
 
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fa fa-archive"></i>Monitoramento
+                                <i class="fa fa-globe"></i>Monitoramento
                             </a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
@@ -110,7 +110,7 @@
 
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fa fa-archive"></i>Perfil
+                                <i class="fa fa-users"></i>Perfil
                             </a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
@@ -119,6 +119,21 @@
 
                                 <li>
                                     @Html.ActionLink("Usuario", "Index", "Usuarios", new { area = "" }, new { @class = "input-group" })
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fa fa-archive"></i>Arquivo
+                            </a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    @Html.ActionLink("Upload", "Index", "Upload", new { area = "" }, new { @class = "input-group" })
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Download", "Index", "Download", new { area = "" }, new { @class = "input-group" })
                                 </li>
                             </ul>
                         </li>
@@ -173,7 +188,7 @@
 
                     <li class=" active has-sub">
                         <a class="js-arrow" href="#">
-                            <i class="fa fa-archive"></i>Monitoramento
+                            <i class="fa fa-globe"></i>Monitoramento
                         </a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li>
@@ -192,11 +207,26 @@
                         </a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li>
-                                    @Html.ActionLink("Empresa", "Index", "Empresa", new { area = "" }, new { @class = "input-group" })
+                                @Html.ActionLink("Empresa", "Index", "Empresa", new { area = "" }, new { @class = "input-group" })
                             </li>
 
                             <li>
                                 @Html.ActionLink("Usuario", "Index", "Usuarios", new { area = "" }, new { @class = "input-group" })
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class=" active has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fa fa-archive"></i>Arquivo
+                        </a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                @Html.ActionLink("Upload", "Index", "Upload", new { area = "" }, new { @class = "input-group" })
+                            </li>
+
+                            <li>
+                                @Html.ActionLink("Download", "Index", "Download", new { area = "" }, new { @class = "input-group" })
                             </li>
                         </ul>
                     </li>
