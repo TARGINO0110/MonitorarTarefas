@@ -14,31 +14,47 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="form-group col-lg-10">
-        <div class="card col-sm-4">
-            <div class="card-title zmdi-colorize">
-                <span>Novos recursos</span>
-            </div>
+    <div class="card-deck">
+        <div class="card">
+            <img class="card-img-top" src="~/assets/images/bg-title-01.jpg" alt="Card image cap">
             <div class="card-body">
-                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Projetos" asp-action="Index">Acessar Projetos</a></p>
+                <h5 class="card-title">Projetos</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                <div class="card-body">
+                    <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Projetos" asp-action="Index">Acessar Projetos</a></p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
             </div>
         </div>
-        <div class="card col-sm-4">
-            <div class="card-title zmdi-colorize">
-                <span>Novos recursos</span>
-            </div>
+        <div class="card">
+            <img class="card-img-top" src="~/assets/images/bg-title-01.jpg" alt="Card image cap">
             <div class="card-body">
-                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Tarefas" asp-action="Index">Acessar Tarefas</a></p>
+                <h5 class="card-title">Tarefas</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                <div class="card-body">
+                    <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Tarefas" asp-action="Index">Acessar Tarefas</a></p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
             </div>
         </div>
-        <div class="card col-sm-4">
-            <div class="card-title zmdi-colorize">
-                <span>Novos recursos</span>
-            </div>
+        <div class="card">
+            <img class="card-img-top" src="~/assets/images/bg-title-01.jpg" alt="Card image cap">
             <div class="card-body">
-                <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Avisos" asp-action="Index">Acessar Avisos</a></p>
+                <h5 class="card-title">Avisos</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <div class="card-body">
+                    <p class="text-center"><a class="btn btn-light" asp-area="" asp-controller="Avisos" asp-action="Index">Acessar Avisos</a></p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
             </div>
         </div>
+
     </div>
 }
 

@@ -1,0 +1,416 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!DOCTYPE html>
+<html lang="en,pt-BR">
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="imagem/png" href="~/assets/imagem/icon/TJCE.png">
+    <!-- Title Page-->
+    <title>Home - Monitorar Tarefas</title>
+    <!-- Fontfaces CSS-->
+    <link href="~/assets/css/font-face.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <!-- Bootstrap CSS-->
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <!-- Vendor CSS-->
+    <link href="~/assets/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <!-- Main CSS-->
+    <link href="~/assets/css/theme.css" rel="stylesheet" media="all">
+</head>
+
+<body class="animsition">
+    <div class="centro" id="onload">
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        <header class="header-mobile d-block d-lg-none">
+            <div class="header-mobile__bar">
+                <div class="container-fluid">
+                    <div class="header-mobile-inner">
+                        <a class="logo" href="#">
+                            <img  src="~/assets/images/icon/monitorarLogo.png" alt="monitorarLogo" />
+                        </a>
+                        <button class="hamburger hamburger--slider" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar-mobile">
+                <div class="container-fluid">
+                    <ul class="navbar-mobile__list list-unstyled">
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-tachometer-alt"></i>Tasks
+                            </a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li class="active">
+                                    @Html.ActionLink("Projetos", "Index", "Projetos", new { area = "" }, null)
+                                </li>
+
+                                <li class="active">
+                                    @Html.ActionLink("Tarefas", "Index", "Tarefas", new { area = "" }, null)
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas  fa-briefcase"></i>Ações
+                            </a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    @Html.ActionLink("Avisos", "Index", "Avisos", new { area = "" }, null)
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Categorias", "Index", "Categorias", new { area = "" }, null)
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fa fa-archive"></i>Monitoramento
+                            </a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    @Html.ActionLink("Historico de ações", "Index", "HistoricoAcoes", new { area = "" }, new { @class = "input-group" })
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Tokens de acesso", "Index", "Tokens", new { area = "" }, new { @class = "input-group" })
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fa fa-archive"></i>Perfil
+                            </a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    @Html.ActionLink("Empresa", "Index", "Empresa", new { area = "" }, new { @class = "input-group" })
+                                </li>
+
+                                <li>
+                                    @Html.ActionLink("Usuario", "Index", "Usuarios", new { area = "" }, new { @class = "input-group" })
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="modal-footer">
+                        Versão 1.0
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    </div>
+    <!-- END HEADER MOBILE-->
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a href="#">
+                <img src="~/assets/images/icon/monitorarLogo.png" alt="monitorarLogo" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar__list">
+                    <li class="active has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Tasks
+                        </a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                @Html.ActionLink("Projetos", "Index", "Projetos", new { area = "" }, null)
+                            </li>
+
+                            <li>
+                                @Html.ActionLink("Tarefas", "Index", "Tarefas", new { area = "" }, null)
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="active has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas  fa-briefcase"></i>Recursos
+                        </a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                @Html.ActionLink("Avisos", "Index", "Avisos", new { area = "" }, null)
+                            </li>
+
+                            <li>
+                                @Html.ActionLink("Categorias", "Index", "Categorias", new { area = "" }, null)
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class=" active has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fa fa-archive"></i>Monitoramento
+                        </a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                @Html.ActionLink("Historico de ações", "Index", "HistoricoAcoes", new { area = "" }, new { @class = "input-group" })
+                            </li>
+
+                            <li>
+                                @Html.ActionLink("Tokens de acesso", "Index", "Tokens", new { area = "" }, new { @class = "input-group" })
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class=" active has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fa fa-users"></i>Perfil
+                        </a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                    @Html.ActionLink("Empresa", "Index", "Empresa", new { area = "" }, new { @class = "input-group" })
+                            </li>
+
+                            <li>
+                                @Html.ActionLink("Usuario", "Index", "Usuarios", new { area = "" }, new { @class = "input-group" })
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <ul class="modal-footer">
+                    Versão 1.0
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <form class="form-header" action="" method="POST">
+                            <h4></h4>
+                        </form>
+                        <p class="col-lg-4">
+                            @DateTime.Now
+                        </p>
+                        <div class="header-button">
+
+                            <div class="noti-wrap">
+                                <div class="noti__item js-item-menu">
+                                    <i class="fa fa-book"></i>
+                                    <!----  <span class="quantity">1</span>-->
+                                    <div class="mess-dropdown js-dropdown">
+                                        <div class="mess__title">
+                                            <p>Arquivos disponiveis em PDF</p>
+                                        </div>
+                                        <div class="mess__item">
+                                            <div class="image img-cir img-40">
+                                                <i class="zmdi zmdi-file-text"></i>
+                                            </div>
+                                            <div class="content">
+                                                <h6>BPM CBOK</h6>
+                                                <p>material de conhecimento</p>
+                                                <span class="time">3 min ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="mess__footer">
+                                            <a href="~/Uploads/Arquivo.pdf">Visualizar</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="noti__item js-item-menu">
+                                    <i class="fa  fa-question-circle"></i>
+                                    <!----<span class="quantity"></span>-->
+                                    <div class="email-dropdown js-dropdown">
+                                        <div class="email__title">
+                                            <span><strong>Duvidas sobre como usar o sistema?</strong></span>
+                                            <p>Existem 3 funcionalidades importantes</p>
+
+                                        </div>
+                                        <div class="email__item">
+                                            <div class="image img-cir img-40">
+                                                <i class="fa fa-bar-chart"></i>
+                                            </div>
+                                            <div class="content">
+
+                                                @Html.ActionLink("Acompanhar acessos", "Index", "Acompanhars")
+                                                <p>
+                                                    <span>Verificando os acessos dos usuários</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="email__item">
+                                            <div class="image img-cir img-40">
+                                                <i class="fa fa-briefcase"></i>
+                                            </div>
+                                            <div class="content">
+                                                @Html.ActionLink("Processos de Trabalho", "Index", "ProcessosTrabalhoes")
+                                                <p>
+                                                    <span>Gerencie as áreas dos processos de trabalho</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="email__item">
+                                            <div class="image img-cir img-40">
+                                                <i class="fa fa-sitemap"></i>
+                                            </div>
+                                            <div class="content">
+                                                @Html.ActionLink("Modelos de processos de trabalho", "Index", "Modeloes")
+                                                <p>
+                                                    <span>Gerencie os modelos referentes as áreas dos processos de trabalho</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="email__footer">
+                                            <a href="~/Uploads/Tutorial.pdf">Baixar tutorial</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="noti__item js-item-menu">
+                                    <i class="zmdi zmdi-notifications"></i>
+
+                                    <div class="notifi-dropdown js-dropdown">
+                                        <div class="notifi__title">
+                                            <p>Conteúdo para servidores</p>
+                                        </div>
+
+
+                                        <div class="notifi__item">
+                                            <div class="bg-c3 img-cir img-40">
+                                                <i class="fa fa-bullhorn"></i>
+                                            </div>
+                                            <div class="content">
+                                                <p>Publicações importantes</p>
+
+                                            </div>
+                                        </div>
+                                        <div class="notifi__footer">
+                                            <a href="~/Uploads/Publico.pdf">Visualizar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="account-wrap">
+                                <div class="account-item clearfix js-item-menu">
+
+                                    <div class="content">
+                                        <span class="fa fa-gears"></span>
+                                        <a class="js-acc-btn" href="#">Opções</a>
+                                    </div>
+
+                                    <div class="account-dropdown js-dropdown">
+                                        <div class="info clearfix">
+                                            <div class="image">
+                                                <a href="#">
+                                                    <img src="~/assets/images/icon/TJCE.png" alt="TJCE" />
+                                                </a>
+                                            </div>
+                                            <div class="content">
+
+                                                <span class="email"><a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bem vindo @User.Identity.Name!</a></span>
+                                            </div>
+                                        </div>
+
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <div class="account-dropdown__footer">
+                                                <div>
+                                                    @Html.ActionLink("Home", "Index", "Home")
+                                                </div>
+                                                <div>
+                                                    @Html.ActionLink("Alterar senha", "ChangePassword", "Manage")
+                                                </div>
+
+
+                                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+
+                                                    <div>
+                                                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-mail-reply-all"></i> Sair</a>
+                                                    </div>
+
+                                                }
+
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+        <!-- HEADER DESKTOP-->
+
+
+        <div class="container body-content">
+            @RenderBody()
+            @RenderSection("SPAViews", required: false)
+            <hr />
+
+        </div>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+
+
+    <!-- Jquery JS-->
+    <script src="~/assets/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="~/assets/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="~/assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="~/assets/vendor/slick/slick.min.js">
+    </script>
+    <script src="~/assets/vendor/wow/wow.min.js"></script>
+    <script src="~/assets/vendor/animsition/animsition.min.js"></script>
+    <script src="~/assets/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="~/assets/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="~/assets/vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="~/assets/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="~/assets/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="~/assets/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="~/assets/vendor/select2/select2.min.js">
+    </script>
+    <!-- Main JS-->
+    <script src="~/assets/js/main.js"></script>
+    <script src="~/assets/js/codigo.js"></script>
+
+</body>
+</html>

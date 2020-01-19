@@ -1702,7 +1702,7 @@ section {
 
 .account-dropdown__footer a:hover {
     background: #4272d7;
-    color: #fff;
+    color: #495057;
 }
 
 .account-dropdown__footer a i {
@@ -1718,7 +1718,7 @@ section {
     left: 0;
     top: 0;
     bottom: 0;
-    background: #333;
+    background: #fbfdff;
     overflow-y: auto;
 }
 
@@ -1767,7 +1767,7 @@ section {
 
 .navbar-sidebar .navbar__list li a {
     display: block;
-    color: #ebebeb;
+    color: #65686b;
     font-size: 16px;
     padding: 15px 0;
 }
@@ -1777,11 +1777,11 @@ section {
 }
 
 .navbar-sidebar .navbar__list li a:hover {
-    color: #63c76a;
+    color:rgb(4, 67, 109);
 }
 
 .navbar-sidebar .navbar__list li.active > a {
-    color: #63c76a;
+    color: rgb(4, 67, 109);
 }
 
 .has-sub {
@@ -1894,7 +1894,7 @@ section {
     }
 
 .header-mobile .navbar-mobile .navbar-mobile__list li a:hover {
-    color:#63c76a;
+    color:rgb(4, 67, 109);
 }
 
 .header-mobile .navbar-mobile .navbar-mobile__list li a > i {
@@ -1975,7 +1975,7 @@ section {
 }
 
 .sub-header-mobile-2 .header__tool .header-button-item {
-    color: #a9b3c9;
+    color: #fbfcfd;
 }
 
 .sub-header-mobile-2 .header__tool .account-wrap .account-item--style2 .content a {

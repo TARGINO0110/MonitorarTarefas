@@ -29,7 +29,7 @@ namespace Monitorar_Tarefas.Models
         public string TelefoneEmpresa { get; set; }
 
         [Required(ErrorMessage = "É necessário informar o E-mail da empresa!")]
-        [RegularExpression(@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$", ErrorMessage = "O E-mail informado está incorreto!")]
+        [StringLength(20, ErrorMessage = "O E-mail informado está incorreto!")]
         [Display(Name = "Email da empresa")]
         public string EmailEmpresa { get; set; }
 
