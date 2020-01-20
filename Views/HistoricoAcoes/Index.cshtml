@@ -1,47 +1,151 @@
 ﻿@model IEnumerable<Monitorar_Tarefas.Models.HistoricoAcoes>
 
 @{
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
     ViewData["Title"] = "Index";
 }
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <!-- DATA TABLE-->
+            <div class="row table-responsive m-b-40">
 
-<h1>Index</h1>
+                <!-- DATA TABLE-->
+                <h2>Página - Histórico de ações</h2>
+                <hr />
+                <br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NumeroAcao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OnservacaoAcao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataHoraAcao)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroAcao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OnservacaoAcao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataHoraAcao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                @if (TempData["Salvar"] != null)
+                {
+
+                    <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                        <span class="badge badge-pill badge-success">Sucesso!</span>
+                        @TempData["Salvar"]
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                }
+
+                @if (TempData["Editar"] != null)
+                {
+                    <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
+                        <span class="badge badge-pill badge-warning">Sucesso!</span>
+                        @TempData["Editar"]
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                }
+
+                @if (TempData["Deletar"] != null)
+                {
+                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                        <span class="badge badge-pill badge-danger">Sucesso!</span>
+                        @TempData["Deletar"]
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="statistic__item shadow p-3 mb-5">
+                            <h2 class="number">0</h2>
+                            <span class="desc">Pessoas online</span>
+                            <div class="icon">
+                                <i class="zmdi zmdi-account-o"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="statistic__item shadow p-3 mb-5">
+                            <h2 class="number">0</h2>
+                            <span class="desc">Ações registradas</span>
+                            <div class="icon">
+                                <i class="zmdi zmdi-calendar-note"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <br />
+                <br />
+
+                @using (Html.BeginForm("Index", "Informacaos", FormMethod.Get))
+                {
+                    <div class="row col-sm-12">
+                        <div class="card card-body shadow p-3 mb-5">
+                            <text>Pesquisar por  Nome / Descrição :</text>
+                            <div class="input-group mb-3 col-sm-6">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" }) &nbsp;
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                }
+
+                <div class="table-responsive table-responsive-data2">
+
+                    <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
+                        <thead>
+
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NumeroAcao)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OnservacaoAcao)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DataHoraAcao)
+                                </th>
+                                <th>
+                                    <span class="fa  fa-ellipsis-v"></span>
+                                    Ações
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumeroAcao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OnservacaoAcao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataHoraAcao)
+                                </td>
+                                <td>
+                                    <span class="fa  fa-edit"></span>
+                                    <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                                    <span class="fa   fa-tasks"></span>
+                                    <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                                    <span class="fa fa-trash"></span>
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="copyright">
+                        <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

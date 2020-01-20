@@ -1,51 +1,110 @@
 ﻿@model Monitorar_Tarefas.Models.Usuarios
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h1>Create</h1>
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
 
-<h4>Usuarios</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NomeUsuario" class="control-label"></label>
-                <input asp-for="NomeUsuario" class="form-control" />
-                <span asp-validation-for="NomeUsuario" class="text-danger"></span>
+            <h2>Cadastrar Usuário </h2>
+
+            @if (TempData["ErroSalvar"] != null)
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Erro ao registrar!</span>
+                    @TempData["ErroSalvar"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            }
+
+            <hr />
+            <div class="card card-body shadow p-3 mb-5">
+                <form asp-action="Create" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para realizar o cadastro</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="NomeUsuario" class="control-label"></label>
+                            <input asp-for="NomeUsuario" type="text" class="form-control" id="validationfeedback01" required>
+                            <small class="input-group form-text text-muted">Preencha o seu primeiro nome.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="NomeUsuario" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback02" asp-for="SobrenomeUsuario" class="control-label"></label>
+                            <input asp-for="SobrenomeUsuario" type="text" class="form-control" id="validationfeedback02" required />
+                            <small class="input-group form-text text-muted">Preencha o seu segundo nome.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="SobrenomeUsuario" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback03" asp-for="CPF" class="control-label"></label>
+                            <input asp-for="CPF" type="number" class="form-control" id="validationfeedback03" required />
+                            <small class="input-group form-text text-muted">Informe o Nº do seu CPF.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="CPF" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback04" asp-for="TelefoneCelular" class="control-label"></label>
+                            <input asp-for="TelefoneCelular" type="number" class="form-control" id="validationfeedback04" required />
+                            <small class="input-group form-text text-muted">Informe o Nº do seu Telefone ou Celular.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="TelefoneCelular" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback05" asp-for="DataNascimento" class="control-label"></label>
+                            <input asp-for="DataNascimento" type="date" class="form-control" id="validationfeedback05" required />
+                            <small class="input-group form-text text-muted">Informe a sua data de nascimento.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataNascimento" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback06" asp-for="EmpresaId" class="control-label"></label>
+                            <select asp-for="EmpresaId" class="form-control" id="validationfeedback06" asp-items="ViewBag.EmpresaId" required></select>
+                            <small class="input-group form-text text-muted">Selecione a empresa vinculada ao projeto.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="EmpresaId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="SobrenomeUsuario" class="control-label"></label>
-                <input asp-for="SobrenomeUsuario" class="form-control" />
-                <span asp-validation-for="SobrenomeUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CPF" class="control-label"></label>
-                <input asp-for="CPF" class="form-control" />
-                <span asp-validation-for="CPF" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TelefoneCelular" class="control-label"></label>
-                <input asp-for="TelefoneCelular" class="form-control" />
-                <span asp-validation-for="TelefoneCelular" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataNascimento" class="control-label"></label>
-                <input asp-for="DataNascimento" class="form-control" />
-                <span asp-validation-for="DataNascimento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

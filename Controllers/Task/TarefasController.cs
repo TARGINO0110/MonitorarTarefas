@@ -47,8 +47,8 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Tarefas/Create
         public IActionResult Create()
         {
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto");
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF");
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto");
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario");
             return View();
         }
 
@@ -63,8 +63,8 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
             return View(tarefas);
         }
 
@@ -81,8 +81,8 @@ namespace Monitorar_Tarefas.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
             return View(tarefas);
         }
 
@@ -116,8 +116,8 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "DescricaoProjeto", tarefas.ProjetoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", tarefas.UsuarioId);
+            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
             return View(tarefas);
         }
 

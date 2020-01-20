@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
@@ -19,7 +20,8 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            var applicationDbContext = _context.Usuarios.Include(u => u.Empresa);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Usuarios/Details/5
@@ -31,6 +33,7 @@ namespace Monitorar_Tarefas.Controllers
             }
 
             var usuarios = await _context.Usuarios
+                .Include(u => u.Empresa)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuarios == null)
             {
@@ -43,13 +46,14 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Usuarios/Create
         public IActionResult Create()
         {
+            ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
             return View();
         }
 
         // POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento")] Usuarios usuarios)
+        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {
@@ -57,6 +61,7 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
             return View(usuarios);
         }
 
@@ -73,13 +78,14 @@ namespace Monitorar_Tarefas.Controllers
             {
                 return NotFound();
             }
+            ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
             return View(usuarios);
         }
 
         // POST: Usuarios/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
         {
             if (id != usuarios.Id)
             {
@@ -106,6 +112,7 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
             return View(usuarios);
         }
 
@@ -118,6 +125,7 @@ namespace Monitorar_Tarefas.Controllers
             }
 
             var usuarios = await _context.Usuarios
+                .Include(u => u.Empresa)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuarios == null)
             {
