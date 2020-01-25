@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
 using System;
@@ -6,6 +7,7 @@ using System.Linq;
 
 namespace Monitorar_Tarefas.Controllers
 {
+    [Authorize]
     public class RegTokenController : Controller
     {
         private readonly ApplicationDbContext _context;

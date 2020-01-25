@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
+    [Authorize]
     public class TarefasController : Controller
     {
         private readonly ApplicationDbContext _context;
