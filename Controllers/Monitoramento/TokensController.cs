@@ -48,7 +48,7 @@ namespace Monitorar_Tarefas.Controllers
         // GET: Tokens/Create
         public IActionResult Create()
         {
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF");
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario");
             return View();
         }
 
@@ -63,7 +63,7 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
             return View(token);
         }
 
@@ -80,7 +80,7 @@ namespace Monitorar_Tarefas.Controllers
             {
                 return NotFound();
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
             return View(token);
         }
 
@@ -114,7 +114,7 @@ namespace Monitorar_Tarefas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "CPF", token.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
             return View(token);
         }
 

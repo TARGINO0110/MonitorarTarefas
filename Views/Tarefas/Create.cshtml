@@ -1,64 +1,134 @@
 ﻿@model Monitorar_Tarefas.Models.Tarefas
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h1>Create</h1>
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
 
-<h4>Tarefas</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NomeTarefa" class="control-label"></label>
-                <input asp-for="NomeTarefa" class="form-control" />
-                <span asp-validation-for="NomeTarefa" class="text-danger"></span>
+            <h2>Cadastrar Tarefa </h2>
+
+            @if (TempData["ErroSalvar"] != null)
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Erro ao registrar!</span>
+                    @TempData["ErroSalvar"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            }
+
+            <hr />
+            <div class="card card-body shadow p-3 mb-5">
+                <form asp-action="Create" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para realizar o cadastro</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="NomeTarefa" class="control-label"></label>
+                            <input asp-for="NomeTarefa" type="text" class="form-control" id="validationfeedback01" required>
+                            <small class="input-group form-text text-muted">Preencha o nome da tarefa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="NomeTarefa" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback02" asp-for="DescricaoTarefa" class="control-label"></label>
+                            <input asp-for="DescricaoTarefa" type="text" class="form-control" id="validationfeedback02" required />
+                            <small class="input-group form-text text-muted">Preencha a sua descrição.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DescricaoTarefa" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback03" asp-for="DataInicioTarefa" class="control-label"></label>
+                            <input asp-for="DataInicioTarefa" type="date" class="form-control" id="validationfeedback03" required />
+                            <small class="input-group form-text text-muted">Informe a data de inicio da tarefa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataInicioTarefa" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback04" asp-for="DataFinalizadoTarefa" class="control-label"></label>
+                            <input asp-for="DataFinalizadoTarefa" type="date" class="form-control" id="validationfeedback04" required />
+                            <small class="input-group form-text text-muted">Informe a data final da tarefa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataFinalizadoTarefa" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback05" asp-for="DataEntregaTarefa" class="control-label"></label>
+                            <input asp-for="DataEntregaTarefa" type="date" class="form-control" id="validationfeedback05" required />
+                            <small class="input-group form-text text-muted">Informe a data da sua entrega.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataEntregaTarefa" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback06" asp-for="Situacao" class="control-label"></label>
+                            <input asp-for="Situacao" type="text" class="form-control" id="validationfeedback06" required>
+                            <small class="input-group form-text text-muted">Informe a situação atual da sua tarefa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="Situacao" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback07" asp-for="ProjetoId" class="control-label"></label>
+                            <select asp-for="ProjetoId" class="form-control" id="validationfeedback07" asp-items="ViewBag.ProjetoId" required></select>
+                            <small class="input-group form-text text-muted">Selecione o projeto vinculado a tarefa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="ProjetoId" class="text-danger"></span>
+                        </div>
+                        <br />
+
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback08" asp-for="UsuarioId" class="control-label"></label>
+                            <select asp-for="UsuarioId" class="form-control" id="validationfeedback08" asp-items="ViewBag.UsuarioId"></select>
+                            <small class="input-group form-text text-muted">Selecione o usuário vinculado a esta tarefa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="UsuarioId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="DescricaoTarefa" class="control-label"></label>
-                <input asp-for="DescricaoTarefa" class="form-control" />
-                <span asp-validation-for="DescricaoTarefa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataInicioTarefa" class="control-label"></label>
-                <input asp-for="DataInicioTarefa" class="form-control" />
-                <span asp-validation-for="DataInicioTarefa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataFinalizadoTarefa" class="control-label"></label>
-                <input asp-for="DataFinalizadoTarefa" class="form-control" />
-                <span asp-validation-for="DataFinalizadoTarefa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataEntregaTarefa" class="control-label"></label>
-                <input asp-for="DataEntregaTarefa" class="form-control" />
-                <span asp-validation-for="DataEntregaTarefa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Situacao" class="control-label"></label>
-                <input asp-for="Situacao" class="form-control" />
-                <span asp-validation-for="Situacao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjetoId" class="control-label"></label>
-                <select asp-for="ProjetoId" class ="form-control" asp-items="ViewBag.ProjetoId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class ="form-control" asp-items="ViewBag.UsuarioId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
