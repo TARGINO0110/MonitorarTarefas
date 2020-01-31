@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,13 +19,62 @@ namespace Monitorar_Tarefas.Controllers
         {
             _context = context;
         }
+        public string NameSort { get; set; }
+        public string DateSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
+        public PaginatedList<Projetos> Tarefas { get; set; }
         // GET: Projetos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var applicationDbContext = _context.Projetos.Include(p => p.Categoria);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var projetos = from p in _context.Projetos
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                projetos = projetos.Where(p => p.NomeProjeto.Contains(searchString)
+                || p.DescricaoProjeto.Contains(searchString));
+            }
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    projetos = projetos.OrderByDescending(p => p.NomeProjeto);
+                    projetos = projetos.OrderByDescending(p => p.DescricaoProjeto);
+                    break;
+                case "Date":
+                    projetos = projetos.OrderBy(p => p.DataInicioProjeto);
+                    break;
+                case "date_desc":
+                    projetos = projetos.OrderByDescending(p => p.DataFinalizadoProjeto);
+                    break;
+                default:
+                    projetos = projetos.OrderBy(p => p.Categoria);
+                    break;
+            }
+  
+            int pageSize = 3;
+            return View(await PaginatedList<Projetos>.CreateAsync(
+                projetos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
 
         // GET: Projetos/Details/5
         public async Task<IActionResult> Details(int? id)

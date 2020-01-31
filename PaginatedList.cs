@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Monitorar_Tarefas.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimulacaoCompra
+namespace Monitorar_Tarefas
 {
     public class PaginatedList<T> : List<T>
     {

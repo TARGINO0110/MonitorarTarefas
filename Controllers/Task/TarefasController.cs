@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,13 +19,65 @@ namespace Monitorar_Tarefas.Controllers
         {
             _context = context;
         }
+        public string NameSort { get; set; }
+        public string DateSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
 
+        public PaginatedList<Tarefas> Tarefas { get; set; }
         // GET: Tarefas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var applicationDbContext = _context.Tarefas.Include(t => t.Projetos).Include(t => t.Usuarios);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var tarefas = from t in _context.Tarefas
+                          select t;
+            var projetos = from p in _context.Projetos
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                tarefas = tarefas.Where(t => t.NomeTarefa.Contains(searchString)
+                                       || t.DescricaoTarefa.Contains(searchString));
+
+                projetos = projetos.Where(p => p.NomeProjeto.Contains(searchString));
+            }
+
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    tarefas = tarefas.OrderByDescending(t => t.NomeTarefa);
+                    break;
+                case "Date":
+                    tarefas = tarefas.OrderBy(t => t.DataInicioTarefa);
+                    break;
+                case "date_desc":
+                    tarefas = tarefas.OrderByDescending(t => t.DataFinalizadoTarefa);
+                    break;
+                default:
+                    projetos = projetos.OrderBy(p => p.NomeProjeto);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Tarefas>.CreateAsync(
+                tarefas.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
 
         // GET: Tarefas/Details/5
         public async Task<IActionResult> Details(int? id)

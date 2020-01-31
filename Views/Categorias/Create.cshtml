@@ -1,42 +1,61 @@
 ﻿@model Monitorar_Tarefas.Models.Categoria
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h1>Create</h1>
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
 
-<h4>Categoria</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NomeCategoria" class="control-label"></label>
-                <select asp-for="NomeCategoria" class="form-control">
-                    <option value=""> Selecione as opções</option>
-                    <option value="TI"> T.I</option>
-                    <option value="Administracao"> Administração</option>
-                    <option value="Contabilidade"> Contabilidade</option>
-                    <option value="Saúde"> Saúde</option>
-                </select>
-                <br />
+            <h2>Cadastrar Categoria </h2>
 
-                <h6>Infome a sua categoria caso não conste nas opções acima.</h6>
-                <input asp-for="NomeCategoria" class="form-control" />
-                <span asp-validation-for="NomeCategoria" class="text-danger"></span>
+            @if (TempData["ErroSalvar"] != null)
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Erro ao registrar!</span>
+                    @TempData["ErroSalvar"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            }
+
+            <hr />
+            <div class="card card-body shadow p-3 mb-5">
+                <form asp-action="Create" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para realizar o cadastro</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="NomeCategoria" class="control-label"></label>
+                            <input asp-for="NomeCategoria" class="form-control" id="validationfeedback01" required />
+                            <small class="input-group form-text text-muted">Informe a categoria na qual se enquadra no seu projeto.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
