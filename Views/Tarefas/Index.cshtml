@@ -79,23 +79,50 @@
                 <hr />
 
                 <br />
+                <h5>Informações dos projetos</h5>
                 <br />
 
-                @using (Html.BeginForm("Index", "Informacaos", FormMethod.Get))
-                {
-                    <div class="row col-sm-12">
-                        <div class="card card-body shadow p-3 mb-5">
-                            <text>Pesquisar por  Nome / Descrição :</text>
-                            <div class="input-group mb-3 col-sm-6">
-                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" }) &nbsp;
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                <div class="row ">
+                    <div class="card card-body shadow p-3 col-sm-10">
+                        <form asp-action="Index" method="get">
+                            <div class="col-md-6 col-lg-10">
+                                <p>
+                                    <text>Pesquisar por  Nome / Descrição :</text>
+                                </p>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]" /> &nbsp;
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="col-md-6 col-lg-8">
+                                <p>
+                                    <text>Filtrar por Usuarios :</text>
+                                </p>
+                                <div class="input-group">
+                                    <select class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]">
+                                        <option value=" ">Selecione as opções</option>
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.Usuarios.NomeUsuario">@item.Usuarios.NomeUsuario</option>
+                                        }
+                                    </select> &nbsp;
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-md-6 col-lg-4">
+                                <p>
+                                    <a class="btn btn-light" asp-action="Index">Carregar lista completa</a>
+                                </p>
+                            </div>
+                        </form>
                     </div>
-                    <br />
-                }
+                </div>
 
                 <div class="table-responsive table-responsive-data2">
 

@@ -1,55 +1,105 @@
 ﻿@model Monitorar_Tarefas.Models.Projetos
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h1>Create</h1>
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
 
-<h4>Projetos</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NomeProjeto" class="control-label"></label>
-                <input asp-for="NomeProjeto" class="form-control" />
-                <span asp-validation-for="NomeProjeto" class="text-danger"></span>
+            <h2>Cadastrar Tarefa </h2>
+
+            @if (TempData["ErroSalvar"] != null)
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Erro ao registrar!</span>
+                    @TempData["ErroSalvar"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            }
+
+            <hr />
+            <div class="card card-body shadow p-3 mb-5">
+                <form asp-action="Create" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para realizar o cadastro</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="NomeProjeto" class="control-label"></label>
+                            <input asp-for="NomeProjeto" type="text" class="form-control" id="validationfeedback01" required />
+                            <small class="input-group form-text text-muted">Preencha o nome do projeto.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="NomeProjeto" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback02" asp-for="DescricaoProjeto" class="control-label"></label>
+                            <input asp-for="DescricaoProjeto" type="text" class="form-control" id="validationfeedback02" required />
+                            <small class="input-group form-text text-muted">Preencha a sua descrição.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DescricaoProjeto" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback03" asp-for="DataInicioProjeto" class="control-label"></label>
+                            <input asp-for="DataInicioProjeto" type="date" class="form-control" id="validationfeedback03" required />
+                            <small class="input-group form-text text-muted">Informe a data de inicio do projeto.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataInicioProjeto" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback04" asp-for="DataFinalizadoProjeto" class="control-label"></label>
+                            <input asp-for="DataFinalizadoProjeto" type="date" class="form-control" id="validationfeedback04" required />
+                            <small class="input-group form-text text-muted">Informe a data final do projeto.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataFinalizadoProjeto" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback05" asp-for="DataEntregaProjeto" class="control-label"></label>
+                            <input asp-for="DataEntregaProjeto" type="date" class="form-control" id="validationfeedback05" required />
+                            <small class="input-group form-text text-muted">Informe a data da sua entrega.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataEntregaProjeto" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback06" asp-for="CategoriaId" class="control-label"></label>
+                            <select asp-for="CategoriaId" tyclass="form-control" asp-items="ViewBag.CategoriaId" id="validationfeedback06" required></select>
+                            <small class="input-group form-text text-muted">Selecione a categoria do projeto.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                            <input type="submit" value="Salvar" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="DescricaoProjeto" class="control-label"></label>
-                <input asp-for="DescricaoProjeto" class="form-control" />
-                <span asp-validation-for="DescricaoProjeto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataInicioProjeto" class="control-label"></label>
-                <input asp-for="DataInicioProjeto" class="form-control" />
-                <span asp-validation-for="DataInicioProjeto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataFinalizadoProjeto" class="control-label"></label>
-                <input asp-for="DataFinalizadoProjeto" class="form-control" />
-                <span asp-validation-for="DataFinalizadoProjeto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataEntregaProjeto" class="control-label"></label>
-                <input asp-for="DataEntregaProjeto" class="form-control" />
-                <span asp-validation-for="DataEntregaProjeto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoriaId" class="control-label"></label>
-                <select asp-for="CategoriaId" class ="form-control" asp-items="ViewBag.CategoriaId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

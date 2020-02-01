@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
+   
     public class TarefasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -45,22 +45,22 @@ namespace Monitorar_Tarefas.Controllers
 
             var tarefas = from t in _context.Tarefas
                           select t;
-            var projetos = from p in _context.Projetos
-                           select p;
+
+
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 tarefas = tarefas.Where(t => t.NomeTarefa.Contains(searchString)
-                                       || t.DescricaoTarefa.Contains(searchString));
-
-                projetos = projetos.Where(p => p.NomeProjeto.Contains(searchString));
+                                       || t.DescricaoTarefa.Contains(searchString)
+                                       || t.Projetos.NomeProjeto.Contains(searchString)
+                                       || t.Usuarios.NomeUsuario.Contains(searchString));
             }
 
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    tarefas = tarefas.OrderByDescending(t => t.NomeTarefa);
+                    tarefas = tarefas.OrderBy(t => t.NomeTarefa);
                     break;
                 case "Date":
                     tarefas = tarefas.OrderBy(t => t.DataInicioTarefa);
@@ -69,13 +69,13 @@ namespace Monitorar_Tarefas.Controllers
                     tarefas = tarefas.OrderByDescending(t => t.DataFinalizadoTarefa);
                     break;
                 default:
-                    projetos = projetos.OrderBy(p => p.NomeProjeto);
+                    tarefas = tarefas.OrderByDescending(t => t.DataInicioTarefa);
                     break;
             }
 
             int pageSize = 3;
             return View(await PaginatedList<Tarefas>.CreateAsync(
-                tarefas.AsNoTracking(), pageNumber ?? 1, pageSize));
+                tarefas.AsNoTracking().Include(u => u.Projetos).Include(u => u.Usuarios), pageNumber ?? 1, pageSize));
         }
 
 

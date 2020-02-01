@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
+
     public class ProjetosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -49,15 +49,15 @@ namespace Monitorar_Tarefas.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 projetos = projetos.Where(p => p.NomeProjeto.Contains(searchString)
-                || p.DescricaoProjeto.Contains(searchString));
+                                        || p.DescricaoProjeto.Contains(searchString)
+                                        || p.Categoria.NomeCategoria.Contains(searchString));
             }
 
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    projetos = projetos.OrderByDescending(p => p.NomeProjeto);
-                    projetos = projetos.OrderByDescending(p => p.DescricaoProjeto);
+                    projetos = projetos.OrderBy(p => p.NomeProjeto);
                     break;
                 case "Date":
                     projetos = projetos.OrderBy(p => p.DataInicioProjeto);
@@ -66,13 +66,13 @@ namespace Monitorar_Tarefas.Controllers
                     projetos = projetos.OrderByDescending(p => p.DataFinalizadoProjeto);
                     break;
                 default:
-                    projetos = projetos.OrderBy(p => p.Categoria);
+                    projetos = projetos.OrderByDescending(p => p.DataInicioProjeto);
                     break;
             }
-  
+
             int pageSize = 3;
             return View(await PaginatedList<Projetos>.CreateAsync(
-                projetos.AsNoTracking(), pageNumber ?? 1, pageSize));
+                projetos.AsNoTracking().Include(p => p.Categoria), pageNumber ?? 1, pageSize));
         }
 
 

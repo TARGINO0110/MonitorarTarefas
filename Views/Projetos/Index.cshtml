@@ -78,24 +78,53 @@
                 <hr />
 
                 <br />
+                <h5>Informações das tarefas</h5>
                 <br />
 
-                <form asp-action="Index" method="get">
-                    <div class="row col-sm-12">
-                        <div class="card card-body shadow p-3 mb-5">
-                            <text>Pesquisar por  Nome / Descrição :</text>
-                            <div class="input-group mb-3 col-sm-6">
-                                <input type="text" class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]" /> &nbsp;
-                                <div class="input-group-append">
-                                    <input class="btn btn-outline-secondary" type="submit" value="Buscar" />
+                <div class="row ">
+                    <div class="card card-body shadow p-3 col-sm-10">
+                        <form asp-action="Index" method="get">
+                            <div class="col-md-6 col-lg-10">
+                                <p>
+                                    <text>Pesquisar por  Nome / Descrição :</text>
+                                </p>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]" /> &nbsp;
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                    </div>
                                 </div>
                             </div>
+                        </form>
+                        <form asp-action="Index" method="get">
+                            <div class="col-md-6 col-lg-8">
+                                <p>
+                                    <text>Filtrar por categorias :</text>
+                                </p>
+                                <div class="input-group">
+                                    <select class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]">
+                                        &nbsp;
+                                        <option value=" ">Selecione as opções</option>
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.Categoria.NomeCategoria">@item.Categoria.NomeCategoria</option>
+                                        }
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                        <div class="col-md-6 col-lg-4">
+                            <p>
                                 <a class="btn btn-light" asp-action="Index">Carregar lista completa</a>
+                            </p>
                         </div>
-                    </div>
-                </form>
-                <br />
 
+                    </div>
+                </div>
 
                 <div class="table-responsive table-responsive-data2">
 
@@ -105,10 +134,10 @@
                             <tr>
 
                                 <th>
-                                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nome do projeto</a>
+                                    Nome do projeto
                                 </th>
                                 <th>
-                                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Descrição do projeto</a>
+                                    Descrição do projeto
                                 </th>
                                 <th>
                                     <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Data Inicial</a>
@@ -120,7 +149,7 @@
                                     Data da entrega
                                 </th>
                                 <th>
-                                    <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Categoria</a>
+                                    Categoria
                                 </th>
                                 <th>
                                     <span class="fa  fa-ellipsis-v"></span>
