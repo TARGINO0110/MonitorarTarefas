@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,10 +19,61 @@ namespace Monitorar_Tarefas.Controllers
             _context = context;
         }
 
-        // GET: Empresas
-        public async Task<IActionResult> Index()
+        public string NameSort { get; set; }
+        public string DateSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+
+        public PaginatedList<Empresa> Empresas { get; set; }
+
+        // GET: Avisos
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Empresas.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var empresas = from e in _context.Empresas
+                           select e;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                empresas = empresas.Where(e => e.NomeEmpresa.Contains(searchString)
+                                       || e.CNPJ.Contains(searchString)
+                                       || e.EmailEmpresa.Contains(searchString)
+                                       || e.PorteEmpresa.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    empresas = empresas.OrderBy(a => a.NomeEmpresa);
+                    break;
+                case "Date":
+                    empresas = empresas.OrderBy(a => a.DataFundacao);
+                    break;
+                case "date_desc":
+                    empresas = empresas.OrderByDescending(a => a.DataFundacao);
+                    break;
+                default:
+                    empresas = empresas.OrderByDescending(a => a.CNPJ);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Empresa>.CreateAsync(
+                empresas.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Empresas/Details/5

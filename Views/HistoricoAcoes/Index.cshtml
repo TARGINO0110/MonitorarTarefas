@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Monitorar_Tarefas.Models.HistoricoAcoes>
+﻿@model PaginatedList<Monitorar_Tarefas.Models.HistoricoAcoes>
 
 @{
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
@@ -93,59 +93,80 @@
                     <br />
                 }
 
-                <div class="table-responsive table-responsive-data2">
+            <div class="table-responsive table-responsive-data2">
 
-                    <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
-                        <thead>
+                <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
+                    <thead>
 
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.NumeroAcao)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.OnservacaoAcao)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.DataHoraAcao)
-                                </th>
-                                <th>
-                                    <span class="fa  fa-ellipsis-v"></span>
-                                    Ações
-                                </th>
-                            </tr>
-                        </thead>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NumeroAcao)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OnservacaoAcao)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataHoraAcao)
-                                </td>
-                                <td>
-                                    <span class="fa  fa-edit"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                                    <span class="fa   fa-tasks"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                                    <span class="fa fa-trash"></span>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                </div>
+                        <tr>
+                            <th>
+                                Nº da Ação
+                            </th>
+                            <th>
+                                Observações
+                            </th>
+                            <th>
+                                Data/Hora
+                            </th>
+                            <th>
+                                <span class="fa  fa-ellipsis-v"></span>
+                                Ações
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumeroAcao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OnservacaoAcao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DataHoraAcao)
+                            </td>
+                            <td>
+                                <span class="fa  fa-edit"></span>
+                                <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                                <span class="fa   fa-tasks"></span>
+                                <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                                <span class="fa fa-trash"></span>
+                                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
 
-                <div class="col-md-12">
-                    <div class="copyright">
-                        <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
-                    </div>
-                </div>
+                @{
+                    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                }
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @prevDisabled">
+                    Retornar
+                </a>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @nextDisabled">
+                    Próximo
+                </a>
 
             </div>
+                <br />
+            </div>
+
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Monitorar_Tarefas.Models.Tarefas>
+﻿@model PaginatedList<Monitorar_Tarefas.Models.Tarefas>
 
 @{
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
@@ -79,7 +79,7 @@
                 <hr />
 
                 <br />
-                <h5>Informações dos projetos</h5>
+                <h5>Informações das tarefas</h5>
                 <br />
 
                 <div class="row ">
@@ -96,7 +96,8 @@
                                     </div>
                                 </div>
                             </div>
-
+                        </form>
+                        <form asp-action="Index" method="get">
                             <div class="col-md-6 col-lg-8">
                                 <p>
                                     <text>Filtrar por Usuarios :</text>
@@ -131,28 +132,28 @@
 
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.NomeTarefa)
+                                    Nome da tarefa
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DescricaoTarefa)
+                                    Descrição
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DataInicioTarefa)
+                                    Iniciado em
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DataFinalizadoTarefa)
+                                    Finalizado em
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DataEntregaTarefa)
+                                    Data da entrega
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Situacao)
+                                    Situação
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Projetos)
+                                    Projetos
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Usuarios)
+                                    Usuarios responsável
                                 </th>
                                 <th>
                                     <span class="fa  fa-ellipsis-v"></span>
@@ -199,15 +200,36 @@
                             </tr>
                         }
                     </table>
-                </div>
 
-                <div class="col-md-12">
-                    <div class="copyright">
-                        <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
-                    </div>
-                </div>
+                    @{
+                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                    }
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="btn btn-default @prevDisabled">
+                        Retornar
+                    </a>
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="btn btn-default @nextDisabled">
+                        Próximo
+                    </a>
 
+                </div>
+                <br />
             </div>
+
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

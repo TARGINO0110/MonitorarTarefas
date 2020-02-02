@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,9 +20,19 @@ namespace Monitorar_Tarefas.Controllers
         }
 
         // GET: Categorias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Categorias.ToListAsync());
+            ViewData["CurrentFilter"] = searchString;
+
+            var categoria = from c in _context.Categorias
+                            select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                categoria = categoria.Where(c => c.NomeCategoria.Contains(searchString));
+            }
+
+            return View(await categoria.AsNoTracking().ToListAsync());
         }
 
         // GET: Categorias/Details/5

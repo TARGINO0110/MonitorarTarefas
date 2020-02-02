@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,11 +20,61 @@ namespace Monitorar_Tarefas.Controllers
             _context = context;
         }
 
-        // GET: Usuarios
-        public async Task<IActionResult> Index()
+        public string NameSort { get; set; }
+        public string DateSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+
+        public PaginatedList<Usuarios> Usuarios { get; set; }
+
+        // GET: Avisos
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var applicationDbContext = _context.Usuarios.Include(u => u.Empresa);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var usuarios = from u in _context.Usuarios
+                           select u;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                usuarios = usuarios.Where(u => u.NomeUsuario.Contains(searchString)
+                                       || u.SobrenomeUsuario.Contains(searchString)
+                                       || u.CPF.Contains(searchString)
+                                       || u.Empresa.NomeEmpresa.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    usuarios = usuarios.OrderBy(u => u.NomeUsuario);
+                    break;
+                case "Date":
+                    usuarios = usuarios.OrderBy(u => u.DataNascimento);
+                    break;
+                case "date_desc":
+                    usuarios = usuarios.OrderByDescending(u => u.DataNascimento);
+                    break;
+                default:
+                    usuarios = usuarios.OrderByDescending(u => u.NomeUsuario);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Usuarios>.CreateAsync(
+                usuarios.AsNoTracking().Include(u => u.Empresa), pageNumber ?? 1, pageSize));
         }
 
         // GET: Usuarios/Details/5
@@ -55,7 +106,7 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
+        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +138,7 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Usuarios/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
         {
             if (id != usuarios.Id)
             {

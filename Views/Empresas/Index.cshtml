@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Monitorar_Tarefas.Models.Empresa>
+﻿@model PaginatedList<Monitorar_Tarefas.Models.Empresa>
 
 @{
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
@@ -71,30 +71,59 @@
                         </div>
                     </div>
                 </div>
-               <p>
+                <p>
                     <a class="btn btn-outline-primary" asp-action="Create">Adicionar Empresa</a>
                 </p>
 
                 <hr />
 
                 <br />
+                <h5>Informações das empresas</h5>
                 <br />
 
-                @using (Html.BeginForm("Index", "Informacaos", FormMethod.Get))
-                {
-                    <div class="row col-sm-12">
-                        <div class="card card-body shadow p-3 mb-5">
-                            <text>Pesquisar por  Nome / Descrição :</text>
-                            <div class="input-group mb-3 col-sm-6">
-                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" }) &nbsp;
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                <div class="row ">
+                    <div class="card card-body shadow p-3 col-sm-10">
+                        <form asp-action="Index" method="get">
+                            <div class="col-md-6 col-lg-10">
+                                <p>
+                                    <text>Pesquisar por Empresa / CNPJ :</text>
+                                </p>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]" /> &nbsp;
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                    </div>
                                 </div>
                             </div>
+                        </form>
+                        <form asp-action="Index" method="get">
+                            <div class="col-md-6 col-lg-8">
+                                <p>
+                                    <text>Filtrar por Empresas :</text>
+                                </p>
+                                <div class="input-group">
+                                    <select class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]">
+                                        &nbsp;
+                                        <option value=" ">Selecione as opções</option>
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.NomeEmpresa">@item.NomeEmpresa</option>
+                                        }
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                        <div class="col-md-6 col-lg-4">
+                            <p>
+                                <a class="btn btn-light" asp-action="Index">Carregar lista completa</a>
+                            </p>
                         </div>
                     </div>
-                    <br />
-                }
+                </div>
 
                 <div class="table-responsive table-responsive-data2">
 
@@ -103,25 +132,25 @@
 
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.NomeEmpresa)
+                                    Nome da empresa
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.EnderecoEmpresa)
+                                    Endereço
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.TelefoneEmpresa)
+                                    Nº Telefone
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.EmailEmpresa)
+                                    Email da empresa
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.CNPJ)
+                                    Nº CNPJ
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DataFundacao)
+                                    Fundado em
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.PorteEmpresa)
+                                    Porte
                                 </th>
                                 <th>
                                     <span class="fa  fa-ellipsis-v"></span>
@@ -164,15 +193,36 @@
                             </tr>
                         }
                     </table>
-                </div>
 
-                <div class="col-md-12">
-                    <div class="copyright">
-                        <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
-                    </div>
-                </div>
+                    @{
+                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                    }
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="btn btn-default @prevDisabled">
+                        Retornar
+                    </a>
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="btn btn-default @nextDisabled">
+                        Próximo
+                    </a>
 
+                </div>
+                <br />
             </div>
+
+            <div class="col-md-12">
+                <div class="copyright">
+                    <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

@@ -50,8 +50,17 @@
                         </div>
                         <br />
                         <div class="form-group col-md-4">
-                            <label for="validationfeedback03" asp-for="CPF" class="control-label"></label>
-                            <input asp-for="CPF" type="number" class="form-control" id="validationfeedback03" required />
+                            <label for="validationfeedback03" asp-for="GerenteProjeto" class="control-label"></label>
+                            <input asp-for="GerenteProjeto" type="checkbox" class="form-control" id="validationfeedback03" required />
+                            <small class="input-group form-text text-muted">Informe sim ou não.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="GerenteProjeto" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback04" asp-for="CPF" class="control-label"></label>
+                            <input asp-for="CPF" type="number" class="form-control" id="validationfeedback04" required />
                             <small class="input-group form-text text-muted">Informe o Nº do seu CPF.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -60,8 +69,8 @@
                         </div>
 
                         <div class="form-group col-md-4">
-                            <label for="validationfeedback04" asp-for="TelefoneCelular" class="control-label"></label>
-                            <input asp-for="TelefoneCelular" type="number" class="form-control" id="validationfeedback04" required />
+                            <label for="validationfeedback05" asp-for="TelefoneCelular" class="control-label"></label>
+                            <input asp-for="TelefoneCelular" type="number" class="form-control" id="validationfeedback05" required />
                             <small class="input-group form-text text-muted">Informe o Nº do seu Telefone ou Celular.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -70,8 +79,8 @@
                         </div>
 
                         <div class="form-group col-md-4">
-                            <label for="validationfeedback05" asp-for="DataNascimento" class="control-label"></label>
-                            <input asp-for="DataNascimento" type="date" class="form-control" id="validationfeedback05" required />
+                            <label for="validationfeedback06" asp-for="DataNascimento" class="control-label"></label>
+                            <input asp-for="DataNascimento" type="date" class="form-control" id="validationfeedback06" required />
                             <small class="input-group form-text text-muted">Informe a sua data de nascimento.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -80,8 +89,8 @@
                         </div>
                         <br />
                         <div class="form-group col-md-6">
-                            <label for="validationfeedback06" asp-for="EmpresaId" class="control-label"></label>
-                            <select asp-for="EmpresaId" class="form-control" id="validationfeedback06" asp-items="ViewBag.EmpresaId" required></select>
+                            <label for="validationfeedback07" asp-for="EmpresaId" class="control-label"></label>
+                            <select asp-for="EmpresaId" class="form-control" id="validationfeedback07" asp-items="ViewBag.EmpresaId" required></select>
                             <small class="input-group form-text text-muted">Selecione a empresa vinculada ao projeto.</small>
                             <div class="valid-feedback">
                                 OK!

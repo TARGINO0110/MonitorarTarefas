@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,11 +20,60 @@ namespace Monitorar_Tarefas.Controllers
             _context = context;
         }
 
-        // GET: Tokens
-        public async Task<IActionResult> Index()
+        public string NameSort { get; set; }
+        public string DateSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+
+        public PaginatedList<Token> Tokens { get; set; }
+
+        // GET: Avisos
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var applicationDbContext = _context.Tokens.Include(t => t.Usuarios);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var tokens = from t in _context.Tokens
+                         select t;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                tokens = tokens.Where(t => t.Hash.Contains(searchString)
+                                       || t.Usuarios.NomeUsuario.Contains(searchString)
+                                       || t.Usuarios.SobrenomeUsuario.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    tokens = tokens.OrderBy(t => t.Hash);
+                    break;
+                case "Date":
+                    tokens = tokens.OrderBy(t => t.DataValidadeToken);
+                    break;
+                case "date_desc":
+                    tokens = tokens.OrderByDescending(t => t.DataValidadeToken);
+                    break;
+                default:
+                    tokens = tokens.OrderBy(t => t.DataValidadeToken);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Token>.CreateAsync(
+                tokens.AsNoTracking().Include(t => t.Usuarios), pageNumber ?? 1, pageSize));
         }
 
         // GET: Tokens/Details/5

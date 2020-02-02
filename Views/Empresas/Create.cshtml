@@ -44,11 +44,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="PorteEmpresa" class="control-label"></label>
-                <input asp-for="PorteEmpresa" class="form-control" />
+                <select asp-for="PorteEmpresa" class="form-control">
+                    <option value="">selecione as opções</option>
+                    <option value="Pequeno">Pequeno</option>
+                    <option value="Medio">Medio</option>
+                    <option value="Grande">Grande</option>
+                </select>
+
                 <span asp-validation-for="PorteEmpresa" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Cadastar empresa" class="btn btn-primary" />
             </div>
         </form>
     </div>

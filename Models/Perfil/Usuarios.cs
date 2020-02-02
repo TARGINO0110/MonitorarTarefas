@@ -18,8 +18,8 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Seu Sobrenome")]
         public string SobrenomeUsuario { get; set; }
 
-        [Required(ErrorMessage = "É necessário informar o seu  Sobrenome!")]
-        [Display(Name = "Seu Sobrenome")]
+        [Required(ErrorMessage = "É necessário informar sim ou não!")]
+        [Display(Name = "Gerente de projetos?")]
         public bool GerenteProjeto { get; set; }
 
         [Display(Name = "Token")]
@@ -40,7 +40,7 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Data de nascimento")]
         public DateTime DataNascimento { get; set; }
 
-        [ForeignKey("Empresa")]
+        [ForeignKey("Colaborador da Empresa")]
         public int EmpresaId { get; set; }
 
         public virtual Empresa Empresa { get; set; }
