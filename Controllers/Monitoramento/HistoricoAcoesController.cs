@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,10 +19,58 @@ namespace Monitorar_Tarefas.Controllers
             _context = context;
         }
 
+        public string NameSort { get; set; }
+        public string DateSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public PaginatedList<HistoricoAcoes> HistoricoAcoes { get; set; }
+
         // GET: HistoricoAcoes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.HistoricoAcoes.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var historico = from h in _context.HistoricoAcoes
+                            select h;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                historico = historico.Where(h => h.OnservacaoAcao.Contains(searchString));
+                                       
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    historico = historico.OrderBy(h => h.OnservacaoAcao);
+                    break;
+                case "Date":
+                    historico = historico.OrderBy(h => h.DataHoraAcao);
+                    break;
+                case "date_desc":
+                    historico = historico.OrderByDescending(h => h.DataHoraAcao);
+                    break;
+                default:
+                    historico = historico.OrderByDescending(h => h.OnservacaoAcao);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<HistoricoAcoes>.CreateAsync(
+                historico.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: HistoricoAcoes/Details/5

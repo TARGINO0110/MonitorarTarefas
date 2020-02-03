@@ -1,67 +1,119 @@
 ﻿@model Monitorar_Tarefas.Models.Empresa
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h1>Create</h1>
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
 
-<h4>Empresa</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NomeEmpresa" class="control-label"></label>
-                <input asp-for="NomeEmpresa" class="form-control" />
-                <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EnderecoEmpresa" class="control-label"></label>
-                <input asp-for="EnderecoEmpresa" class="form-control" />
-                <span asp-validation-for="EnderecoEmpresa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TelefoneEmpresa" class="control-label"></label>
-                <input asp-for="TelefoneEmpresa" class="form-control" />
-                <span asp-validation-for="TelefoneEmpresa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmailEmpresa" class="control-label"></label>
-                <input asp-for="EmailEmpresa" class="form-control" />
-                <span asp-validation-for="EmailEmpresa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CNPJ" class="control-label"></label>
-                <input asp-for="CNPJ" class="form-control" />
-                <span asp-validation-for="CNPJ" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataFundacao" class="control-label"></label>
-                <input asp-for="DataFundacao" class="form-control" />
-                <span asp-validation-for="DataFundacao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PorteEmpresa" class="control-label"></label>
-                <select asp-for="PorteEmpresa" class="form-control">
-                    <option value="">selecione as opções</option>
-                    <option value="Pequeno">Pequeno</option>
-                    <option value="Medio">Medio</option>
-                    <option value="Grande">Grande</option>
-                </select>
+            <h2>Cadastrar Usuário </h2>
 
-                <span asp-validation-for="PorteEmpresa" class="text-danger"></span>
+            @if (TempData["ErroSalvar"] != null)
+            {
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                    <span class="badge badge-pill badge-danger">Erro ao registrar!</span>
+                    @TempData["ErroSalvar"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            }
+
+            <hr />
+            <div class="card card-body shadow p-3 mb-5">
+                <form asp-action="Create" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para realizar o cadastro</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="NomeEmpresa" class="control-label"></label>
+                            <input asp-for="NomeEmpresa" type="text" class="form-control" id="validationfeedback01" required />
+                            <small class="input-group form-text text-muted">Preencha o nome da empresa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback02" asp-for="EnderecoEmpresa" class="control-label"></label>
+                            <input asp-for="EnderecoEmpresa" type="text" class="form-control" id="validationfeedback02" required />
+                            <small class="input-group form-text text-muted">Preencha o endereço da empresa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="EnderecoEmpresa" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback03" asp-for="TelefoneEmpresa" class="control-label"></label>
+                            <input asp-for="TelefoneEmpresa" type="number" class="form-control" id="validationfeedback03" required />
+                            <small class="input-group form-text text-muted">Informe o telefone da empresa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="TelefoneEmpresa" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback04" asp-for="EmailEmpresa" class="control-label"></label>
+                            <input asp-for="EmailEmpresa" type="email" class="form-control" id="validationfeedback05" required />
+                            <small class="input-group form-text text-muted">Informe o email mais acessível da empresa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="EmailEmpresa" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback06" asp-for="CNPJ" class="control-label"></label>
+                            <input asp-for="CNPJ" type="number" class="form-control" id="validationfeedback06" required />
+                            <small class="input-group form-text text-muted">Informe o CNPJ desta empresa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="CNPJ" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback07" asp-for="DataFundacao" class="control-label"></label>
+                            <input asp-for="DataFundacao" type="date" class="form-control" id="validationfeedback07" required />
+                            <small class="input-group form-text text-muted">Informe a data da fundação.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataFundacao" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback08" asp-for="PorteEmpresa" class="control-label"></label>
+                            <select asp-for="PorteEmpresa" class="form-control" id="validationfeedback07" required>
+                                <option value="">selecione as opções</option>
+                                <option value="Pequeno">Pequeno</option>
+                                <option value="Medio">Medio</option>
+                                <option value="Grande">Grande</option>
+                            </select>
+                            <small class="input-group form-text text-muted">Selecione o porte da empresa.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="PorteEmpresa" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                            <input type="submit" value="Salvar" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Cadastar empresa" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

@@ -107,12 +107,31 @@ namespace Monitorar_Tarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(token);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if (token.DataValidadeToken >= DateTime.Today)
+                    {
+                        _context.Add(token);
+                        await _context.SaveChangesAsync();
+                        TempData["Salvar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi cadastrado com sucesso!";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
+                        return View("Create");
+                    }
+                }
+                catch (Exception)
+                {
+                    TempData["ErroInesperado"] = "Não foi possivel cadastrar o hash: '" + token.Hash.ToUpper() + "'\t , tente novamente!";
+                    return RedirectToAction(nameof(Index));
+                }
             }
+
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
             return View(token);
         }
@@ -148,13 +167,24 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(token);
-                    await _context.SaveChangesAsync();
+                    if (token.DataValidadeToken >= DateTime.Today)
+                    {
+                        _context.Update(token);
+                        TempData["Editar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi editado com sucesso!";
+                        await _context.SaveChangesAsync();
+                    }
+
+                    else
+                    {
+                        TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
+                        return View("Edit");
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TokenExists(token.Id))
                     {
+                        TempData["ErroInesperado"] = "Não foi possivel editar o hash: '" + token.Hash.ToUpper() + "'\t , tente novamente!";
                         return NotFound();
                     }
                     else

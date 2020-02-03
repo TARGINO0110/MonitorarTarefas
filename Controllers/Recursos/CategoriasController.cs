@@ -18,10 +18,27 @@ namespace Monitorar_Tarefas.Controllers
         {
             _context = context;
         }
+        public string NameSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+
+        public PaginatedList<Categoria> Categorias { get; set; }
 
         // GET: Categorias
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             ViewData["CurrentFilter"] = searchString;
 
             var categoria = from c in _context.Categorias
@@ -32,7 +49,19 @@ namespace Monitorar_Tarefas.Controllers
                 categoria = categoria.Where(c => c.NomeCategoria.Contains(searchString));
             }
 
-            return View(await categoria.AsNoTracking().ToListAsync());
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    categoria = categoria.OrderBy(c => c.NomeCategoria);
+                    break;
+                default:
+                    categoria = categoria.OrderBy(c => c.NomeCategoria);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Categoria>.CreateAsync(
+                categoria.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Categorias/Details/5
