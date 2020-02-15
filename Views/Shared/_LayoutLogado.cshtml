@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+
 <!DOCTYPE html>
 <html lang="en,pt-BR">
 <head>
@@ -50,7 +51,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="#">
-                            <img  src="~/assets/images/icon/monitorarLogo.png" alt="monitorarLogo" />
+                            <img src="~/assets/images/icon/monitorarLogo.png" alt="monitorarLogo" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -289,13 +290,13 @@
                                         </div>
                                         <div class="email__item">
                                             <div class="image img-cir img-40">
-                                                <i class="fa fa-bar-chart"></i>
+                                                <i class="fa fa-tasks"></i>
                                             </div>
                                             <div class="content">
 
-                                                @Html.ActionLink("Acompanhar acessos", "Index", "Acompanhars")
+                                                @Html.ActionLink("Tasks", "Index", "Projetos")
                                                 <p>
-                                                    <span>Verificando os acessos dos usuários</span>
+                                                    <span>Ambiente para gerenciar projetos e tarefas.</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -304,20 +305,20 @@
                                                 <i class="fa fa-briefcase"></i>
                                             </div>
                                             <div class="content">
-                                                @Html.ActionLink("Processos de Trabalho", "Index", "ProcessosTrabalhoes")
+                                                @Html.ActionLink("Recursos", "Index", "Categorias")
                                                 <p>
-                                                    <span>Gerencie as áreas dos processos de trabalho</span>
+                                                    <span>Defina o modelo do seu projeto por categorias e registre seus avisos.</span>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="email__item">
                                             <div class="image img-cir img-40">
-                                                <i class="fa fa-sitemap"></i>
+                                                <i class="fa fa-globe"></i>
                                             </div>
                                             <div class="content">
-                                                @Html.ActionLink("Modelos de processos de trabalho", "Index", "Modeloes")
+                                                @Html.ActionLink("Monitoramento", "Index", "HistoricoAcoes")
                                                 <p>
-                                                    <span>Gerencie os modelos referentes as áreas dos processos de trabalho</span>
+                                                    <span>Acompanhe diariamente os acessos dos usuários e consceda de modo prático os acessos pelo token.</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -331,7 +332,7 @@
 
                                     <div class="notifi-dropdown js-dropdown">
                                         <div class="notifi__title">
-                                            <p>Conteúdo para servidores</p>
+                                            <p>Avisos diários</p>
                                         </div>
 
 
@@ -345,7 +346,7 @@
                                             </div>
                                         </div>
                                         <div class="notifi__footer">
-                                            <a href="~/Uploads/Publico.pdf">Visualizar</a>
+                                            <p>@Html.ActionLink("Avisos", "Index", "Avisos", new { area = "" }, null)</p>
                                         </div>
                                     </div>
                                 </div>
@@ -363,11 +364,11 @@
                                         <div class="info clearfix">
                                             <div class="image">
                                                 <a href="#">
-                                                    <img src="~/assets/images/icon/TJCE.png" alt="TJCE" />
+                                                    <img src="~/assets/images/icon/user.png" alt="user" />
                                                 </a>
                                             </div>
-                                            <div class="content">
 
+                                            <div class="content">
                                                 <span class="email"><a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bem vindo @User.Identity.Name!</a></span>
                                             </div>
                                         </div>
@@ -376,23 +377,16 @@
                                         {
                                             <div class="account-dropdown__footer">
                                                 <div>
-                                                    @Html.ActionLink("Home", "Index", "Home")
+                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Projetos" asp-action="Index">Pagina inicial</a>
                                                 </div>
                                                 <div>
-                                                    @Html.ActionLink("Alterar senha", "ChangePassword", "Manage")
+                                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Alterar senha</a>
                                                 </div>
-
-
-                                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                                                {
-                                                    @Html.AntiForgeryToken()
-
-                                                    <div>
-                                                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-mail-reply-all"></i> Sair</a>
-                                                    </div>
-
-                                                }
-
+                                                <div>
+                                                    <form class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         }
                                     </div>

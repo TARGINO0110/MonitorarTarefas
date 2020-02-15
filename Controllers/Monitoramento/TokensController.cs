@@ -110,6 +110,7 @@ namespace Monitorar_Tarefas.Controllers
 
             if (ModelState.IsValid)
             {
+
                 try
                 {
                     if (token.DataValidadeToken >= DateTime.Today)
@@ -119,6 +120,7 @@ namespace Monitorar_Tarefas.Controllers
                         TempData["Salvar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi cadastrado com sucesso!";
                         return RedirectToAction(nameof(Index));
                     }
+
                     else
                     {
                         TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
@@ -220,12 +222,20 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Tokens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, Token token)
         {
-            var token = await _context.Tokens.FindAsync(id);
-            _context.Tokens.Remove(token);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var reg = await _context.Tokens.FindAsync(id);
+                _context.Tokens.Remove(reg);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception)
+            {
+                TempData["Delete"] = "Ocorreu um erro inesperado ao deletar, o token '" + token.Hash + "'\t continua ativo, tente novamente!";
+                return View("Delete");
+            }
         }
 
         private bool TokenExists(int id)

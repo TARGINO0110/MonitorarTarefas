@@ -1,4 +1,4 @@
-﻿@model PaginatedList<Monitorar_Tarefas.Models.Tarefas>
+﻿@model PaginatedList<Monitorar_Tarefas.Models.Tarefas> 
 
 @{
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
@@ -105,10 +105,10 @@
                                 <div class="input-group">
                                     <select class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]">
                                         <option value=" ">Selecione as opções</option>
-                                        @foreach (var item in Model)
-                                        {
-                                            <option value="@item.Usuarios.NomeUsuario">@item.Usuarios.NomeUsuario</option>
-                                        }
+                                          @foreach (var listaUsuarios in Model)
+                                          {
+                                        <option value="@listaUsuarios.Usuarios.NomeUsuario">@listaUsuarios.Usuarios.NomeUsuario</option>
+                                          }
                                     </select> &nbsp;
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
