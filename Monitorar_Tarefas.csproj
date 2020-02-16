@@ -6,12 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Arquivos.cs" />
     <Compile Remove="Data\Migrations\20200116001653_InitialCreateMonitorarTarefas.cs" />
     <Compile Remove="Data\Migrations\20200116001653_InitialCreateMonitorarTarefas.Designer.cs" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="Grpc.Core" Version="2.27.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
@@ -19,6 +21,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

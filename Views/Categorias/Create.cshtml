@@ -59,4 +59,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+            $(document).ready(function () {
+                $("#preco").inputmask("mask", { "mask": "999.999,99" }, { reverse: true });
+                $("#porcento").inputmask("mask", { "mask": "9,999" }, { reverse: true });
+                $("#valor").inputmask("mask", { "mask": "#.##9,99" }, { reverse: true });
+            });
+    </script>
 }

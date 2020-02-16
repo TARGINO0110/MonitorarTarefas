@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery.inputmask@3.3.4",
+      "destination": "wwwroot/lib/jquery.inputmask/"
+    }
+  ]
+}
