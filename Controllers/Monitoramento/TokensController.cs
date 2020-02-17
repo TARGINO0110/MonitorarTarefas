@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
+    ////[Authorize]
     public class TokensController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -107,10 +107,8 @@ namespace Monitorar_Tarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
         {
-
             if (ModelState.IsValid)
             {
-
                 try
                 {
                     if (token.DataValidadeToken >= DateTime.Today)
@@ -120,7 +118,6 @@ namespace Monitorar_Tarefas.Controllers
                         TempData["Salvar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi cadastrado com sucesso!";
                         return RedirectToAction(nameof(Index));
                     }
-
                     else
                     {
                         TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
@@ -172,10 +169,9 @@ namespace Monitorar_Tarefas.Controllers
                     if (token.DataValidadeToken >= DateTime.Today)
                     {
                         _context.Update(token);
-                        TempData["Editar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi editado com sucesso!";
+                        TempData["Editar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi atualizado com sucesso!";
                         await _context.SaveChangesAsync();
                     }
-
                     else
                     {
                         TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
@@ -228,12 +224,13 @@ namespace Monitorar_Tarefas.Controllers
             {
                 var reg = await _context.Tokens.FindAsync(id);
                 _context.Tokens.Remove(reg);
+                TempData["Delete"] = "O token '" + token.Hash + "'\t foi deletado!";
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception)
+            catch (Exception)
             {
-                TempData["Delete"] = "Ocorreu um erro inesperado ao deletar, o token '" + token.Hash + "'\t continua ativo, tente novamente!";
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o token '" + token.Hash + "'\t , tente novamente!";
                 return View("Delete");
             }
         }

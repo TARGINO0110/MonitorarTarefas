@@ -13,8 +13,14 @@ a {
 }
 
 .btn-primary {
-    color: #eef1f3;
-    background-color: #083f76;
+    color: #fff;
+    background-color: #04305e;
+    border-color: #1861ac;
+}
+
+a.btn-primary {
+    color: #fff;
+    background-color: #ff6a00;
     border-color: #1861ac;
 }
 

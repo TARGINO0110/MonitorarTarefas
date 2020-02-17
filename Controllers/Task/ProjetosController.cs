@@ -109,9 +109,26 @@ namespace Monitorar_Tarefas.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(projetos);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if ((projetos.DataInicioProjeto >= DateTime.Today) && (projetos.DataEntregaProjeto >= DateTime.Today) && (projetos.DataFinalizadoProjeto >= DateTime.Today))
+                    {
+                        _context.Add(projetos);
+                        await _context.SaveChangesAsync();
+                        TempData["Salvar"] = "Seu projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t foi cadastrado com sucesso!";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                        return View("Create");
+                    }
+                }
+                catch
+                {
+                    TempData["ErroInesperado"] = "Não foi possivel cadastrar o projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t , tente novamente!";
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
             return View(projetos);
@@ -148,13 +165,25 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(projetos);
-                    await _context.SaveChangesAsync();
+                    if ((projetos.DataInicioProjeto >= DateTime.Today) && (projetos.DataEntregaProjeto >= DateTime.Today) && (projetos.DataFinalizadoProjeto >= DateTime.Today))
+                    {
+                        _context.Update(projetos);
+                        TempData["Editar"] = "Seu projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t foi atualizado com sucesso!";
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                        ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
+                        return View("Edit");
+                    }
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ProjetosExists(projetos.Id))
                     {
+                        TempData["ErroInesperado"] = "Não foi possivel editar o projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t , tente novamente!";
                         return NotFound();
                     }
                     else
@@ -190,12 +219,21 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Projetos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, Projetos projeto)
         {
-            var projetos = await _context.Projetos.FindAsync(id);
-            _context.Projetos.Remove(projetos);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var projetos = await _context.Projetos.FindAsync(id);
+                _context.Projetos.Remove(projetos);
+                TempData["Delete"] = "O projeto '" + projeto.NomeProjeto + "'\t foi deletado!";
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o projeto '" + projeto.NomeProjeto + "'\t , tente novamente!";
+                return View("Delete");
+            }
         }
 
         private bool ProjetosExists(int id)

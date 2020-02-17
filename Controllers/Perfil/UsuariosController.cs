@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
+    ////[Authorize]
     public class UsuariosController : Controller
     {
         private readonly ApplicationDbContext _context;

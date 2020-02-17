@@ -50,9 +50,9 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="#">
-                            <img src="~/assets/images/icon/monitorarLogo.png" alt="monitorarLogo" />
-                        </a>
+                        <figure class="logo" href="#">
+                            <img src="~/assets/images/icon/monitorarlogo_mobile.png" alt="monitorarLogo" />
+                        </figure>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
                                 <span class="hamburger-inner"></span>
@@ -150,9 +150,9 @@
     <!-- MENU SIDEBAR-->
     <aside class="menu-sidebar d-none d-lg-block">
         <div class="logo">
-            <a href="#">
-                <img src="~/assets/images/icon/monitorarLogo.png" alt="monitorarLogo" />
-            </a>
+            <figure href="#">
+                <img src="~/assets/images/icon/monitorarlogo_mobile.png" alt="monitorarLogo" />
+            </figure>
         </div>
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
@@ -354,9 +354,11 @@
 
                             <div class="account-wrap">
                                 <div class="account-item clearfix js-item-menu">
-
+                                    <div class="image">
+                                        <img src="~/assets/images/icon/user.png" alt="">
+                                    </div>
                                     <div class="content">
-                                        <span class="fa fa-gears"></span>
+                                        <span class="fa fa-plus-circle"></span>
                                         <a class="js-acc-btn" href="#">Opções</a>
                                     </div>
 
@@ -373,12 +375,13 @@
                                             </div>
                                         </div>
 
-                                        @if (SignInManager.IsSignedIn(User))
-                                        {
-                                            <div class="account-dropdown__footer">
-                                                <div>
-                                                    <a class="nav-link text-dark" asp-area="" asp-controller="Projetos" asp-action="Index">Pagina inicial</a>
-                                                </div>
+
+                                        <div class="account-dropdown__footer">
+                                            <div>
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Pagina inicial</a>
+                                            </div>
+                                            @if (SignInManager.IsSignedIn(User))
+                                            {
                                                 <div>
                                                     <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Alterar senha</a>
                                                 </div>
@@ -387,8 +390,8 @@
                                                         <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
                                                     </form>
                                                 </div>
-                                            </div>
-                                        }
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>

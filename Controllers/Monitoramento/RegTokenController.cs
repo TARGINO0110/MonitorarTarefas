@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Monitorar_Tarefas.Controllers
 {
-    [Authorize]
+    ////[Authorize]
     public class RegTokenController : Controller
     {
         private readonly ApplicationDbContext _context;

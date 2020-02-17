@@ -4,50 +4,15 @@
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
     ViewData["Title"] = "Index";
 }
+
 <!-- MAIN CONTENT-->
-<div class="main-content">
-    <div class="section__content section__content--p30">
-        <div class="container-fluid">
-            <!-- DATA TABLE-->
-            <div class="row table-responsive m-b-40">
+    <div class="main-content ">
+        <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
+        <div class="section__content section__content--p30">
+            <div class="container-fluid card card-body shadow p-3 mb-5">
                 <h2><i class="zmdi zmdi-layers"> </i> Página de Projetos</h2>
                 <hr />
                 <br />
-
-                @if (TempData["Salvar"] != null)
-                {
-
-                    <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
-                        <span class="badge badge-pill badge-success">Sucesso!</span>
-                        @TempData["Salvar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
-                @if (TempData["Editar"] != null)
-                {
-                    <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
-                        <span class="badge badge-pill badge-warning">Sucesso!</span>
-                        @TempData["Editar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
-                @if (TempData["Deletar"] != null)
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Sucesso!</span>
-                        @TempData["Deletar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
                 <div class="row">
                     <div class="col-md-6 col-lg-3">
                         <div class="statistic__item shadow p-3 mb-5">
@@ -70,7 +35,7 @@
                     </div>
                 </div>
                 <p>
-                    <a class="btn btn-outline-primary" asp-action="Create">Adicionar Projeto</a>
+                    <a class="btn btn-primary" asp-action="Create">Adicionar Projeto</a>
                 </p>
 
                 <hr />
@@ -79,7 +44,7 @@
                 <h5>Informações dos projetos</h5>
                 <br />
 
-                <div class="row ">
+                <div class="form-group">
                     <div class="card card-body shadow p-3 col-sm-10">
                         <form asp-action="Index" method="get">
                             <div class="col-md-6 col-lg-10">
@@ -122,73 +87,76 @@
                         </div>
                     </div>
                 </div>
+                <!-- DATA TABLE-->
+                <div class="table-responsive m-b-40">
+                    <div class="table-responsive table-responsive-data2">
 
-                <div class="table-responsive table-responsive-data2">
+                        <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
+                            <thead>
 
-                    <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
-                        <thead>
+                                <tr>
 
-                            <tr>
+                                    <th>
+                                        Nome do projeto
+                                    </th>
+                                    <th>
+                                        Descrição do projeto
+                                    </th>
+                                    <th>
+                                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Data Inicial</a>
+                                    </th>
+                                    <th>
+                                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Data finalizado</a>
+                                    </th>
+                                    <th>
+                                        Data da entrega
+                                    </th>
+                                    <th>
+                                        Categoria
+                                    </th>
+                                    <th>
+                                        <span class="fa  fa-ellipsis-v"></span>
+                                        Ações
+                                    </th>
 
-                                <th>
-                                    Nome do projeto
-                                </th>
-                                <th>
-                                    Descrição do projeto
-                                </th>
-                                <th>
-                                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Data Inicial</a>
-                                </th>
-                                <th>
-                                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Data finalizado</a>
-                                </th>
-                                <th>
-                                    Data da entrega
-                                </th>
-                                <th>
-                                    Categoria
-                                </th>
-                                <th>
-                                    <span class="fa  fa-ellipsis-v"></span>
-                                    Ações
-                                </th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NomeProjeto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayTextFor(modelItem => item.DescricaoProjeto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DataInicioProjeto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DataFinalizadoProjeto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DataEntregaProjeto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Categoria.NomeCategoria)
+                                    </td>
+                                    <td>
+                                        <span class="fa  fa-edit"></span>
+                                        <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                                        <span class="fa   fa-tasks"></span>
+                                        <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                                        <span class="fa fa-trash"></span>
+                                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                                    </td>
+                                </tr>
+                            }
 
-                            </tr>
-                        </thead>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NomeProjeto)
-                                </td>
-                                <td>
-                                    @Html.DisplayTextFor(modelItem => item.DescricaoProjeto)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataInicioProjeto)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataFinalizadoProjeto)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataEntregaProjeto)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Categoria.NomeCategoria)
-                                </td>
-                                <td>
-                                    <span class="fa  fa-edit"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                                    <span class="fa   fa-tasks"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                                    <span class="fa fa-trash"></span>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
-                                </td>
-                            </tr>
-                        }
-
-                    </table>
-
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     @{
                         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -197,19 +165,17 @@
                        asp-route-sortOrder="@ViewData["CurrentSort"]"
                        asp-route-pageNumber="@(Model.PageIndex - 1)"
                        asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                       class="btn btn-default @prevDisabled">
+                       class="btn btn-light @prevDisabled">
                         Retornar
                     </a>
                     <a asp-action="Index"
                        asp-route-sortOrder="@ViewData["CurrentSort"]"
                        asp-route-pageNumber="@(Model.PageIndex + 1)"
                        asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                       class="btn btn-default @nextDisabled">
+                       class="btn btn-light @nextDisabled">
                         Próximo
                     </a>
-
                 </div>
-                <br />
             </div>
 
             <div class="col-md-12">
@@ -217,7 +183,5 @@
                     <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
                 </div>
             </div>
-
         </div>
     </div>
-</div>

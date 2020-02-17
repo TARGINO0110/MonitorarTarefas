@@ -1,0 +1,59 @@
+﻿
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@if (TempData["Salvar"] != null)
+{
+
+    <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+        <span class="badge badge-pill badge-success">Sucesso!</span>
+        @TempData["Salvar"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+}
+
+@if (TempData["Editar"] != null)
+{
+    <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
+        <span class="badge badge-pill badge-warning">Sucesso!</span>
+        @TempData["Editar"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+}
+
+@if (TempData["Deletar"] != null)
+{
+    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+        <span class="badge badge-pill badge-danger">Sucesso!</span>
+        @TempData["Deletar"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+}
+
+@if (TempData["ErroSalvar"] != null)
+{
+    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+        <span class="badge badge-pill badge-danger">Erro ao registrar!</span>
+        @TempData["ErroSalvar"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+}
+
+@if (TempData["ErroInesperado"] != null)
+{
+    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+        <span class="badge badge-pill badge-danger">Erro ao registrar!</span>
+        @TempData["ErroInesperado"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+}
+

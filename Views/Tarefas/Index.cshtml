@@ -1,4 +1,4 @@
-﻿@model PaginatedList<Monitorar_Tarefas.Models.Tarefas> 
+﻿@model PaginatedList<Monitorar_Tarefas.Models.Tarefas>
 
 @{
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
@@ -6,49 +6,13 @@
 }
 
 <!-- MAIN CONTENT-->
-<div class="main-content">
-    <div class="section__content section__content--p30">
-        <div class="container-fluid">
-            <!-- DATA TABLE-->
-            <div class="row table-responsive m-b-40">
+    <div class="main-content">
+        <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
+        <div class="section__content section__content--p30">
+            <div class="container-fluid card card-body shadow p-3 mb-5">
                 <h2><i class="zmdi zmdi-assignment-o"> </i> Página de Tarefas</h2>
                 <hr />
                 <br />
-
-                @if (TempData["Salvar"] != null)
-                {
-
-                    <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
-                        <span class="badge badge-pill badge-success">Sucesso!</span>
-                        @TempData["Salvar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
-                @if (TempData["Editar"] != null)
-                {
-                    <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
-                        <span class="badge badge-pill badge-warning">Sucesso!</span>
-                        @TempData["Editar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
-                @if (TempData["Deletar"] != null)
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Sucesso!</span>
-                        @TempData["Deletar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
                 <div class="row">
                     <div class="col-md-6 col-lg-3">
                         <div class="statistic__item shadow p-3 mb-5">
@@ -80,7 +44,7 @@
                 <h5>Informações das tarefas</h5>
                 <br />
 
-                <div class="row ">
+                <div class="form-group">
                     <div class="card card-body shadow p-3 col-sm-10">
                         <form asp-action="Index" method="get">
                             <div class="col-md-6 col-lg-10">
@@ -103,10 +67,10 @@
                                 <div class="input-group">
                                     <select class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]">
                                         <option value=" ">Selecione as opções</option>
-                                          @foreach (var listaUsuarios in Model)
-                                          {
-                                        <option value="@listaUsuarios.Usuarios.NomeUsuario">@listaUsuarios.Usuarios.NomeUsuario</option>
-                                          }
+                                        @foreach (var listaUsuarios in Model)
+                                        {
+                                            <option value="@listaUsuarios.Usuarios.NomeUsuario">@listaUsuarios.Usuarios.NomeUsuario</option>
+                                        }
                                     </select> &nbsp;
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
@@ -122,83 +86,86 @@
                         </form>
                     </div>
                 </div>
+                <!-- DATA TABLE-->
+                <div class="table-responsive m-b-40">
+                    <div class="table-responsive table-responsive-data2">
 
-                <div class="table-responsive table-responsive-data2">
+                        <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
+                            <thead>
 
-                    <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
-                        <thead>
+                                <tr>
+                                    <th>
+                                        Nome da tarefa
+                                    </th>
+                                    <th>
+                                        Descrição
+                                    </th>
+                                    <th>
+                                        Iniciado em
+                                    </th>
+                                    <th>
+                                        Finalizado em
+                                    </th>
+                                    <th>
+                                        Data da entrega
+                                    </th>
+                                    <th>
+                                        Situação
+                                    </th>
+                                    <th>
+                                        Projetos
+                                    </th>
+                                    <th>
+                                        Usuarios responsável
+                                    </th>
+                                    <th>
+                                        <span class="fa  fa-ellipsis-v"></span>
+                                        Ações
+                                    </th>
+                                </tr>
+                            </thead>
 
-                            <tr>
-                                <th>
-                                    Nome da tarefa
-                                </th>
-                                <th>
-                                    Descrição
-                                </th>
-                                <th>
-                                    Iniciado em
-                                </th>
-                                <th>
-                                    Finalizado em
-                                </th>
-                                <th>
-                                    Data da entrega
-                                </th>
-                                <th>
-                                    Situação
-                                </th>
-                                <th>
-                                    Projetos
-                                </th>
-                                <th>
-                                    Usuarios responsável
-                                </th>
-                                <th>
-                                    <span class="fa  fa-ellipsis-v"></span>
-                                    Ações
-                                </th>
-                            </tr>
-                        </thead>
-
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NomeTarefa)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DescricaoTarefa)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataInicioTarefa)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataFinalizadoTarefa)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataEntregaTarefa)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Situacao)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Projetos.NomeProjeto)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Usuarios.NomeUsuario)
-                                </td>
-                                <td>
-                                    <span class="fa  fa-edit"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                                    <span class="fa   fa-tasks"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                                    <span class="fa fa-trash"></span>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
-                                </td>
-                            </tr>
-                        }
-                    </table>
-
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NomeTarefa)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DescricaoTarefa)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DataInicioTarefa)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DataFinalizadoTarefa)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DataEntregaTarefa)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Situacao)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Projetos.NomeProjeto)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Usuarios.NomeUsuario)
+                                    </td>
+                                    <td>
+                                        <span class="fa  fa-edit"></span>
+                                        <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                                        <span class="fa   fa-tasks"></span>
+                                        <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                                        <span class="fa fa-trash"></span>
+                                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     @{
                         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -217,9 +184,7 @@
                        class="btn btn-default @nextDisabled">
                         Próximo
                     </a>
-
                 </div>
-                <br />
             </div>
 
             <div class="col-md-12">
@@ -227,7 +192,5 @@
                     <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
                 </div>
             </div>
-
         </div>
     </div>
-</div>

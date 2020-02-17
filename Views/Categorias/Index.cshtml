@@ -6,130 +6,93 @@
 }
 <!-- MAIN CONTENT-->
 <div class="main-content">
+    <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
     <div class="section__content section__content--p30">
-        <div class="container-fluid">
+        <div class="container-fluid card card-body shadow p-3 mb-5">
+            <h2><i class="zmdi zmdi-widgets"> </i> Página de Categorias</h2>
+            <hr />
+            <br />
+            <div class="row">
+                <div class="col-md-6 col-lg-3">
+                    <div class="statistic__item shadow p-3 mb-5">
+                        <h2 class="number">0</h2>
+                        <span class="desc">Pessoas online</span>
+                        <div class="icon">
+                            <i class="zmdi zmdi-account-o"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="statistic__item shadow p-3 mb-5">
+                        <h2 class="number">0</h2>
+                        <span class="desc">Categorias registradas</span>
+                        <div class="icon">
+                            <i class="zmdi zmdi-calendar-note"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>
+                <a class="btn btn-outline-primary" asp-action="Create">Adicionar Categoria</a>
+            </p>
+
+            <hr />
+
+            <br />
+            <h5>Informações das categorias</h5>
+            <br />
+
+            <div class="form-group">
+                <div class="card card-body shadow p-3 col-sm-10">
+                    <form asp-action="Index" method="get">
+                        <div class="col-md-6 col-lg-10">
+                            <p>
+                                <text>Pesquisar por categorias :</text>
+                            </p>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]" /> &nbsp;
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form asp-action="Index" method="get">
+                        <div class="col-md-6 col-lg-8">
+                            <p>
+                                <text>Filtrar por categorias :</text>
+                            </p>
+                            <div class="input-group">
+                                <select class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]">
+                                    <option value=" ">Selecione as opções</option>
+                                    @foreach (var item in Model)
+                                    {
+                                        <option value="@item.NomeCategoria">@item.NomeCategoria</option>
+                                    }
+                                </select> &nbsp;
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-md-6 col-lg-4">
+                            <p>
+                                <a class="btn btn-light" asp-action="Index">Carregar lista completa</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <!-- DATA TABLE-->
-            <div class="row table-responsive m-b-40">
-                <h2><i class="zmdi zmdi-widgets"> </i> Página de Categorias</h2>
-                <hr />
-                <br />
-
-                @if (TempData["Salvar"] != null)
-                {
-
-                    <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
-                        <span class="badge badge-pill badge-success">Sucesso!</span>
-                        @TempData["Salvar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
-                @if (TempData["Editar"] != null)
-                {
-                    <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
-                        <span class="badge badge-pill badge-warning">Sucesso!</span>
-                        @TempData["Editar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
-                @if (TempData["Deletar"] != null)
-                {
-                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                        <span class="badge badge-pill badge-danger">Sucesso!</span>
-                        @TempData["Deletar"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                }
-
-                <div class="row">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="statistic__item shadow p-3 mb-5">
-                            <h2 class="number">0</h2>
-                            <span class="desc">Pessoas online</span>
-                            <div class="icon">
-                                <i class="zmdi zmdi-account-o"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-3">
-                        <div class="statistic__item shadow p-3 mb-5">
-                            <h2 class="number">0</h2>
-                            <span class="desc">Categorias registradas</span>
-                            <div class="icon">
-                                <i class="zmdi zmdi-calendar-note"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p>
-                    <a class="btn btn-outline-primary" asp-action="Create">Adicionar Categoria</a>
-                </p>
-
-                <hr />
-
-                <br />
-                <h5>Informações das categorias</h5>
-                <br />
-
-                <div class="row ">
-                    <div class="card card-body shadow p-3 col-sm-10">
-                        <form asp-action="Index" method="get">
-                            <div class="col-md-6 col-lg-10">
-                                <p>
-                                    <text>Pesquisar por categorias :</text>
-                                </p>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]" /> &nbsp;
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <form asp-action="Index" method="get">
-                            <div class="col-md-6 col-lg-8">
-                                <p>
-                                    <text>Filtrar por categorias :</text>
-                                </p>
-                                <div class="input-group">
-                                    <select class="form-control" name="SearchString" value="@ViewData["CurrentFilter"]">
-                                        <option value=" ">Selecione as opções</option>
-                                        @foreach (var item in Model)
-                                        {
-                                            <option value="@item.NomeCategoria">@item.NomeCategoria</option>
-                                        }
-                                    </select> &nbsp;
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="submit" value="Buscar">Buscar</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="col-md-6 col-lg-4">
-                                <p>
-                                    <a class="btn btn-light" asp-action="Index">Carregar lista completa</a>
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
+            <div class="table-responsive m-b-40">
                 <div class="table-responsive table-responsive-data2">
-
                     <table class="table table-borderless table-striped table-earning shadow p-3 mb-5">
                         <thead>
-
                             <tr>
                                 <th>
-                                   Nome da categoria
+                                    Nome da categoria
                                 </th>
                                 <th>
                                     <span class="fa  fa-ellipsis-v"></span>
@@ -154,36 +117,34 @@
                             </tr>
                         }
                     </table>
-
-                    @{
-                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-                    }
-                    <a asp-action="Index"
-                       asp-route-sortOrder="@ViewData["CurrentSort"]"
-                       asp-route-pageNumber="@(Model.PageIndex - 1)"
-                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                       class="btn btn-default @prevDisabled">
-                        Retornar
-                    </a>
-                    <a asp-action="Index"
-                       asp-route-sortOrder="@ViewData["CurrentSort"]"
-                       asp-route-pageNumber="@(Model.PageIndex + 1)"
-                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                       class="btn btn-default @nextDisabled">
-                        Próximo
-                    </a>
-
-                </div>
-                <br />
-            </div>
-
-            <div class="col-md-12">
-                <div class="copyright">
-                    <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
                 </div>
             </div>
+            <div class="col-md-6">
+                @{
+                    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                }
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @prevDisabled">
+                    Retornar
+                </a>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @nextDisabled">
+                    Próximo
+                </a>
+            </div>
+        </div>
 
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas - todos os direitos reservados.</p>
+            </div>
         </div>
     </div>
 </div>
