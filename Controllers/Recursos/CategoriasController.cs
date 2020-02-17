@@ -95,9 +95,19 @@ namespace Monitorar_Tarefas.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoria);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(categoria);
+                    await _context.SaveChangesAsync();
+                    TempData["Salvar"] = "Sua categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t foi cadastrado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    TempData["ErroInesperado"] = "Não foi possivel cadastrar a categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t , tente novamente!";
+                    return RedirectToAction(nameof(Index));
+                }
+
             }
             return View(categoria);
         }
@@ -135,12 +145,14 @@ namespace Monitorar_Tarefas.Controllers
                 try
                 {
                     _context.Update(categoria);
+                    TempData["Editar"] = "Sua categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t foi atualizado com sucesso!";
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!CategoriaExists(categoria.Id))
                     {
+                        TempData["ErroInesperado"] = "Não foi possivel editar a categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t , tente novamente!";
                         return NotFound();
                     }
                     else
@@ -176,10 +188,20 @@ namespace Monitorar_Tarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
-            _context.Categorias.Remove(categoria);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var categoria = await _context.Categorias.FindAsync(id);
+                TempData["Deletar"] = "A categoria '" + categoria.NomeCategoria.ToUpper() + "'\t foi deletado!";
+                _context.Categorias.Remove(categoria);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar a categoria, tente novamente!";
+                return View("Delete");
+            }
+
         }
 
         private bool CategoriaExists(int id)

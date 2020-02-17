@@ -177,7 +177,6 @@ namespace Monitorar_Tarefas.Controllers
                         ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
                         return View("Edit");
                     }
-                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -219,19 +218,19 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Projetos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, Projetos projeto)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {
                 var projetos = await _context.Projetos.FindAsync(id);
                 _context.Projetos.Remove(projetos);
-                TempData["Delete"] = "O projeto '" + projeto.NomeProjeto + "'\t foi deletado!";
+                TempData["Deletar"] = "O projeto '" + projetos.NomeProjeto.ToUpper() + "'\t foi deletado!";
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
             {
-                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o projeto '" + projeto.NomeProjeto + "'\t , tente novamente!";
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o projeto, tente novamente!";
                 return View("Delete");
             }
         }

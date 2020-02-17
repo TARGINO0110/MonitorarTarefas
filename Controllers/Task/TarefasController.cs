@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Monitorar_Tarefas.Controllers
 {
-   
+
     public class TarefasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -114,9 +114,26 @@ namespace Monitorar_Tarefas.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tarefas);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if ((tarefas.DataInicioTarefa >= DateTime.Today) && (tarefas.DataEntregaTarefa >= DateTime.Today) && (tarefas.DataFinalizadoTarefa >= DateTime.Today))
+                    {
+                        _context.Add(tarefas);
+                        await _context.SaveChangesAsync();
+                        TempData["Salvar"] = "Sua tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t foi cadastrada com sucesso!";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                        return View("Create");
+                    }
+                }
+                catch
+                {
+                    TempData["ErroInesperado"] = "Não foi possivel cadastrar a tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t , tente novamente!";
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
@@ -155,13 +172,25 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(tarefas);
-                    await _context.SaveChangesAsync();
+                    if ((tarefas.DataInicioTarefa >= DateTime.Today) && (tarefas.DataEntregaTarefa >= DateTime.Today) && (tarefas.DataFinalizadoTarefa >= DateTime.Today))
+                    {
+                        _context.Update(tarefas);
+                        TempData["Editar"] = "Sua tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t foi atualizado com sucesso!";
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                        ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+                        ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
+                        return View("Edit");
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TarefasExists(tarefas.Id))
                     {
+                        TempData["ErroInesperado"] = "Não foi possivel editar a tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t , tente novamente!";
                         return NotFound();
                     }
                     else
@@ -201,10 +230,19 @@ namespace Monitorar_Tarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tarefas = await _context.Tarefas.FindAsync(id);
-            _context.Tarefas.Remove(tarefas);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var tarefas = await _context.Tarefas.FindAsync(id);
+                _context.Tarefas.Remove(tarefas);
+                TempData["Deletar"] = "A tarefa '" + tarefas.NomeTarefa.ToUpper() + "'\t foi deletado!";
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o projeto, tente novamente!";
+                return View("Delete");
+            }
         }
 
         private bool TarefasExists(int id)

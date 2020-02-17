@@ -218,19 +218,19 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Tokens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, Token token)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {
-                var reg = await _context.Tokens.FindAsync(id);
-                _context.Tokens.Remove(reg);
-                TempData["Delete"] = "O token '" + token.Hash + "'\t foi deletado!";
+                var token = await _context.Tokens.FindAsync(id);
+                _context.Tokens.Remove(token);
+                TempData["Delete"] = "O token '" + token.Hash.ToUpper() + "'\t foi deletado!";
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
             {
-                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o token '" + token.Hash + "'\t , tente novamente!";
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o token, tente novamente!";
                 return View("Delete");
             }
         }
