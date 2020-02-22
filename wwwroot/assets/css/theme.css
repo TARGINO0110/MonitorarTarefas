@@ -1801,11 +1801,11 @@ section {
         }
 
         .navbar-sidebar .navbar__list li a:hover {
-            color: rgb(4, 67, 109);
+            color: #1b1b1b;
         }
 
     .navbar-sidebar .navbar__list li.active > a {
-        color: rgb(4, 67, 109);
+        color: #1b1b1b;
     }
 
 .has-sub {

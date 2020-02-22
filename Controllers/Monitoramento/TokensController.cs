@@ -55,23 +55,14 @@ namespace Monitorar_Tarefas.Controllers
                                        || t.Usuarios.SobrenomeUsuario.Contains(searchString));
             }
 
-            switch (sortOrder)
+            tokens = sortOrder switch
             {
-                case "name_desc":
-                    tokens = tokens.OrderBy(t => t.Hash);
-                    break;
-                case "Date":
-                    tokens = tokens.OrderBy(t => t.DataValidadeToken);
-                    break;
-                case "date_desc":
-                    tokens = tokens.OrderByDescending(t => t.DataValidadeToken);
-                    break;
-                default:
-                    tokens = tokens.OrderBy(t => t.DataValidadeToken);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => tokens.OrderBy(t => t.Hash),
+                "Date" => tokens.OrderBy(t => t.DataValidadeToken),
+                "date_desc" => tokens.OrderByDescending(t => t.DataValidadeToken),
+                _ => tokens.OrderBy(t => t.DataValidadeToken),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<Token>.CreateAsync(
                 tokens.AsNoTracking().Include(t => t.Usuarios), pageNumber ?? 1, pageSize));
         }

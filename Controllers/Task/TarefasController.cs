@@ -57,23 +57,14 @@ namespace Monitorar_Tarefas.Controllers
             }
 
 
-            switch (sortOrder)
+            tarefas = sortOrder switch
             {
-                case "name_desc":
-                    tarefas = tarefas.OrderBy(t => t.NomeTarefa);
-                    break;
-                case "Date":
-                    tarefas = tarefas.OrderBy(t => t.DataInicioTarefa);
-                    break;
-                case "date_desc":
-                    tarefas = tarefas.OrderByDescending(t => t.DataFinalizadoTarefa);
-                    break;
-                default:
-                    tarefas = tarefas.OrderByDescending(t => t.DataInicioTarefa);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => tarefas.OrderBy(t => t.NomeTarefa),
+                "Date" => tarefas.OrderBy(t => t.DataInicioTarefa),
+                "date_desc" => tarefas.OrderByDescending(t => t.DataFinalizadoTarefa),
+                _ => tarefas.OrderByDescending(t => t.DataInicioTarefa),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<Tarefas>.CreateAsync(
                 tarefas.AsNoTracking().Include(u => u.Projetos).Include(u => u.Usuarios), pageNumber ?? 1, pageSize));
         }

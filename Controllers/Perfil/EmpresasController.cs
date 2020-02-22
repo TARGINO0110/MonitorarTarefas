@@ -55,23 +55,14 @@ namespace Monitorar_Tarefas.Controllers
                                        || e.PorteEmpresa.Contains(searchString));
             }
 
-            switch (sortOrder)
+            empresas = sortOrder switch
             {
-                case "name_desc":
-                    empresas = empresas.OrderBy(a => a.NomeEmpresa);
-                    break;
-                case "Date":
-                    empresas = empresas.OrderBy(a => a.DataFundacao);
-                    break;
-                case "date_desc":
-                    empresas = empresas.OrderByDescending(a => a.DataFundacao);
-                    break;
-                default:
-                    empresas = empresas.OrderByDescending(a => a.CNPJ);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => empresas.OrderBy(a => a.NomeEmpresa),
+                "Date" => empresas.OrderBy(a => a.DataFundacao),
+                "date_desc" => empresas.OrderByDescending(a => a.DataFundacao),
+                _ => empresas.OrderByDescending(a => a.CNPJ),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<Empresa>.CreateAsync(
                 empresas.AsNoTracking(), pageNumber ?? 1, pageSize));
         }

@@ -52,23 +52,14 @@ namespace Monitorar_Tarefas.Controllers
                                        || a.DescricaoAviso.Contains(searchString));
             }
 
-            switch (sortOrder)
+            avisos = sortOrder switch
             {
-                case "name_desc":
-                    avisos = avisos.OrderBy(a => a.TituloAviso);
-                    break;
-                case "Date":
-                    avisos = avisos.OrderBy(a => a.DataPostagemAviso);
-                    break;
-                case "date_desc":
-                    avisos = avisos.OrderByDescending(a => a.DataExpiracaoAviso);
-                    break;
-                default:
-                    avisos = avisos.OrderByDescending(a => a.DataPostagemAviso);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => avisos.OrderBy(a => a.TituloAviso),
+                "Date" => avisos.OrderBy(a => a.DataPostagemAviso),
+                "date_desc" => avisos.OrderByDescending(a => a.DataExpiracaoAviso),
+                _ => avisos.OrderByDescending(a => a.DataPostagemAviso),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<Avisos>.CreateAsync(
                 avisos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }

@@ -49,17 +49,12 @@ namespace Monitorar_Tarefas.Controllers
                 categoria = categoria.Where(c => c.NomeCategoria.Contains(searchString));
             }
 
-            switch (sortOrder)
+            categoria = sortOrder switch
             {
-                case "name_desc":
-                    categoria = categoria.OrderBy(c => c.NomeCategoria);
-                    break;
-                default:
-                    categoria = categoria.OrderBy(c => c.NomeCategoria);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => categoria.OrderBy(c => c.NomeCategoria),
+                _ => categoria.OrderBy(c => c.NomeCategoria),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<Categoria>.CreateAsync(
                 categoria.AsNoTracking(), pageNumber ?? 1, pageSize));
         }

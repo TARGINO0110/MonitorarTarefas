@@ -52,23 +52,14 @@ namespace Monitorar_Tarefas.Controllers
                                        
             }
 
-            switch (sortOrder)
+            historico = sortOrder switch
             {
-                case "name_desc":
-                    historico = historico.OrderBy(h => h.OnservacaoAcao);
-                    break;
-                case "Date":
-                    historico = historico.OrderBy(h => h.DataHoraAcao);
-                    break;
-                case "date_desc":
-                    historico = historico.OrderByDescending(h => h.DataHoraAcao);
-                    break;
-                default:
-                    historico = historico.OrderByDescending(h => h.OnservacaoAcao);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => historico.OrderBy(h => h.OnservacaoAcao),
+                "Date" => historico.OrderBy(h => h.DataHoraAcao),
+                "date_desc" => historico.OrderByDescending(h => h.DataHoraAcao),
+                _ => historico.OrderByDescending(h => h.OnservacaoAcao),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<HistoricoAcoes>.CreateAsync(
                 historico.AsNoTracking(), pageNumber ?? 1, pageSize));
         }

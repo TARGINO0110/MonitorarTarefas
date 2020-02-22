@@ -56,23 +56,14 @@ namespace Monitorar_Tarefas.Controllers
                                        || u.Empresa.NomeEmpresa.Contains(searchString));
             }
 
-            switch (sortOrder)
+            usuarios = sortOrder switch
             {
-                case "name_desc":
-                    usuarios = usuarios.OrderBy(u => u.NomeUsuario);
-                    break;
-                case "Date":
-                    usuarios = usuarios.OrderBy(u => u.DataNascimento);
-                    break;
-                case "date_desc":
-                    usuarios = usuarios.OrderByDescending(u => u.DataNascimento);
-                    break;
-                default:
-                    usuarios = usuarios.OrderByDescending(u => u.NomeUsuario);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => usuarios.OrderBy(u => u.NomeUsuario),
+                "Date" => usuarios.OrderBy(u => u.DataNascimento),
+                "date_desc" => usuarios.OrderByDescending(u => u.DataNascimento),
+                _ => usuarios.OrderByDescending(u => u.NomeUsuario),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<Usuarios>.CreateAsync(
                 usuarios.AsNoTracking().Include(u => u.Empresa), pageNumber ?? 1, pageSize));
         }

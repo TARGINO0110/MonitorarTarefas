@@ -54,23 +54,14 @@ namespace Monitorar_Tarefas.Controllers
             }
 
 
-            switch (sortOrder)
+            projetos = sortOrder switch
             {
-                case "name_desc":
-                    projetos = projetos.OrderBy(p => p.NomeProjeto);
-                    break;
-                case "Date":
-                    projetos = projetos.OrderBy(p => p.DataInicioProjeto);
-                    break;
-                case "date_desc":
-                    projetos = projetos.OrderByDescending(p => p.DataFinalizadoProjeto);
-                    break;
-                default:
-                    projetos = projetos.OrderByDescending(p => p.DataInicioProjeto);
-                    break;
-            }
-
-            int pageSize = 3;
+                "name_desc" => projetos.OrderBy(p => p.NomeProjeto),
+                "Date" => projetos.OrderBy(p => p.DataInicioProjeto),
+                "date_desc" => projetos.OrderByDescending(p => p.DataFinalizadoProjeto),
+                _ => projetos.OrderByDescending(p => p.DataInicioProjeto),
+            };
+            int pageSize = 4;
             return View(await PaginatedList<Projetos>.CreateAsync(
                 projetos.AsNoTracking().Include(p => p.Categoria), pageNumber ?? 1, pageSize));
         }
