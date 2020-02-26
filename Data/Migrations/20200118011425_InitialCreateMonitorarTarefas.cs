@@ -44,7 +44,7 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NomeEmpresa = table.Column<string>(nullable: false),
                     EnderecoEmpresa = table.Column<string>(maxLength: 100, nullable: false),
-                    TelefoneEmpresa = table.Column<string>(maxLength: 10, nullable: false),
+                    TelefoneEmpresa = table.Column<string>(maxLength: 11, nullable: false),
                     EmailEmpresa = table.Column<string>(nullable: false),
                     CNPJ = table.Column<string>(maxLength: 14, nullable: false),
                     DataFundacao = table.Column<DateTime>(nullable: false),

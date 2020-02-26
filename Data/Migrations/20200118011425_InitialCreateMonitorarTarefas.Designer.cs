@@ -298,8 +298,8 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("TelefoneEmpresa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
+                        .HasColumnType("nvarchar(11)")
+                        .HasMaxLength(11);
 
                     b.HasKey("Id");
 

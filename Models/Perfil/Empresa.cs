@@ -24,12 +24,12 @@ namespace Monitorar_Tarefas.Models
         public string EnderecoEmpresa { get; set; }
 
         [Required(ErrorMessage = "Preencha o número do telefone da empresa!")]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "O número do telefone preenchido está incorreto!")]
-        [Display(Name = "Nº Telefone")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "O número do telefone preenchido está incorreto!")]
+        [Display(Name = "Nº Telefone/Celular")]
         public string TelefoneEmpresa { get; set; }
 
         [Required(ErrorMessage = "É necessário informar o E-mail da empresa!")]
-        [StringLength(20, ErrorMessage = "O E-mail informado está incorreto!")]
+        [StringLength(50, MinimumLength = 10, ErrorMessage = "O E-mail informado está incorreto!")]
         [Display(Name = "Email da empresa")]
         public string EmailEmpresa { get; set; }
 
