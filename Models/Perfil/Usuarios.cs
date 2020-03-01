@@ -26,12 +26,12 @@ namespace Monitorar_Tarefas.Models
         public bool TokenAcesso { get; set; }
 
         [Required(ErrorMessage = "Informe os 11 digitos do seu CPF!")]
-        [StringLength(11, ErrorMessage = "Verifique se o número do seu CPF está correto")]
+        [StringLength(14, ErrorMessage = "Verifique se o número do seu CPF está correto")]
         [Display(Name = "CPF")]
         public string CPF { get; set; }
 
         [Required(ErrorMessage = "É necessário informar o número do seu Telefone ou Celular!")]
-        [StringLength(11, ErrorMessage = "Verifique se o número do seu Telefone ou Celular está correto!")]
+        [StringLength(14, ErrorMessage = "Verifique se o número do seu Telefone ou Celular está correto!")]
         [Display(Name = "Telefone/Celular")]
         public string TelefoneCelular { get; set; }
 

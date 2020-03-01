@@ -10,9 +10,8 @@
     <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
     <div class="section__content section__content--p30">
         <div class="container-fluid">
-            <h2>Cadastrar Aviso </h2>
-            <hr />
             <div class="card card-body shadow p-3 mb-5">
+                <h2>Cadastrar Aviso </h2>
                 <form asp-action="Create" class="was-validated" novalidate>
                     <text>Preencha os campos abaixo para realizar o cadastro</text>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -73,11 +72,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $(document).ready(function () {
-            $("#preco").inputmask("mask", { "mask": "999.999,99" }, { reverse: true });
-            $("#porcento").inputmask("mask", { "mask": "9,999" }, { reverse: true });
-            $("#valor").inputmask("mask", { "mask": "#.##9,99" }, { reverse: true });
-        });
-    </script>
 }

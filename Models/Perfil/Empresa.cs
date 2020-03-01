@@ -24,7 +24,7 @@ namespace Monitorar_Tarefas.Models
         public string EnderecoEmpresa { get; set; }
 
         [Required(ErrorMessage = "Preencha o número do telefone da empresa!")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "O número do telefone preenchido está incorreto!")]
+        [StringLength(14, MinimumLength = 11, ErrorMessage = "O número do telefone preenchido está incorreto!")]
         [Display(Name = "Nº Telefone/Celular")]
         public string TelefoneEmpresa { get; set; }
 
@@ -34,7 +34,7 @@ namespace Monitorar_Tarefas.Models
         public string EmailEmpresa { get; set; }
 
         [Required(ErrorMessage = "Preencha o número do CNPJ da empresa!")]
-        [StringLength(14, MinimumLength = 14, ErrorMessage = "O número do CNPJ preenchido está incorreto!")]
+        [StringLength(18, MinimumLength = 14, ErrorMessage = "O número do CNPJ preenchido está incorreto!")]
         [Display(Name = "Nº CNPJ")]
         public string CNPJ { get; set; }
 

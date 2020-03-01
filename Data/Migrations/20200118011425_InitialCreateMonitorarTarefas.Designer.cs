@@ -273,8 +273,8 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
-                        .HasColumnType("nvarchar(14)")
-                        .HasMaxLength(14);
+                        .HasColumnType("nvarchar(18)")
+                        .HasMaxLength(18);
 
                     b.Property<DateTime>("DataFundacao")
                         .HasColumnType("datetime2");
@@ -298,8 +298,8 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("TelefoneEmpresa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(11)")
-                        .HasMaxLength(11);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.HasKey("Id");
 
@@ -444,8 +444,8 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(11)")
-                        .HasMaxLength(11);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
@@ -472,8 +472,8 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("TelefoneCelular")
                         .IsRequired()
-                        .HasColumnType("nvarchar(11)")
-                        .HasMaxLength(11);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<bool>("TokenAcesso")
                         .HasColumnType("bit");

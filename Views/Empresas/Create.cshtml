@@ -10,9 +10,8 @@
     <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
     <div class="section__content section__content--p30">
         <div class="container-fluid">
-            <h2>Cadastrar Empresa </h2>
-            <hr />
             <div class="card card-body shadow p-3 mb-5">
+                <h2>Cadastrar Empresa </h2>
                 <form asp-action="Create" class="was-validated" novalidate>
                     <text>Preencha os campos abaixo para realizar o cadastro</text>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -37,7 +36,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="validationfeedback03" asp-for="TelefoneEmpresa" class="control-label"></label>
-                            <input asp-for="TelefoneEmpresa" type="number" class="form-control" id="validationfeedback03" required />
+                            <input asp-for="TelefoneEmpresa" type="text" class="form-control telefone" id="validationfeedback03" required />
                             <small class="input-group form-text text-muted">Informe o telefone da empresa.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -55,7 +54,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="validationfeedback05" asp-for="CNPJ" class="control-label"></label>
-                            <input asp-for="CNPJ" type="number" class="form-control" id="validationfeedback05" required />
+                            <input asp-for="CNPJ" type="text" class="form-control cnpj" id="validationfeedback05" required />
                             <small class="input-group form-text text-muted">Informe o CNPJ desta empresa.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -105,11 +104,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $(document).ready(function () {
-            $("#preco").inputmask("mask", { "mask": "999.999,99" }, { reverse: true });
-            $("#porcento").inputmask("mask", { "mask": "9,999" }, { reverse: true });
-            $("#valor").inputmask("mask", { "mask": "#.##9,99" }, { reverse: true });
-        });
-    </script>
 }
