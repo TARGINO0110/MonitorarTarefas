@@ -101,8 +101,13 @@ namespace Monitorar_Tarefas.Controllers
                 try
                 {
                    var verificaCNPJ = await _context.Empresas.AnyAsync(e=> e.CNPJ == empresa.CNPJ);
-                   
-                    if (verificaCNPJ == false)
+                    if (empresa.DataFundacao > DateTime.Today)
+                    {
+                        TempData["ErroSalvar"] = "A data da fundação da sua empresa deverá ser atual ou anterior: '" + empresa.DataFundacao + "'\t , tente novamente!";
+                        return View("Edit");
+                    }
+
+                    else if (verificaCNPJ == false)
                     {
                         _context.Add(empresa);
                         await _context.SaveChangesAsync();
@@ -156,8 +161,12 @@ namespace Monitorar_Tarefas.Controllers
                 try
                 {
                     var verificaCNPJ = await _context.Empresas.AnyAsync(e => e.CNPJ == empresa.CNPJ && e.Id != empresa.Id);
-
-                    if (verificaCNPJ == false)
+                    if (empresa.DataFundacao > DateTime.Today)
+                    {
+                        TempData["ErroSalvar"] = "A data da fundação da sua empresa deverá ser atual ou anterior: '" + empresa.DataFundacao + "'\t , tente novamente!";
+                        return View("Edit");
+                    }
+                    else if (verificaCNPJ == false)
                     {
                         _context.Update(empresa);
                         TempData["Editar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi atualizada com sucesso!";

@@ -112,6 +112,7 @@ namespace Monitorar_Tarefas.Controllers
                     else
                     {
                         TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                        ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
                         return View("Create");
                     }
                 }

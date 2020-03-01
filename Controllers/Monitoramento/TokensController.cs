@@ -102,16 +102,26 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if (token.DataValidadeToken >= DateTime.Today)
+                    var verificaHASH = await _context.Tokens.AnyAsync(t => t.Hash == token.Hash || t.Usuarios == token.Usuarios);
+                    if (token.DataValidadeToken < DateTime.Today)
+                    {
+                        TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
+                        ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
+                        return View("Create");
+                    }
+
+                    else if (verificaHASH == false)
                     {
                         _context.Add(token);
                         await _context.SaveChangesAsync();
                         TempData["Salvar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi cadastrado com sucesso!";
                         return RedirectToAction(nameof(Index));
                     }
+
                     else
                     {
-                        TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
+                        TempData["ErroSalvar"] = "O seguinte Hash: '" + token.Hash + "'\t , ja está atribuido a um usuário cadastrado, tente novamente!";
+                        ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
                         return View("Create");
                     }
                 }
@@ -157,15 +167,25 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if (token.DataValidadeToken >= DateTime.Today)
+                    var verificaHASH = await _context.Tokens.AnyAsync(t => t.Hash == token.Hash || t.Usuarios == token.Usuarios && t.Id != token.Id);
+                    if (token.DataValidadeToken < DateTime.Today)
+                    {
+                        TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
+                        ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
+                        return View("Edit");
+                    }
+
+                    else if (verificaHASH == false)
                     {
                         _context.Update(token);
                         TempData["Editar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi atualizado com sucesso!";
                         await _context.SaveChangesAsync();
                     }
+
                     else
                     {
-                        TempData["ErroSalvar"] = "A data de validade do token deverá ser atual ou posterior: '" + token.DataValidadeToken + "'\t , tente novamente!";
+                        TempData["ErroSalvar"] = "O seguinte Hash: '" + token.Hash + "'\t , ja está atribuido a um usuário cadastrado, tente novamente!";
+                        ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", token.UsuarioId);
                         return View("Edit");
                     }
                 }
