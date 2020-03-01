@@ -1,34 +1,49 @@
 ﻿@model Monitorar_Tarefas.Models.Categoria
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Categoria</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="NomeCategoria" class="control-label"></label>
-                <input asp-for="NomeCategoria" class="form-control" />
-                <span asp-validation-for="NomeCategoria" class="text-danger"></span>
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="card card-body shadow p-3 mb-5">
+                <h2>Editar Categoria </h2>
+                <form asp-action="Edit" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para modificação dos dados</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="NomeCategoria" class="control-label"></label>
+                            <input asp-for="NomeCategoria" class="form-control" id="validationfeedback01" required />
+                            <small class="input-group form-text text-muted">Informe a categoria na qual se enquadra no seu projeto.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

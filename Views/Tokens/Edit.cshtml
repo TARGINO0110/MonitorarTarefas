@@ -1,44 +1,67 @@
 ﻿@model Monitorar_Tarefas.Models.Token
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Token</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Hash" class="control-label"></label>
-                <input asp-for="Hash" class="form-control" />
-                <span asp-validation-for="Hash" class="text-danger"></span>
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="card card-body shadow p-3 mb-5">
+                <h2>Editar Token </h2>
+                <form asp-action="Edit" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para modificação dos dados</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="Hash" class="control-label"></label>
+                            <input asp-for="Hash" type="text" class="form-control" id="validationfeedback01" required>
+                            <small class="input-group form-text text-muted">Informe o caracteres do Hash.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="Hash" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="validationfeedback02" asp-for="DataValidadeToken" class="control-label"></label>
+                            <input asp-for="DataValidadeToken" type="date" class="form-control" id="validationfeedback02" required />
+                            <small class="input-group form-text text-muted">Informe a data de validade.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="DataValidadeToken" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback03" asp-for="UsuarioId" class="control-label"></label>
+                            <select asp-for="UsuarioId" class="form-control" id="validationfeedback03" asp-items="ViewBag.UsuarioId" required></select>
+                            <small class="input-group form-text text-muted">Selecione o usuário a ser vinculado no token.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="UsuarioId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="DataValidadeToken" class="control-label"></label>
-                <input asp-for="DataValidadeToken" class="form-control" />
-                <span asp-validation-for="DataValidadeToken" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
-                <span asp-validation-for="UsuarioId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

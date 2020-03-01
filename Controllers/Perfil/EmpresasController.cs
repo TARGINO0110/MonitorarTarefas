@@ -98,9 +98,29 @@ namespace Monitorar_Tarefas.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(empresa);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                   var verificaCNPJ = await _context.Empresas.AnyAsync(e=> e.CNPJ == empresa.CNPJ);
+                   
+                    if (verificaCNPJ == false)
+                    {
+                        _context.Add(empresa);
+                        await _context.SaveChangesAsync();
+                        TempData["Salvar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi cadastrada com sucesso!";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "O CNPJ " + empresa.CNPJ.ToUpper() + " ja está cadastrado, tente novamente!";
+                        return View("Create");
+                    }
+                }
+                catch
+                {
+                    TempData["ErroInesperado"] = "Não foi possivel cadastrar a empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t , tente novamente!";
+                    return RedirectToAction(nameof(Index));
+                }
+                
             }
             return View(empresa);
         }
@@ -135,13 +155,25 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(empresa);
-                    await _context.SaveChangesAsync();
+                    var verificaCNPJ = await _context.Empresas.AnyAsync(e => e.CNPJ == empresa.CNPJ && e.Id != empresa.Id);
+
+                    if (verificaCNPJ == false)
+                    {
+                        _context.Update(empresa);
+                        TempData["Editar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi atualizada com sucesso!";
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "O CNPJ " + empresa.CNPJ.ToUpper() + " ja está cadastrado, tente novamente!";
+                        return View("Edit");
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!EmpresaExists(empresa.Id))
                     {
+                        TempData["ErroInesperado"] = "Não foi possivel editar a empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t , tente novamente!";
                         return NotFound();
                     }
                     else
@@ -177,10 +209,20 @@ namespace Monitorar_Tarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var empresa = await _context.Empresas.FindAsync(id);
-            _context.Empresas.Remove(empresa);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var empresa = await _context.Empresas.FindAsync(id);
+                _context.Empresas.Remove(empresa);
+                TempData["Deletar"] = "A empresa '" + empresa.CNPJ.ToUpper() + "'\t foi deletado!";
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception)
+            {
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar a empresa, tente novamente!";
+                return View("Delete");
+            }
+            
         }
 
         private bool EmpresaExists(int id)
