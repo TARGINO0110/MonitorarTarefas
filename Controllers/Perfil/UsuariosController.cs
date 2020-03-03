@@ -101,9 +101,35 @@ namespace Monitorar_Tarefas.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuarios);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    var verificaCPF = await _context.Usuarios.AnyAsync(u => u.CPF == usuarios.CPF);
+                    if (usuarios.DataNascimento > DateTime.Today)
+                    {
+                        TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, não é possivel ser em: '" + usuarios.DataNascimento + "'\t , tente novamente!";
+                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        return View("Create");
+                    }
+                    else if (verificaCPF == false)
+                    {
+                        _context.Add(usuarios);
+                        TempData["Create"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi cadastrado com sucesso!";
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
+                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        return View("Create");
+                    }
+                }
+                catch
+                {
+                    TempData["ErroInesperado"] = "Não foi possivel cadastrar o usuario: '" + usuarios.NomeUsuario.ToUpper() + "'\t , tente novamente!";
+                    return RedirectToAction(nameof(Index));
+                }
+
             }
             ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
             return View(usuarios);
@@ -140,13 +166,32 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(usuarios);
-                    await _context.SaveChangesAsync();
+                    var verificaCPF = await _context.Usuarios.AnyAsync(u => u.CPF == usuarios.CPF && u.Id != usuarios.Id);
+                    if (usuarios.DataNascimento > DateTime.Today)
+                    {
+                        TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, não é possivel ser em: '" + usuarios.DataNascimento + "'\t , tente novamente!";
+                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        return View("Edit");
+                    }
+                    else if (verificaCPF == false)
+                    {
+                        _context.Add(usuarios);
+                        TempData["Editar"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi atualizado com sucesso!";
+                        await _context.SaveChangesAsync();
+                        
+                    }
+                    else
+                    {
+                        TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
+                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        return View("Edit");
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!UsuariosExists(usuarios.Id))
                     {
+                        TempData["ErroInesperado"] = "Não foi possivel editar o usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t , tente novamente!";
                         return NotFound();
                     }
                     else
@@ -184,10 +229,19 @@ namespace Monitorar_Tarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuarios = await _context.Usuarios.FindAsync(id);
-            _context.Usuarios.Remove(usuarios);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var usuarios = await _context.Usuarios.FindAsync(id);
+                _context.Usuarios.Remove(usuarios);
+                TempData["Delete"] = "O Usuário '" + usuarios.NomeUsuario.ToUpper() + "'\t foi deletado!";
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o token, tente novamente!";
+                return View("Delete");
+            }
         }
 
         private bool UsuariosExists(int id)
