@@ -51,8 +51,8 @@ namespace Monitorar_Tarefas.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 tokens = tokens.Where(t => t.Hash.Contains(searchString)
-                                       || t.Usuarios.NomeUsuario.Contains(searchString)
-                                       || t.Usuarios.SobrenomeUsuario.Contains(searchString));
+                                        || t.Usuarios.NomeUsuario.Contains(searchString)
+                                        || t.Usuarios.SobrenomeUsuario.Contains(searchString));
             }
 
             tokens = sortOrder switch
@@ -178,8 +178,8 @@ namespace Monitorar_Tarefas.Controllers
                     else if (verificaHASH == false)
                     {
                         _context.Update(token);
-                        TempData["Editar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi atualizado com sucesso!";
                         await _context.SaveChangesAsync();
+                        TempData["Editar"] = "Seu Token: '" + token.Hash.ToUpper() + "'\t foi atualizado com sucesso!";
                     }
 
                     else

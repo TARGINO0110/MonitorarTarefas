@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
 using Monitorar_Tarefas.Models;
@@ -49,7 +50,7 @@ namespace Monitorar_Tarefas.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 avisos = avisos.Where(a => a.TituloAviso.Contains(searchString)
-                                       || a.DescricaoAviso.Contains(searchString));
+                                        || a.DescricaoAviso.Contains(searchString));
             }
 
             avisos = sortOrder switch
@@ -97,17 +98,31 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if((avisos.DataPostagemAviso >= DateTime.Today)&&(avisos.DataExpiracaoAviso >= DateTime.Today))
+                    var verificaTexto = await _context.Avisos.AnyAsync(a => a.TituloAviso == avisos.TituloAviso || a.DescricaoAviso == avisos.DescricaoAviso);
+                    switch (verificaTexto)
                     {
-                        _context.Add(avisos);
-                        await _context.SaveChangesAsync();
-                        TempData["Salvar"] = "Seu aviso: '" + avisos.TituloAviso.ToUpper() + "'\t foi cadastrado com sucesso!";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A data da postagem/Expiração deverá ser atual ou posterior, tente novamente!";
-                        return View("Create");
+                        case true:
+                            TempData["ErroSalvar"] = "Já existe o título " + avisos.TituloAviso + " ou Descrição " + avisos.DescricaoAviso + " cadastrado na base de dados'\t , tente novamente!";
+                            return View("Create");
+
+                        default:
+                            if (avisos.DataPostagemAviso < DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A sua data de postagem deve ser posterior ou atual, não é possivel ser em: '" + avisos.DataPostagemAviso + "'\t , tente novamente!";
+                                return View("Create");
+                            }
+                            else if (avisos.DataExpiracaoAviso < DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A sua data de expiração deve ser posterior ou atual, não é possivel ser em: '" + avisos.DataExpiracaoAviso + "'\t , tente novamente!";
+                                return View("Create");
+                            }
+                            else
+                            {
+                                _context.Add(avisos);
+                                await _context.SaveChangesAsync();
+                                TempData["Salvar"] = "Seu aviso: '" + avisos.TituloAviso.ToUpper() + "'\t foi cadastrado com sucesso!";
+                                return RedirectToAction(nameof(Index));
+                            }
                     }
                 }
                 catch
@@ -115,7 +130,7 @@ namespace Monitorar_Tarefas.Controllers
                     TempData["ErroInesperado"] = "Não foi possivel cadastrar o aviso: '" + avisos.TituloAviso.ToUpper() + "'\t , tente novamente!";
                     return RedirectToAction(nameof(Index));
                 }
-                
+
             }
             return View(avisos);
         }
@@ -150,18 +165,33 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if ((avisos.DataPostagemAviso >= DateTime.Today) && (avisos.DataExpiracaoAviso >= DateTime.Today))
+                    var verificaTexto = await _context.Avisos.AnyAsync(a => a.TituloAviso == avisos.TituloAviso || a.DescricaoAviso == avisos.DescricaoAviso || a.Id != avisos.Id);
+                    switch (verificaTexto)
                     {
-                        _context.Update(avisos);
-                        TempData["Editar"] = "Seu aviso: '" + avisos.TituloAviso.ToUpper() + "'\t foi atualizado com sucesso!";
-                        await _context.SaveChangesAsync();
+                        case true:
+                            TempData["ErroSalvar"] = "Já existe o título " + avisos.TituloAviso + " ou Descrição " + avisos.DescricaoAviso + " cadastrado na base de dados'\t , tente novamente!";
+                            return View("Edit");
+
+                        default:
+                            if (avisos.DataPostagemAviso < DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A sua data de postagem deve ser posterior ou atual, não é possivel ser em: '" + avisos.DataPostagemAviso + "'\t , tente novamente!";
+                                return View("Edit");
+                            }
+                            else if (avisos.DataExpiracaoAviso < DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A sua data de expiração deve ser posterior ou atual, não é possivel ser em: '" + avisos.DataExpiracaoAviso + "'\t , tente novamente!";
+                                return View("Edit");
+                            }
+                            else
+                            {
+                                _context.Add(avisos);
+                                await _context.SaveChangesAsync();
+                                TempData["Salvar"] = "Seu aviso: '" + avisos.TituloAviso.ToUpper() + "'\t foi atualizado com sucesso!";
+                                return RedirectToAction(nameof(Index));
+                            }
                     }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A data de postagem/Expiração deverá ser atual ou posterior, tente novamente!";
-                        return View("Edit");
-                    }
-                        
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -175,7 +205,6 @@ namespace Monitorar_Tarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(avisos);
         }
@@ -211,7 +240,7 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o aviso, tente novamente!";
                 return View("Delete");

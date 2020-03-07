@@ -50,9 +50,9 @@ namespace Monitorar_Tarefas.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 empresas = empresas.Where(e => e.NomeEmpresa.Contains(searchString)
-                                       || e.CNPJ.Contains(searchString)
-                                       || e.EmailEmpresa.Contains(searchString)
-                                       || e.PorteEmpresa.Contains(searchString));
+                                            || e.CNPJ.Contains(searchString)
+                                            || e.EmailEmpresa.Contains(searchString)
+                                            || e.PorteEmpresa.Contains(searchString));
             }
 
             empresas = sortOrder switch
@@ -100,11 +100,11 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                   var verificaCNPJ = await _context.Empresas.AnyAsync(e=> e.CNPJ == empresa.CNPJ);
+                    var verificaCNPJ = await _context.Empresas.AnyAsync(e=> e.CNPJ == empresa.CNPJ);
                     if (empresa.DataFundacao > DateTime.Today)
                     {
                         TempData["ErroSalvar"] = "A data da fundação da sua empresa deverá ser atual ou anterior: '" + empresa.DataFundacao + "'\t , tente novamente!";
-                        return View("Edit");
+                        return View("Create");
                     }
 
                     else if (verificaCNPJ == false)
@@ -169,8 +169,8 @@ namespace Monitorar_Tarefas.Controllers
                     else if (verificaCNPJ == false)
                     {
                         _context.Update(empresa);
-                        TempData["Editar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi atualizada com sucesso!";
                         await _context.SaveChangesAsync();
+                        TempData["Editar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi atualizada com sucesso!";
                     }
                     else
                     {

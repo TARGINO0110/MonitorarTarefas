@@ -10,5 +10,6 @@ namespace Monitorar_Tarefas.Models
         [Required(ErrorMessage = "Será necessário selecionar ou informar a categoria do seu projeto!")]
         [Display(Name = "Categoria")]
         public string NomeCategoria { get; set; }
+
     }
 }

@@ -51,9 +51,9 @@ namespace Monitorar_Tarefas.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 usuarios = usuarios.Where(u => u.NomeUsuario.Contains(searchString)
-                                       || u.SobrenomeUsuario.Contains(searchString)
-                                       || u.CPF.Contains(searchString)
-                                       || u.Empresa.NomeEmpresa.Contains(searchString));
+                                            || u.SobrenomeUsuario.Contains(searchString)
+                                            || u.CPF.Contains(searchString)
+                                            || u.Empresa.NomeEmpresa.Contains(searchString));
             }
 
             usuarios = sortOrder switch
@@ -113,8 +113,8 @@ namespace Monitorar_Tarefas.Controllers
                     else if (verificaCPF == false)
                     {
                         _context.Add(usuarios);
-                        TempData["Create"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi cadastrado com sucesso!";
                         await _context.SaveChangesAsync();
+                        TempData["Create"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi cadastrado com sucesso!";
                         return RedirectToAction(nameof(Index));
                     }
                     else
@@ -176,9 +176,9 @@ namespace Monitorar_Tarefas.Controllers
                     else if (verificaCPF == false)
                     {
                         _context.Add(usuarios);
-                        TempData["Editar"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi atualizado com sucesso!";
                         await _context.SaveChangesAsync();
-                        
+                        TempData["Editar"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi atualizado com sucesso!";
+
                     }
                     else
                     {
