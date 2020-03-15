@@ -42,13 +42,25 @@
             @Html.DisplayFor(model => model.DataNascimento)
         </dd>
         <dd class="col-sm-10">
+            @Html.DisplayNameFor(model => model.TokenAcesso)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TokenAcesso)
+        </dd>
+        <dd class="col-sm-10">
             @Html.DisplayNameFor(model => model.Empresa)
         </dd>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Empresa.NomeEmpresa)
         </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayNameFor(model => model.Perfil)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Perfil.PerfilUsuario)
+        </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

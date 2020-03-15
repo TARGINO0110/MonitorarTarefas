@@ -102,6 +102,9 @@
                                     Usuario
                                 </th>
                                 <th>
+                                    Perfil
+                                </th>
+                                <th>
                                     <span class="fa  fa-ellipsis-v"></span>
                                     Ações
                                 </th>
@@ -109,25 +112,28 @@
                         </thead>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Hash)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataValidadeToken)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Usuarios.NomeUsuario)
-                                </td>
-                                <td>
-                                    <span class="fa  fa-edit"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                                    <span class="fa   fa-tasks"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                                    <span class="fa fa-trash"></span>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Hash)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataValidadeToken)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Usuarios.NomeUsuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PerfilToken)
+                        </td>
+                        <td>
+                            <span class="fa  fa-edit"></span>
+                            <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                            <span class="fa   fa-tasks"></span>
+                            <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                            <span class="fa fa-trash"></span>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                        </td>
+                    </tr>
                         }
                     </table>
                 </div>

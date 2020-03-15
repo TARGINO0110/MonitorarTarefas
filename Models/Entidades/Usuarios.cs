@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Monitorar_Tarefas.Models.Entidades;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,9 +24,6 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Gerente de projetos?")]
         public bool GerenteProjeto { get; set; }
 
-        [Display(Name = "Token")]
-        public bool TokenAcesso { get; set; }
-
         [Required(ErrorMessage = "Informe os 11 digitos do seu CPF!")]
         [StringLength(14, ErrorMessage = "Verifique se o número do seu CPF está correto")]
         [Display(Name = "CPF")]
@@ -40,9 +39,16 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Data de nascimento")]
         public DateTime DataNascimento { get; set; }
 
-        [ForeignKey("Colaborador da Empresa")]
+        [Display(Name = "Token")]
+        public string TokenAcesso { get; set; }
+
+        [ForeignKey("Empresas")]
         public int EmpresaId { get; set; }
+        [ForeignKey("Perfils")]
+        public int PerfilId { get; set; }
+
 
         public virtual Empresa Empresa { get; set; }
+        public virtual Perfil Perfil { get; set; }
     }
 }

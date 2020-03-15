@@ -271,15 +271,16 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
-                        .HasColumnType("nvarchar(14)")
-                        .HasMaxLength(14);
+                        .HasColumnType("nvarchar(18)")
+                        .HasMaxLength(18);
 
                     b.Property<DateTime>("DataFundacao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailEmpresa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("EnderecoEmpresa")
                         .IsRequired()
@@ -296,12 +297,31 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("TelefoneEmpresa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.HasKey("Id");
 
                     b.ToTable("Empresas");
+                });
+
+            modelBuilder.Entity("Monitorar_Tarefas.Models.Entidades.Perfil", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CodigoPerfil")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PerfilUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Perfils");
                 });
 
             modelBuilder.Entity("Monitorar_Tarefas.Models.HistoricoAcoes", b =>
@@ -423,6 +443,10 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("PerfilToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
@@ -442,8 +466,8 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(11)")
-                        .HasMaxLength(11);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
@@ -461,6 +485,9 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PerfilId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ProjetosId")
                         .HasColumnType("int");
 
@@ -470,17 +497,19 @@ namespace Monitorar_Tarefas.Data.Migrations
 
                     b.Property<string>("TelefoneCelular")
                         .IsRequired()
-                        .HasColumnType("nvarchar(11)")
-                        .HasMaxLength(11);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
-                    b.Property<bool>("TokenAcesso")
-                        .HasColumnType("bit");
+                    b.Property<string>("TokenAcesso")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmpresaId");
 
                     b.HasIndex("HistoricoAcoesId");
+
+                    b.HasIndex("PerfilId");
 
                     b.HasIndex("ProjetosId");
 
@@ -586,6 +615,12 @@ namespace Monitorar_Tarefas.Data.Migrations
                     b.HasOne("Monitorar_Tarefas.Models.HistoricoAcoes", null)
                         .WithMany("Usuarios")
                         .HasForeignKey("HistoricoAcoesId");
+
+                    b.HasOne("Monitorar_Tarefas.Models.Entidades.Perfil", "Perfil")
+                        .WithMany()
+                        .HasForeignKey("PerfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Monitorar_Tarefas.Models.Projetos", null)
                         .WithMany("Usuarios")

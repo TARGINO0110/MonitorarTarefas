@@ -112,7 +112,13 @@
                                     Data de nascimento
                                 </th>
                                 <th>
+                                    Token
+                                </th>
+                                <th>
                                     Colaborador da Empresa
+                                </th>
+                                <th>
+                                    Perfil
                                 </th>
                                 <th>
                                     <span class="fa  fa-ellipsis-v"></span>
@@ -122,37 +128,43 @@
                         </thead>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NomeUsuario)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.SobrenomeUsuario)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.GerenteProjeto)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CPF)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TelefoneCelular)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataNascimento)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Empresa.NomeEmpresa)
-                                </td>
-                                <td>
-                                    <span class="fa  fa-edit"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                                    <span class="fa   fa-tasks"></span>
-                                    <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                                    <span class="fa fa-trash"></span>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NomeUsuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SobrenomeUsuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GerenteProjeto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CPF)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TelefoneCelular)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataNascimento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TokenAcesso)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empresa.NomeEmpresa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Perfil.PerfilUsuario)
+                        </td>
+                        <td>
+                            <span class="fa  fa-edit"></span>
+                            <a class="btn btn-light btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                            <span class="fa   fa-tasks"></span>
+                            <a class="btn btn-light btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                            <span class="fa fa-trash"></span>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                        </td>
+                    </tr>
                         }
                     </table>
                 </div>

@@ -66,7 +66,7 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fas fa-clipboard"></i>Tasks
+                                <i class="fas fa-clipboard"></i>Planejamento
                             </a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li class="active">
@@ -111,7 +111,7 @@
 
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fa fa-users"></i>Perfil
+                                <i class="fa fa-users"></i>Entidades
                             </a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
@@ -120,6 +120,9 @@
 
                                 <li>
                                     @Html.ActionLink("Usuario", "Index", "Usuarios", new { area = "" }, new { @class = "input-group" })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Perfil", "Index", "Perfils", new { area = "" }, new { @class = "input-group" })
                                 </li>
                             </ul>
                         </li>
@@ -159,7 +162,7 @@
                 <ul class="list-unstyled navbar__list">
                     <li class="active has-sub">
                         <a class="js-arrow" href="#">
-                            <i class="fas fa-clipboard"></i>Tasks
+                            <i class="fas fa-clipboard"></i>Planejamento
                         </a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li>
@@ -204,15 +207,17 @@
 
                     <li class=" active has-sub">
                         <a class="js-arrow" href="#">
-                            <i class="fa fa-users"></i>Perfil
+                            <i class="fa fa-users"></i>Entidades
                         </a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li>
                                 @Html.ActionLink("Empresa", "Index", "Empresas", new { area = "" }, new { @class = "input-group" })
                             </li>
-
                             <li>
                                 @Html.ActionLink("Usuario", "Index", "Usuarios", new { area = "" }, new { @class = "input-group" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Perfil", "Index", "Perfils", new { area = "" }, new { @class = "input-group" })
                             </li>
                         </ul>
                     </li>

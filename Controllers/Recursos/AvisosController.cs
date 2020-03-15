@@ -98,8 +98,8 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    var verificaTexto = await _context.Avisos.AnyAsync(a => a.TituloAviso == avisos.TituloAviso || a.DescricaoAviso == avisos.DescricaoAviso);
-                    switch (verificaTexto)
+                    var validarTexto = await _context.Avisos.AnyAsync(a => a.TituloAviso == avisos.TituloAviso || a.DescricaoAviso == avisos.DescricaoAviso);
+                    switch (validarTexto)
                     {
                         case true:
                             TempData["ErroSalvar"] = "Já existe o título " + avisos.TituloAviso + " ou Descrição " + avisos.DescricaoAviso + " cadastrado na base de dados'\t , tente novamente!";
@@ -165,13 +165,13 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    var verificaTexto = await _context.Avisos.AnyAsync(a => a.TituloAviso == avisos.TituloAviso || a.DescricaoAviso == avisos.DescricaoAviso || a.Id != avisos.Id);
-                    switch (verificaTexto)
+                    var validarTexto = await _context.Avisos.AnyAsync(a => a.TituloAviso == avisos.TituloAviso || a.DescricaoAviso == avisos.DescricaoAviso || a.Id != avisos.Id);
+                    switch (validarTexto)
                     {
-                        case true:
+                        case true :
                             TempData["ErroSalvar"] = "Já existe o título " + avisos.TituloAviso + " ou Descrição " + avisos.DescricaoAviso + " cadastrado na base de dados'\t , tente novamente!";
                             return View("Edit");
-
+                        
                         default:
                             if (avisos.DataPostagemAviso < DateTime.Today)
                             {

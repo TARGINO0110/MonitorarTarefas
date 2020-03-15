@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Data;
@@ -53,7 +52,8 @@ namespace Monitorar_Tarefas.Controllers
                 usuarios = usuarios.Where(u => u.NomeUsuario.Contains(searchString)
                                             || u.SobrenomeUsuario.Contains(searchString)
                                             || u.CPF.Contains(searchString)
-                                            || u.Empresa.NomeEmpresa.Contains(searchString));
+                                            || u.Empresa.NomeEmpresa.Contains(searchString)
+                                            || u.Perfil.PerfilUsuario.Contains(searchString));
             }
 
             usuarios = sortOrder switch
@@ -65,7 +65,7 @@ namespace Monitorar_Tarefas.Controllers
             };
             int pageSize = 4;
             return View(await PaginatedList<Usuarios>.CreateAsync(
-                usuarios.AsNoTracking().Include(u => u.Empresa), pageNumber ?? 1, pageSize));
+                usuarios.AsNoTracking().Include(u => u.Empresa).Include(u => u.Perfil), pageNumber ?? 1, pageSize));
         }
 
         // GET: Usuarios/Details/5
@@ -91,13 +91,14 @@ namespace Monitorar_Tarefas.Controllers
         public IActionResult Create()
         {
             ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+            ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
             return View();
         }
 
         // POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
+        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,TokenAcesso,EmpresaId,PerfilId")] Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {
@@ -108,6 +109,7 @@ namespace Monitorar_Tarefas.Controllers
                     {
                         TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, não é possivel ser em: '" + usuarios.DataNascimento + "'\t , tente novamente!";
                         ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
                         return View("Create");
                     }
                     else if (verificaCPF == false)
@@ -121,6 +123,7 @@ namespace Monitorar_Tarefas.Controllers
                     {
                         TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
                         ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
                         return View("Create");
                     }
                 }
@@ -132,6 +135,7 @@ namespace Monitorar_Tarefas.Controllers
 
             }
             ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+            ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
             return View(usuarios);
         }
 
@@ -149,13 +153,14 @@ namespace Monitorar_Tarefas.Controllers
                 return NotFound();
             }
             ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+            ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
             return View(usuarios);
         }
 
         // POST: Usuarios/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,EmpresaId")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,TokenAcesso,EmpresaId,PerfilId")] Usuarios usuarios)
         {
             if (id != usuarios.Id)
             {
@@ -171,6 +176,7 @@ namespace Monitorar_Tarefas.Controllers
                     {
                         TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, não é possivel ser em: '" + usuarios.DataNascimento + "'\t , tente novamente!";
                         ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
                         return View("Edit");
                     }
                     else if (verificaCPF == false)
@@ -184,6 +190,7 @@ namespace Monitorar_Tarefas.Controllers
                     {
                         TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
                         ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
                         return View("Edit");
                     }
                 }
@@ -202,6 +209,7 @@ namespace Monitorar_Tarefas.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+            ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
             return View(usuarios);
         }
 

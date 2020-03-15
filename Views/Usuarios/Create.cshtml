@@ -71,13 +71,31 @@
                             <span asp-validation-for="DataNascimento" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="validationfeedback07" asp-for="EmpresaId" class="control-label"></label>
+                            <label for="validationfeedback07" asp-for="TokenAcesso" class="control-label"></label>
+                            <select asp-for="TokenAcesso" class="form-control" id="validationfeedback07" asp-items="ViewBag.TokenAcesso" required></select>
+                            <small class="input-group form-text text-muted">Informe o token do perfil.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="TokenAcesso" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback08" asp-for="EmpresaId" class="control-label"></label>
                             <select asp-for="EmpresaId" class="form-control" id="validationfeedback07" asp-items="ViewBag.EmpresaId" required></select>
                             <small class="input-group form-text text-muted">Selecione a empresa vinculada ao projeto.</small>
                             <div class="valid-feedback">
                                 OK!
                             </div>
                             <span asp-validation-for="EmpresaId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback09" asp-for="PerfilId" class="control-label"></label>
+                            <select asp-for="PerfilId" class="form-control" id="validationfeedback08" asp-items="ViewBag.PerfilId" required></select>
+                            <small class="input-group form-text text-muted">Selecione o perfil de seu usuário.</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="PerfilId" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group col-md-4">

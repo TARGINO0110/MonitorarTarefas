@@ -45,7 +45,7 @@ namespace Monitorar_Tarefas.Data.Migrations
                     NomeEmpresa = table.Column<string>(nullable: false),
                     EnderecoEmpresa = table.Column<string>(maxLength: 100, nullable: false),
                     TelefoneEmpresa = table.Column<string>(maxLength: 14, nullable: false),
-                    EmailEmpresa = table.Column<string>(nullable: false),
+                    EmailEmpresa = table.Column<string>(maxLength: 50, nullable: false),
                     CNPJ = table.Column<string>(maxLength: 18, nullable: false),
                     DataFundacao = table.Column<DateTime>(nullable: false),
                     PorteEmpresa = table.Column<string>(nullable: false)
@@ -68,6 +68,20 @@ namespace Monitorar_Tarefas.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HistoricoAcoes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Perfils",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PerfilUsuario = table.Column<string>(nullable: false),
+                    CodigoPerfil = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Perfils", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,11 +124,12 @@ namespace Monitorar_Tarefas.Data.Migrations
                     NomeUsuario = table.Column<string>(nullable: false),
                     SobrenomeUsuario = table.Column<string>(nullable: false),
                     GerenteProjeto = table.Column<bool>(nullable: false),
-                    TokenAcesso = table.Column<bool>(nullable: false),
                     CPF = table.Column<string>(maxLength: 14, nullable: false),
                     TelefoneCelular = table.Column<string>(maxLength: 14, nullable: false),
                     DataNascimento = table.Column<DateTime>(nullable: false),
+                    TokenAcesso = table.Column<string>(nullable: true),
                     EmpresaId = table.Column<int>(nullable: false),
+                    PerfilId = table.Column<int>(nullable: false),
                     HistoricoAcoesId = table.Column<int>(nullable: true),
                     ProjetosId = table.Column<int>(nullable: true)
                 },
@@ -133,6 +148,12 @@ namespace Monitorar_Tarefas.Data.Migrations
                         principalTable: "HistoricoAcoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_Perfils_PerfilId",
+                        column: x => x.PerfilId,
+                        principalTable: "Perfils",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Usuarios_Projetos_ProjetosId",
                         column: x => x.ProjetosId,
@@ -181,6 +202,7 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Hash = table.Column<string>(maxLength: 50, nullable: false),
                     DataValidadeToken = table.Column<DateTime>(nullable: false),
+                    PerfilToken = table.Column<string>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -230,6 +252,11 @@ namespace Monitorar_Tarefas.Data.Migrations
                 column: "HistoricoAcoesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_PerfilId",
+                table: "Usuarios",
+                column: "PerfilId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_ProjetosId",
                 table: "Usuarios",
                 column: "ProjetosId");
@@ -251,6 +278,9 @@ namespace Monitorar_Tarefas.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Empresas");
+
+            migrationBuilder.DropTable(
+                name: "Perfils");
 
             migrationBuilder.DropTable(
                 name: "Projetos");

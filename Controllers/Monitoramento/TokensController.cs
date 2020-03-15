@@ -52,7 +52,8 @@ namespace Monitorar_Tarefas.Controllers
             {
                 tokens = tokens.Where(t => t.Hash.Contains(searchString)
                                         || t.Usuarios.NomeUsuario.Contains(searchString)
-                                        || t.Usuarios.SobrenomeUsuario.Contains(searchString));
+                                        || t.Usuarios.SobrenomeUsuario.Contains(searchString)
+                                        || t.Usuarios.Perfil.PerfilUsuario.Contains(searchString));
             }
 
             tokens = sortOrder switch
@@ -90,13 +91,14 @@ namespace Monitorar_Tarefas.Controllers
         public IActionResult Create()
         {
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario");
+            ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
             return View();
         }
 
         // POST: Tokens/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
+        public async Task<IActionResult> Create([Bind("Id,Hash,DataValidadeToken,PerfilToken,UsuarioId")] Token token)
         {
             if (ModelState.IsValid)
             {
@@ -156,7 +158,7 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Tokens/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Hash,DataValidadeToken,UsuarioId")] Token token)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Hash,DataValidadeToken,PerfilToken,UsuarioId")] Token token)
         {
             if (id != token.Id)
             {

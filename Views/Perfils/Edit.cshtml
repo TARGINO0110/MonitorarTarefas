@@ -1,0 +1,65 @@
+﻿@model Monitorar_Tarefas.Models.Entidades.Perfil
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
+}
+
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="card card-body shadow p-3 mb-5">
+                <h2>Editar Perfil </h2>
+                <form asp-action="Edit" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para realizar o cadastro</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback01" asp-for="PerfilUsuario" class="control-label"></label>
+                            <select asp-for="PerfilUsuario" class="form-control" id="validationfeedback01" required>
+                                <option placeholder="selecione as opções"></option>
+                                <option value="Gerente de Projetos">Gerente de Projetos</option>
+                                <option value="Administrador">Administrador</option>
+                            </select>
+                            <small class="input-group form-text text-muted">Selecione o perfil</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="PerfilUsuario" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="validationfeedback02" asp-for="CodigoPerfil" class="control-label"></label>
+                            <select asp-for="CodigoPerfil" class="form-control" id="validationfeedback02" required>
+                                <option placeholder="selecione as opções"></option>
+                                <option value="1">Nível 1 (Acesso Completo)</option>
+                                <option value="2">Nível 2 (Acesso Gerencial)</option>
+                            </select>
+                            <small class="input-group form-text text-muted">Selecione o código do perfil</small>
+                            <div class="valid-feedback">
+                                OK!
+                            </div>
+                            <span asp-validation-for="CodigoPerfil" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                            <input type="submit" value="Salvar" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
