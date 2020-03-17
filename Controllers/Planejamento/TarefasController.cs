@@ -107,17 +107,26 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if ((tarefas.DataInicioTarefa >= DateTime.Today) && (tarefas.DataEntregaTarefa >= DateTime.Today) && (tarefas.DataFinalizadoTarefa >= DateTime.Today))
+                    var validaNomeTarefa = await _context.Tarefas.AnyAsync(t => t.NomeTarefa == tarefas.NomeTarefa);
+                    switch (validaNomeTarefa)
                     {
-                        _context.Add(tarefas);
-                        await _context.SaveChangesAsync();
-                        TempData["Salvar"] = "Sua tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t foi cadastrada com sucesso!";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
-                        return View("Create");
+                        case true:
+                            TempData["ErroSalvar"] = "O nome da tarefa informada já exite cadastrada na base de dados, tente novamente!";
+                            return View("Create");
+
+                        default:
+                            if ((tarefas.DataInicioTarefa >= DateTime.Today) && (tarefas.DataEntregaTarefa >= DateTime.Today) && (tarefas.DataFinalizadoTarefa >= DateTime.Today))
+                            {
+                                _context.Add(tarefas);
+                                await _context.SaveChangesAsync();
+                                TempData["Salvar"] = "Sua tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t foi cadastrada com sucesso!";
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                                return View("Create");
+                            }
                     }
                 }
                 catch
@@ -163,18 +172,30 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if ((tarefas.DataInicioTarefa >= DateTime.Today) && (tarefas.DataEntregaTarefa >= DateTime.Today) && (tarefas.DataFinalizadoTarefa >= DateTime.Today))
+                    var validaNomeTarefa = await _context.Tarefas.AnyAsync(t => t.NomeTarefa == tarefas.NomeTarefa && t.Id != tarefas.Id);
+                    switch (validaNomeTarefa)
                     {
-                        _context.Update(tarefas);
-                        TempData["Editar"] = "Sua tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t foi atualizado com sucesso!";
-                        await _context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
-                        ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
-                        ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
-                        return View("Edit");
+                        case true:
+                            TempData["ErroSalvar"] = "O nome da tarefa informada já exite cadastrada na base de dados, tente novamente!";
+                            ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+                            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
+                            return View("Edit");
+
+                        default:
+                            if ((tarefas.DataInicioTarefa >= DateTime.Today) && (tarefas.DataEntregaTarefa >= DateTime.Today) && (tarefas.DataFinalizadoTarefa >= DateTime.Today))
+                            {
+                                _context.Update(tarefas);
+                                TempData["Editar"] = "Sua tarefa: '" + tarefas.NomeTarefa.ToUpper() + "'\t foi atualizado com sucesso!";
+                                await _context.SaveChangesAsync();
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                                ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
+                                ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);
+                                return View("Edit");
+                            }
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -189,7 +210,6 @@ namespace Monitorar_Tarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["ProjetoId"] = new SelectList(_context.Projetos, "Id", "NomeProjeto", tarefas.ProjetoId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "NomeUsuario", tarefas.UsuarioId);

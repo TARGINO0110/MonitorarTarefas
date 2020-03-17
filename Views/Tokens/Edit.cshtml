@@ -1,5 +1,6 @@
 ﻿@model Monitorar_Tarefas.Models.Token
 
+
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
@@ -13,7 +14,7 @@
             <div class="card card-body shadow p-3 mb-5">
                 <h2>Editar Token </h2>
                 <form asp-action="Edit" class="was-validated" novalidate>
-                    <text>Preencha os campos abaixo para modificação dos dados</text>
+                    <text>Preencha os campos abaixo para atualizar o cadastro</text>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -45,7 +46,11 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="validationfeedback04" asp-for="PerfilToken" class="control-label"></label>
-                            <select asp-for="PerfilToken" class="form-control" id="validationfeedback04" asp-items="ViewBag.PerfilToken" required></select>
+                            <select asp-for="PerfilToken" class="form-control" id="validationfeedback04" required>
+                                <option value="">selecione as opções</option>
+                                <option value="Gerente de Projetos">Gerente de Projetos</option>
+                                <option value="Administrador">Administrador</option>
+                            </select>
                             <small class="input-group form-text text-muted">Selecione o perfil do usuário.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -73,4 +78,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-

@@ -102,18 +102,28 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if ((projetos.DataInicioProjeto >= DateTime.Today) && (projetos.DataEntregaProjeto >= DateTime.Today) && (projetos.DataFinalizadoProjeto >= DateTime.Today))
+                    var validaNomeProjeto = await _context.Projetos.AnyAsync(p => p.NomeProjeto == projetos.NomeProjeto);
+                    switch (validaNomeProjeto)
                     {
-                        _context.Add(projetos);
-                        await _context.SaveChangesAsync();
-                        TempData["Salvar"] = "Seu projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t foi cadastrado com sucesso!";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
-                        ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
-                        return View("Create");
+                        case true:
+                            TempData["ErroSalvar"] = "O nome do projeto informado já exite cadastrado na base de dados, tente novamente!";
+                            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
+                            return View("Create");
+
+                        default:
+                            if ((projetos.DataInicioProjeto >= DateTime.Today) && (projetos.DataEntregaProjeto >= DateTime.Today) && (projetos.DataFinalizadoProjeto >= DateTime.Today))
+                            {
+                                _context.Add(projetos);
+                                await _context.SaveChangesAsync();
+                                TempData["Salvar"] = "Seu projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t foi cadastrado com sucesso!";
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                                ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
+                                return View("Create");
+                            }
                     }
                 }
                 catch
@@ -157,17 +167,27 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    if ((projetos.DataInicioProjeto >= DateTime.Today) && (projetos.DataEntregaProjeto >= DateTime.Today) && (projetos.DataFinalizadoProjeto >= DateTime.Today))
+                    var validaNomeProjeto = await _context.Projetos.AnyAsync(p => p.NomeProjeto == projetos.NomeProjeto && p.Id != projetos.Id);
+                    switch (validaNomeProjeto)
                     {
-                        _context.Update(projetos);
-                        TempData["Editar"] = "Seu projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t foi atualizado com sucesso!";
-                        await _context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
-                        ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
-                        return View("Edit");
+                        case true:
+                            TempData["ErroSalvar"] = "O nome do projeto informado já exite cadastrado na base de dados, tente novamente!";
+                            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
+                            return View("Edit");
+                        default:
+                            if ((projetos.DataInicioProjeto >= DateTime.Today) && (projetos.DataEntregaProjeto >= DateTime.Today) && (projetos.DataFinalizadoProjeto >= DateTime.Today))
+                            {
+                                _context.Update(projetos);
+                                TempData["Editar"] = "Seu projeto: '" + projetos.NomeProjeto.ToUpper() + "'\t foi atualizado com sucesso!";
+                                await _context.SaveChangesAsync();
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                TempData["ErroSalvar"] = "A data de Inicio/Entrega ou final deverá ser atual ou posterior, tente novamente!";
+                                ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
+                                return View("Edit");
+                            }
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -182,7 +202,6 @@ namespace Monitorar_Tarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "NomeCategoria", projetos.CategoriaId);
             return View(projetos);
