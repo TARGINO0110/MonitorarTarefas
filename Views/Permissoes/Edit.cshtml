@@ -1,0 +1,82 @@
+﻿@model Monitorar_Tarefas.Models.Monitoramento.Permissoes
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Permissoes</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermEmpresa" /> @Html.DisplayNameFor(model => model.PermEmpresa)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermPerfil" /> @Html.DisplayNameFor(model => model.PermPerfil)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermUsuarios" /> @Html.DisplayNameFor(model => model.PermUsuarios)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermHistoricoAcoes" /> @Html.DisplayNameFor(model => model.PermHistoricoAcoes)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermPermissoes" /> @Html.DisplayNameFor(model => model.PermPermissoes)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermToken" /> @Html.DisplayNameFor(model => model.PermToken)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermAvisos" /> @Html.DisplayNameFor(model => model.PermAvisos)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermCategoria" /> @Html.DisplayNameFor(model => model.PermCategoria)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermProjetos" /> @Html.DisplayNameFor(model => model.PermProjetos)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermTarefas" /> @Html.DisplayNameFor(model => model.PermTarefas)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="PerfilId" class="control-label"></label>
+                <select asp-for="PerfilId" class="form-control" asp-items="ViewBag.PerfilId"></select>
+                <span asp-validation-for="PerfilId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

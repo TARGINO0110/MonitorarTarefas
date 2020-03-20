@@ -1,0 +1,100 @@
+﻿@model Monitorar_Tarefas.Models.Monitoramento.Permissoes
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
+}
+
+<!-- MAIN CONTENT-->
+<div class="main-content">
+    <partial name="~/Views/Shared/_AlertasPartial.cshtml" />
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="card card-body shadow p-3 mb-5">
+                <h2>Cadastrar Permissões </h2>
+                <form asp-action="Create" class="was-validated" novalidate>
+                    <text>Preencha os campos abaixo para realizar o cadastro</text>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <br />
+                    <p><b>Entidades</b></p>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback01" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermEmpresa" id="validationfeedback01" required /> @Html.DisplayNameFor(model => model.PermEmpresa)
+                        </label>
+                    </div>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback02" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermPerfil" id="validationfeedback02" required /> @Html.DisplayNameFor(model => model.PermPerfil)
+                        </label>
+                    </div>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback03" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermUsuarios" id="validationfeedback03" required /> @Html.DisplayNameFor(model => model.PermUsuarios)
+                        </label>
+                    </div>
+                    <br />
+                    <p><b>Monitoramento</b></p>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback04" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermHistoricoAcoes" id="validationfeedback04" required /> @Html.DisplayNameFor(model => model.PermHistoricoAcoes)
+                        </label>
+                    </div>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback05" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermPermissoes" id="validationfeedback05" required /> @Html.DisplayNameFor(model => model.PermPermissoes)
+                        </label>
+                    </div>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback06" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermToken" id="validationfeedback06" required /> @Html.DisplayNameFor(model => model.PermToken)
+                        </label>
+                    </div>
+                    <br />
+                    <p><b>Recursos</b></p>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback07" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermAvisos" id="validationfeedback07" required /> @Html.DisplayNameFor(model => model.PermAvisos)
+                        </label>
+                    </div>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback08" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermCategoria" id="validationfeedback08" required /> @Html.DisplayNameFor(model => model.PermCategoria)
+                        </label>
+                    </div>
+                    <br />
+                    <p><b>Planejamento</b></p>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback09" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermProjetos" id="validationfeedback09" required /> @Html.DisplayNameFor(model => model.PermProjetos)
+                        </label>
+                    </div>
+                    <div class="form-group form-check ">
+                        <label for="validationfeedback10" class="form-check-label">
+                            <input class="form-check-input" asp-for="PermTarefas" id="validationfeedback10" required /> @Html.DisplayNameFor(model => model.PermTarefas)
+                        </label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="validationfeedback11" asp-for="PerfilId" class="control-label"></label>
+                        <select asp-for="PerfilId" class="form-control" asp-items="ViewBag.PerfilId" id="validationfeedback11" required></select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="copyright">
+                <p>Copyright © 2020 - Monitorar Tarefas todos direitos reservados.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -1,0 +1,85 @@
+﻿@model Monitorar_Tarefas.Models.Monitoramento.Permissoes
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutLogado.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Permissoes</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermEmpresa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermEmpresa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermPerfil)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermPerfil)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermUsuarios)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermUsuarios)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermHistoricoAcoes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermHistoricoAcoes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermPermissoes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermPermissoes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermToken)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermToken)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermAvisos)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermAvisos)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermCategoria)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermCategoria)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermProjetos)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermProjetos)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PermTarefas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PermTarefas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Perfil)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Perfil.PerfilUsuario)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
