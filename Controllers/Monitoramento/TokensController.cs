@@ -104,7 +104,7 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    var verificaHASH = await _context.Tokens.AnyAsync(t => t.Hash == token.Hash || t.Usuarios == token.Usuarios);
+                    var verificaHASH = await _context.Tokens.AnyAsync(t => t.Hash == token.Hash && t.Usuarios == token.Usuarios);
                     switch (verificaHASH)
                     {
                         case true:

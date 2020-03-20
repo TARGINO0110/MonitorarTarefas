@@ -100,24 +100,24 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    var verificaCNPJ = await _context.Empresas.AnyAsync(e=> e.CNPJ == empresa.CNPJ);
-                    if (empresa.DataFundacao > DateTime.Today)
+                    var verificaDadosEmpresa = await _context.Empresas.AnyAsync(e => e.CNPJ == empresa.CNPJ && e.EmailEmpresa == empresa.EmailEmpresa && e.NomeEmpresa == empresa.NomeEmpresa);
+                    switch (verificaDadosEmpresa)
                     {
-                        TempData["ErroSalvar"] = "A data da fundação da sua empresa deverá ser atual ou anterior: '" + empresa.DataFundacao + "'\t , tente novamente!";
-                        return View("Create");
-                    }
+                        case true:
+                            TempData["ErroSalvar"] = "O Dados informados desta empresa ja existe em nossa base cadastrada, verifique se o "
+                            + empresa.CNPJ.ToUpper() + ", " + empresa.EmailEmpresa.ToUpper() + ", " + empresa.NomeEmpresa.ToUpper() + " está informado corretamente, tente novamente!";
+                            return View("Create");
 
-                    else if (verificaCNPJ == false)
-                    {
-                        _context.Add(empresa);
-                        await _context.SaveChangesAsync();
-                        TempData["Salvar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi cadastrada com sucesso!";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "O CNPJ " + empresa.CNPJ.ToUpper() + " ja está cadastrado, tente novamente!";
-                        return View("Create");
+                        default:
+                            if (empresa.DataFundacao > DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A data da fundação da sua empresa deverá ser atual ou anterior: '" + empresa.DataFundacao + "'\t , tente novamente!";
+                                return View("Create");
+                            }
+                            _context.Add(empresa);
+                            await _context.SaveChangesAsync();
+                            TempData["Salvar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi cadastrada com sucesso!";
+                            return RedirectToAction(nameof(Index));
                     }
                 }
                 catch
@@ -125,7 +125,7 @@ namespace Monitorar_Tarefas.Controllers
                     TempData["ErroInesperado"] = "Não foi possivel cadastrar a empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t , tente novamente!";
                     return RedirectToAction(nameof(Index));
                 }
-                
+
             }
             return View(empresa);
         }
@@ -160,22 +160,25 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    var verificaCNPJ = await _context.Empresas.AnyAsync(e => e.CNPJ == empresa.CNPJ && e.Id != empresa.Id);
-                    if (empresa.DataFundacao > DateTime.Today)
+                    var verificaDadosEmpresa = await _context.Empresas.AnyAsync(e => e.CNPJ == empresa.CNPJ && e.EmailEmpresa == empresa.EmailEmpresa && e.NomeEmpresa == empresa.NomeEmpresa && e.Id != empresa.Id);
+                    switch (verificaDadosEmpresa)
                     {
-                        TempData["ErroSalvar"] = "A data da fundação da sua empresa deverá ser atual ou anterior: '" + empresa.DataFundacao + "'\t , tente novamente!";
-                        return View("Edit");
-                    }
-                    else if (verificaCNPJ == false)
-                    {
-                        _context.Update(empresa);
-                        await _context.SaveChangesAsync();
-                        TempData["Editar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi atualizada com sucesso!";
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "O CNPJ " + empresa.CNPJ.ToUpper() + " ja está cadastrado, tente novamente!";
-                        return View("Edit");
+                        case true:
+                            TempData["ErroSalvar"] = "O Dados informados desta empresa ja existe em nossa base cadastrada, verifique se o "
+                            + empresa.CNPJ.ToUpper() + ", " + empresa.EmailEmpresa.ToUpper() + ", " + empresa.NomeEmpresa.ToUpper() + " está informado corretamente, tente novamente!";
+                            return View("Edit");
+
+                        default:
+                            if (empresa.DataFundacao > DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A data da fundação da sua empresa deverá ser atual ou anterior: '" + empresa.DataFundacao + "'\t , tente novamente!";
+                                return View("Edit");
+                            }
+
+                            _context.Update(empresa);
+                            await _context.SaveChangesAsync();
+                            TempData["Editar"] = "Sua empresa: '" + empresa.NomeEmpresa.ToUpper() + "'\t foi atualizada com sucesso!";
+                            return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -190,7 +193,7 @@ namespace Monitorar_Tarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
             }
             return View(empresa);
         }
@@ -226,12 +229,12 @@ namespace Monitorar_Tarefas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar a empresa, tente novamente!";
                 return View("Delete");
             }
-            
+
         }
 
         private bool EmpresaExists(int id)

@@ -98,33 +98,34 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,TokenAcesso,EmpresaId,PerfilId")] Usuarios usuarios)
+        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento,TokenAcesso,EmpresaId,PerfilId")] Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var verificaCPF = await _context.Usuarios.AnyAsync(u => u.CPF == usuarios.CPF);
-                    if (usuarios.DataNascimento > DateTime.Today)
+                    var verificaCPF = await _context.Usuarios.AnyAsync(u => u.CPF == usuarios.CPF && u.TokenAcesso == usuarios.TokenAcesso);
+                    switch (verificaCPF)
                     {
-                        TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, não é possivel ser em: '" + usuarios.DataNascimento + "'\t , tente novamente!";
-                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
-                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
-                        return View("Create");
-                    }
-                    else if (verificaCPF == false)
-                    {
-                        _context.Add(usuarios);
-                        await _context.SaveChangesAsync();
-                        TempData["Create"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi cadastrado com sucesso!";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
-                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
-                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
-                        return View("Create");
+                        case true:
+                            TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ou token de acesso:" + usuarios.TokenAcesso.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
+                            ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                            ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
+                            return View("Create");
+
+                        default:
+                            if (usuarios.DataNascimento > DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, pois não é possivel ser em: '" + usuarios.DataNascimento + "'\t neste momento, tente novamente!";
+                                ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                                ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
+                                return View("Create");
+                            }
+
+                            _context.Add(usuarios);
+                            await _context.SaveChangesAsync();
+                            TempData["Create"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi cadastrado com sucesso!";
+                            return RedirectToAction(nameof(Index));
                     }
                 }
                 catch
@@ -160,7 +161,7 @@ namespace Monitorar_Tarefas.Controllers
         // POST: Usuarios/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,GerenteProjeto,CPF,TelefoneCelular,DataNascimento,TokenAcesso,EmpresaId,PerfilId")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NomeUsuario,SobrenomeUsuario,CPF,TelefoneCelular,DataNascimento,TokenAcesso,EmpresaId,PerfilId")] Usuarios usuarios)
         {
             if (id != usuarios.Id)
             {
@@ -171,27 +172,28 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    var verificaCPF = await _context.Usuarios.AnyAsync(u => u.CPF == usuarios.CPF && u.Id != usuarios.Id);
-                    if (usuarios.DataNascimento > DateTime.Today)
+                    var verificaUsuario = await _context.Usuarios.AnyAsync(u => u.CPF == usuarios.CPF && u.TokenAcesso == usuarios.TokenAcesso && u.Id != usuarios.Id);
+                    switch (verificaUsuario)
                     {
-                        TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, não é possivel ser em: '" + usuarios.DataNascimento + "'\t , tente novamente!";
-                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
-                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
-                        return View("Edit");
-                    }
-                    else if (verificaCPF == false)
-                    {
-                        _context.Add(usuarios);
-                        await _context.SaveChangesAsync();
-                        TempData["Editar"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi atualizado com sucesso!";
+                        case true:
+                            TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ou token de acesso:" + usuarios.TokenAcesso.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
+                            ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                            ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
+                            return View("Edit");
 
-                    }
-                    else
-                    {
-                        TempData["ErroSalvar"] = "O CPF " + usuarios.CPF.ToUpper() + " ja está cadastrado na base de dados de outro usuário, tente novamente!";
-                        ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
-                        ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
-                        return View("Edit");
+                        default:
+                            if (usuarios.DataNascimento > DateTime.Today)
+                            {
+                                TempData["ErroSalvar"] = "A sua data de nascimento deve ser anterior, não é possivel ser em: '" + usuarios.DataNascimento + "'\t , tente novamente!";
+                                ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
+                                ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");
+                                return View("Edit");
+                            }
+
+                            _context.Add(usuarios);
+                            await _context.SaveChangesAsync();
+                            TempData["Editar"] = "O Usuário: '" + usuarios.NomeUsuario.ToUpper() + "'\t foi atualizado com sucesso!";
+                            return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -206,7 +208,6 @@ namespace Monitorar_Tarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["EmpresaId"] = new SelectList(_context.Empresas, "Id", "NomeEmpresa");
             ViewData["PerfilId"] = new SelectList(_context.Perfils, "Id", "PerfilUsuario");

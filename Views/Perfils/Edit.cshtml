@@ -29,19 +29,6 @@
                             </div>
                             <span asp-validation-for="PerfilUsuario" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="validationfeedback02" asp-for="CodigoPerfil" class="control-label"></label>
-                            <select asp-for="CodigoPerfil" class="form-control" id="validationfeedback02" required>
-                                <option value="">selecione as opções</option>
-                                <option value="1">Nível 1 (Acesso Completo)</option>
-                                <option value="2">Nível 2 (Acesso Gerencial)</option>
-                            </select>
-                            <small class="input-group form-text text-muted">Selecione o código do perfil</small>
-                            <div class="valid-feedback">
-                                OK!
-                            </div>
-                            <span asp-validation-for="CodigoPerfil" class="text-danger"></span>
-                        </div>
                         <div class="form-group col-md-4">
                             <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
                             <input type="submit" value="Salvar" class="btn btn-primary" />

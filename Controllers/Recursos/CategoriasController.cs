@@ -93,18 +93,17 @@ namespace Monitorar_Tarefas.Controllers
                 try
                 {
                     var verificaCategoria = await _context.Categorias.AnyAsync(c => c.NomeCategoria == categoria.NomeCategoria);
-                    if (verificaCategoria == false)
+                    switch (verificaCategoria)
                     {
-                        _context.Add(categoria);
-                        await _context.SaveChangesAsync();
-                        TempData["Salvar"] = "Sua categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t foi cadastrado com sucesso!";
-                        return RedirectToAction(nameof(Index));
-                    }
+                        case true:
+                            TempData["ErroSalvar"] = "A seguinte Categoria: '" + categoria.NomeCategoria + "'\t , ja está cadastrada na base de dados, tente novamente!";
+                            return View("Create");
 
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A seguinte Categoria: '" + categoria.NomeCategoria + "'\t , ja está cadastrada na base de dados, tente novamente!";
-                        return View("Create");
+                        default:
+                            _context.Add(categoria);
+                            await _context.SaveChangesAsync();
+                            TempData["Salvar"] = "Sua categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t foi cadastrado com sucesso!";
+                            return RedirectToAction(nameof(Index));
                     }
                 }
                 catch
@@ -149,17 +148,17 @@ namespace Monitorar_Tarefas.Controllers
                 try
                 {
                     var verificaCategoria = await _context.Categorias.AnyAsync(c => c.NomeCategoria == categoria.NomeCategoria && c.Id != categoria.Id);
-                    if (verificaCategoria == false)
+                    switch (verificaCategoria)
                     {
-                        _context.Add(categoria);
-                        TempData["Editar"] = "Sua categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t foi atualizada com sucesso!";
-                        await _context.SaveChangesAsync();
-                    }
+                        case true:
+                            TempData["ErroSalvar"] = "A seguinte Categoria: '" + categoria.NomeCategoria + "'\t , ja está cadastrada na base de dados, tente novamente!";
+                            return View("Edit");
 
-                    else
-                    {
-                        TempData["ErroSalvar"] = "A seguinte Categoria: '" + categoria.NomeCategoria + "'\t , ja está cadastrada na base de dados, tente novamente!";
-                        return View("Edit");
+                        default:
+                            _context.Add(categoria);
+                            TempData["Editar"] = "Sua categoria: '" + categoria.NomeCategoria.ToUpper() + "'\t foi atualizada com sucesso!";
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -174,7 +173,7 @@ namespace Monitorar_Tarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
             }
             return View(categoria);
         }

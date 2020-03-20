@@ -35,17 +35,8 @@
                             <span asp-validation-for="SobrenomeUsuario" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="validationfeedback03" asp-for="GerenteProjeto" class="control-label"></label>
-                            <input asp-for="GerenteProjeto" type="checkbox" class="form-control" id="validationfeedback03" required />
-                            <small class="input-group form-text text-muted">Informe sim ou não.</small>
-                            <div class="valid-feedback">
-                                OK!
-                            </div>
-                            <span asp-validation-for="GerenteProjeto" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="validationfeedback04" asp-for="CPF" class="control-label"></label>
-                            <input asp-for="CPF" type="text" class="form-control cpf" id="validationfeedback04" required />
+                            <label for="validationfeedback03" asp-for="CPF" class="control-label"></label>
+                            <input asp-for="CPF" type="text" class="form-control cpf" id="validationfeedback03" required />
                             <small class="input-group form-text text-muted">Informe o Nº do seu CPF.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -53,8 +44,8 @@
                             <span asp-validation-for="CPF" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="validationfeedback05" asp-for="TelefoneCelular" class="control-label"></label>
-                            <input asp-for="TelefoneCelular" type="text" class="form-control telefone" id="validationfeedback05" required />
+                            <label for="validationfeedback04" asp-for="TelefoneCelular" class="control-label"></label>
+                            <input asp-for="TelefoneCelular" type="text" class="form-control telefone" id="validationfeedback04" required />
                             <small class="input-group form-text text-muted">Informe o Nº do seu Telefone ou Celular.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -62,8 +53,8 @@
                             <span asp-validation-for="TelefoneCelular" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="validationfeedback06" asp-for="DataNascimento" class="control-label"></label>
-                            <input asp-for="DataNascimento" type="date" class="form-control" id="validationfeedback06" required />
+                            <label for="validationfeedback05" asp-for="DataNascimento" class="control-label"></label>
+                            <input asp-for="DataNascimento" type="date" class="form-control" id="validationfeedback05" required />
                             <small class="input-group form-text text-muted">Informe a sua data de nascimento.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -71,8 +62,8 @@
                             <span asp-validation-for="DataNascimento" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="validationfeedback07" asp-for="TokenAcesso" class="control-label"></label>
-                            <select asp-for="TokenAcesso" class="form-control" id="validationfeedback07" asp-items="ViewBag.TokenAcesso" required></select>
+                            <label for="validationfeedback06" asp-for="TokenAcesso" class="control-label"></label>
+                            <select asp-for="TokenAcesso" class="form-control" id="validationfeedback06" asp-items="ViewBag.TokenAcesso" required></select>
                             <small class="input-group form-text text-muted">Informe o token do perfil.</small>
                             <div class="valid-feedback">
                                 OK!
@@ -80,7 +71,7 @@
                             <span asp-validation-for="TokenAcesso" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="validationfeedback08" asp-for="EmpresaId" class="control-label"></label>
+                            <label for="validationfeedback07" asp-for="EmpresaId" class="control-label"></label>
                             <select asp-for="EmpresaId" class="form-control" id="validationfeedback07" asp-items="ViewBag.EmpresaId" required></select>
                             <small class="input-group form-text text-muted">Selecione a empresa vinculada ao projeto.</small>
                             <div class="valid-feedback">
@@ -89,7 +80,7 @@
                             <span asp-validation-for="EmpresaId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="validationfeedback09" asp-for="PerfilId" class="control-label"></label>
+                            <label for="validationfeedback08" asp-for="PerfilId" class="control-label"></label>
                             <select asp-for="PerfilId" class="form-control" id="validationfeedback08" asp-items="ViewBag.PerfilId" required></select>
                             <small class="input-group form-text text-muted">Selecione o perfil de seu usuário.</small>
                             <div class="valid-feedback">

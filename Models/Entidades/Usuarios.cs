@@ -20,10 +20,6 @@ namespace Monitorar_Tarefas.Models
         [Display(Name = "Seu Sobrenome")]
         public string SobrenomeUsuario { get; set; }
 
-        [Required(ErrorMessage = "É necessário informar sim ou não!")]
-        [Display(Name = "Gerente de projetos?")]
-        public bool GerenteProjeto { get; set; }
-
         [Required(ErrorMessage = "Informe os 11 digitos do seu CPF!")]
         [StringLength(14, ErrorMessage = "Verifique se o número do seu CPF está correto")]
         [Display(Name = "CPF")]

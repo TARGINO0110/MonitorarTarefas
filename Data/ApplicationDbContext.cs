@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Monitorar_Tarefas.Models;
 using Monitorar_Tarefas.Models.Entidades;
+using Monitorar_Tarefas.Models.Monitoramento;
 
 namespace Monitorar_Tarefas.Data
 {
@@ -20,5 +21,6 @@ namespace Monitorar_Tarefas.Data
         public virtual DbSet<Token> Tokens { get; set; }
         public virtual DbSet<HistoricoAcoes> HistoricoAcoes { get; set; }
         public virtual DbSet<Perfil> Perfils { get; set; }
+        public virtual DbSet<Permissoes> Permissoes { get; set; }
     }
 }

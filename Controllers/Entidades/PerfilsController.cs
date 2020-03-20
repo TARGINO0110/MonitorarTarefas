@@ -54,13 +54,31 @@ namespace Monitorar_Tarefas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PerfilUsuario,CodigoPerfil")] Perfil perfil)
+        public async Task<IActionResult> Create([Bind("Id,PerfilUsuario")] Perfil perfil)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(perfil);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    var validaPerfil = await _context.Perfils.AnyAsync(p => p.PerfilUsuario == perfil.PerfilUsuario);
+                    switch (validaPerfil)
+                    {
+                        case true:
+                            TempData["ErroSalvar"] = "Não é possivel cadastrar o perfil de acesso: " + perfil.PerfilUsuario.ToUpper() + "'\t, no momento este perfil já se encontra cadastrado.";
+                            return View("Create");
+
+                        default:
+                            _context.Add(perfil);
+                            await _context.SaveChangesAsync();
+                            TempData["Salvar"] = "O perfil " + perfil.PerfilUsuario.ToUpper() + "'\t foi cadastrado com sucesso!.";
+                            return RedirectToAction(nameof(Index));
+                    }
+                }
+                catch
+                {
+                    TempData["ErroInesperado"] = "Não foi possivel cadastrar o perfil : '" + perfil.PerfilUsuario.ToUpper() + "'\t pois ocorreu um erro interno, tente novamente!";
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(perfil);
         }
@@ -86,7 +104,7 @@ namespace Monitorar_Tarefas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PerfilUsuario,CodigoPerfil")] Perfil perfil)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PerfilUsuario")] Perfil perfil)
         {
             if (id != perfil.Id)
             {
@@ -97,13 +115,25 @@ namespace Monitorar_Tarefas.Controllers
             {
                 try
                 {
-                    _context.Update(perfil);
-                    await _context.SaveChangesAsync();
+                    var validaPerfil = await _context.Perfils.AnyAsync(p => p.PerfilUsuario == perfil.PerfilUsuario && p.Id != perfil.Id);
+                    switch (validaPerfil)
+                    {
+                        case true:
+                            TempData["ErroSalvar"] = "Não é possivel atualizar o perfil de acesso: " + perfil.PerfilUsuario.ToUpper() + "'\t, no momento este perfil já se encontra cadastrado.";
+                            return View("Edit");
+
+                        default:
+                            _context.Update(perfil);
+                            await _context.SaveChangesAsync();
+                            TempData["Editar"] = "O perfil " + perfil.PerfilUsuario.ToUpper() + "'\t foi atualizado com sucesso!.";
+                            return RedirectToAction(nameof(Index));
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!PerfilExists(perfil.Id))
                     {
+                        TempData["ErroInesperado"] = "Não foi possivel editar este perfil: '" + perfil.PerfilUsuario.ToUpper() + "'\t , tente novamente!";
                         return NotFound();
                     }
                     else
@@ -111,7 +141,6 @@ namespace Monitorar_Tarefas.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(perfil);
         }
@@ -139,10 +168,20 @@ namespace Monitorar_Tarefas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var perfil = await _context.Perfils.FindAsync(id);
-            _context.Perfils.Remove(perfil);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var perfil = await _context.Perfils.FindAsync(id);
+                _context.Perfils.Remove(perfil);
+                TempData["Deletar"] = "O perfil '" + perfil.PerfilUsuario.ToUpper() + "'\t foi deletado!";
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            catch (Exception)
+            {
+                TempData["ErroInesperado"] = "Ocorreu um erro inesperado ao deletar o perfil, tente novamente!";
+                return View("Delete");
+            }
         }
 
         private bool PerfilExists(int id)

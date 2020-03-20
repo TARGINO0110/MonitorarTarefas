@@ -312,9 +312,6 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CodigoPerfil")
-                        .HasColumnType("int");
-
                     b.Property<string>("PerfilUsuario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -343,6 +340,53 @@ namespace Monitorar_Tarefas.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HistoricoAcoes");
+                });
+
+            modelBuilder.Entity("Monitorar_Tarefas.Models.Monitoramento.Permissoes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PerfilId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PermAvisos")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermCategoria")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermEmpresa")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermHistoricoAcoes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermPerfil")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermPermissoes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermProjetos")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermTarefas")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermToken")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PermUsuarios")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PerfilId");
+
+                    b.ToTable("Permissoes");
                 });
 
             modelBuilder.Entity("Monitorar_Tarefas.Models.Projetos", b =>
@@ -475,9 +519,6 @@ namespace Monitorar_Tarefas.Data.Migrations
                     b.Property<int>("EmpresaId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("GerenteProjeto")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("HistoricoAcoesId")
                         .HasColumnType("int");
 
@@ -563,6 +604,15 @@ namespace Monitorar_Tarefas.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Monitorar_Tarefas.Models.Monitoramento.Permissoes", b =>
+                {
+                    b.HasOne("Monitorar_Tarefas.Models.Entidades.Perfil", "Perfil")
+                        .WithMany()
+                        .HasForeignKey("PerfilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

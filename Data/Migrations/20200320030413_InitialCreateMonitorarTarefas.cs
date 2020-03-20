@@ -76,8 +76,7 @@ namespace Monitorar_Tarefas.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PerfilUsuario = table.Column<string>(nullable: false),
-                    CodigoPerfil = table.Column<int>(nullable: false)
+                    PerfilUsuario = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,6 +115,35 @@ namespace Monitorar_Tarefas.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Permissoes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PermEmpresa = table.Column<bool>(nullable: false),
+                    PermPerfil = table.Column<bool>(nullable: false),
+                    PermUsuarios = table.Column<bool>(nullable: false),
+                    PermHistoricoAcoes = table.Column<bool>(nullable: false),
+                    PermPermissoes = table.Column<bool>(nullable: false),
+                    PermToken = table.Column<bool>(nullable: false),
+                    PermAvisos = table.Column<bool>(nullable: false),
+                    PermCategoria = table.Column<bool>(nullable: false),
+                    PermProjetos = table.Column<bool>(nullable: false),
+                    PermTarefas = table.Column<bool>(nullable: false),
+                    PerfilId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissoes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Permissoes_Perfils_PerfilId",
+                        column: x => x.PerfilId,
+                        principalTable: "Perfils",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
@@ -123,7 +151,6 @@ namespace Monitorar_Tarefas.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NomeUsuario = table.Column<string>(nullable: false),
                     SobrenomeUsuario = table.Column<string>(nullable: false),
-                    GerenteProjeto = table.Column<bool>(nullable: false),
                     CPF = table.Column<string>(maxLength: 14, nullable: false),
                     TelefoneCelular = table.Column<string>(maxLength: 14, nullable: false),
                     DataNascimento = table.Column<DateTime>(nullable: false),
@@ -217,6 +244,11 @@ namespace Monitorar_Tarefas.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Permissoes_PerfilId",
+                table: "Permissoes",
+                column: "PerfilId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projetos_CategoriaId",
                 table: "Projetos",
                 column: "CategoriaId");
@@ -266,6 +298,9 @@ namespace Monitorar_Tarefas.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Avisos");
+
+            migrationBuilder.DropTable(
+                name: "Permissoes");
 
             migrationBuilder.DropTable(
                 name: "Tarefas");
